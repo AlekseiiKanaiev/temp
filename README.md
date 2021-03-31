@@ -10,6 +10,14 @@ v0.0.1 initial scaffold
 4. Run `AC_LOCAL_BASE_URL=https://THE_NGROK_BASE_URL node app.js` from the
 repository root.
 
+# Build app
+go to ./frontend
+1. Run `npm install`.
+2. Run `npm run build`. (file bundled.snyk.repo.page will be put into backend/public/dist)
+go to ./backend
+1. Run `npm install`.
+2. Run `node app.js`.
+
 # Development loop
 
 You can manually install/update/uninstall your add-ons from
