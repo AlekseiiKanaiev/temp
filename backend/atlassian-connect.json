@@ -1,0 +1,45 @@
+{
+    "key": "snyk-bb-app-test",
+    "name": "Snyk Integration",
+    "description": "Snyk app for Bitbucket",
+    "vendor": {
+        "name": "snyk.io",
+        "url": "https://snyk.io"
+    },
+    "baseUrl": "{{localBaseUrl}}",
+    "authentication": {
+        "type": "jwt"
+    },
+    "lifecycle": {
+        "installed": "/installed",
+        "uninstalled": "/uninstalled"
+    },
+    "modules": {
+        "webhooks": [
+            {
+                "event": "*",
+                "url": "/webhook"
+            }
+        ],
+        "repoPages": [
+            {
+                "url": "/pages",
+                "name": {
+                    "value": "Snyk"
+                },
+                "location": "org.bitbucket.repository.navigation",
+                "key": "snyk-repo-page",
+                "params": {
+                    "auiIcon": "aui-iconfont-doc"
+                },
+                "icon": {
+                    "url": "/assets/ico/SnykApi.svg",
+                    "width": 24,
+                    "height": 24
+                }
+            }
+        ]
+    },
+    "scopes": ["account", "repository"],
+    "contexts": ["account"]
+}
