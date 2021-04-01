@@ -23,7 +23,7 @@
     "production": {
         "port": "$PORT",
         "errorTemplate": true,
-        "localBaseUrl": "https://41a4eee2963f.ngrok.io",
+        "localBaseUrl": "$APP_URL",
         "store": {
             "type": "postgres",
             "url": "$DATABASE_URL"
