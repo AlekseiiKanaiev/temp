@@ -1,0 +1,34 @@
+{
+    "product": "bitbucket",
+    "development": {
+        "port": 3000,
+        "errorTemplate": true,
+        "store": {
+            "adapter": "sequelize",
+            "type": "postgres",
+            "url": "postgres://postgres:ferwsjy785@localhost:5432/snyk_bitbucket",
+            "database": "snyk_bitbucket",
+            "host": "localhost",
+            "port": 5432,
+            "username": "postgres",
+            "password": "ferwsjy785"
+        },
+        "snyk": {
+            "baseUrl": "https://snyk.io/api/v1/"
+        },
+        "localBaseUrl": "https://b09b150603fd.ngrok.io"
+    },
+    "production": {
+        "port": "$PORT",
+        "errorTemplate": true,
+        "localBaseUrl": "https://41a4eee2963f.ngrok.io",
+        "store": {
+            "type": "postgres",
+            "url": "$DATABASE_URL"
+        },
+        "whitelist": [
+            "bitbucket.org",
+            "api.bitbucket.org"
+        ]
+    }
+}

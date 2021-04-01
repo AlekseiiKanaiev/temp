@@ -1,0 +1,41 @@
+{
+    "name": "snyk-bitbucket-integration",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node -r esm app.js",
+        "lint": "eslint app.js routes"
+    },
+    "dependencies": {
+        "atlassian-connect-express": "^6.6.0",
+        "body-parser": "^1.19.0",
+        "compression": "^1.7.4",
+        "cookie-parser": "^1.4.5",
+        "ejs": "^3.1.6",
+        "errorhandler": "^1.5.1",
+        "esm": "^3.2.25",
+        "express": "^4.17.1",
+        "express-hbs": "^2.3.4",
+        "http-status": "^1.5.0",
+        "immutable": "^4.0.0-rc.12",
+        "method-override": "^3.0.0",
+        "morgan": "^1.10.0",
+        "morgan-json": "^1.1.0",
+        "pg": "^8.5.1",
+        "request": "^2.88.2",
+        "sequelize": "^6.6.2",
+        "sqlite3": "^5.0.2",
+        "static-expiry": ">=0.0.11",
+        "winston": "^3.3.3"
+    },
+    "devDependencies": {
+        "eslint": "^7.23.0",
+        "eslint-config-standard": "^16.0.2",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.3.1",
+        "eslint-plugin-vue": "^7.8.0",
+        "vue": "^2.6.12",
+        "vue-router": "^3.5.1"
+    }
+}
