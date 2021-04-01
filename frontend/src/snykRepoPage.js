@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import Button from '@atlaskit/button';
+import ProjectList from "./components/ProjectList";
 
 export default class General extends Component {
   constructor() {
@@ -10,15 +10,13 @@ export default class General extends Component {
   render() {
     return (
       <div>
-        <Button appearance="primary">Primary button</Button>
+        <ProjectList apiKey={"4a18d42f-0706-4ad0-b127-24078731fbed"} />
       </div>
     );
   }
 }
 
-
-window.addEventListener('load', function() {
-
-    const wrapper = document.getElementById("container");
-    wrapper ? ReactDOM.render(<General />, wrapper) : false;
+window.addEventListener("load", function () {
+  const wrapper = document.getElementById("container");
+  wrapper ? ReactDOM.render(<General />, wrapper) : false;
 });
