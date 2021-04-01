@@ -3,26 +3,26 @@ const defaultBody = {
     tags: {
       includes: [
         {
-          key: "example-tag-key",
-          value: "example-tag-value",
+          key: 'example-tag-key',
+          value: 'example-tag-value',
         },
       ],
     },
     attributes: {
-      criticality: ["high"],
-      environment: ["backend"],
-      lifecycle: ["development"],
+      criticality: ['high'],
+      environment: ['backend'],
+      lifecycle: ['development'],
     },
   },
 };
 
-export async function getProjects(apiKey) {
+export default async function getProjects(apiKey) {
   const url = `https://private-anon-7156f113fb-snyk.apiary-mock.com/api/v1/org/${apiKey}/projects`;
   const res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: "token API_KEY",
-      "Content-Type": "application/json",
+      Authorization: 'token API_KEY',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(defaultBody),
   });
@@ -30,5 +30,5 @@ export async function getProjects(apiKey) {
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
   }
-  return await res.json();
+  return res.json();
 }

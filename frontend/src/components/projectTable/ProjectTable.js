@@ -1,10 +1,10 @@
-import React from "react";
-import moment from "moment";
-import styled from "styled-components";
-import DynamicTable from "@atlaskit/dynamic-table";
+import React from 'react';
+import moment from 'moment';
+import styled from 'styled-components';
+import DynamicTable from '@atlaskit/dynamic-table';
 
-import ProjectName from "./ProjectName";
-import VulnarabilityBadges from "../../components/VulnarabilityBadges";
+import ProjectName from './ProjectName';
+import VulnarabilityBadges from '../VulnarabilityBadges';
 
 const TableWrapper = styled.div`
   margin-top: 30px;
@@ -17,56 +17,51 @@ const TextWrapper = styled.span`
 const head = {
   cells: [
     {
-      key: "project",
-      content: "Project",
+      key: 'project',
+      content: 'Project',
       width: 60,
     },
     {
-      key: "vulnerabilities",
-      content: "Vulnerabilities",
+      key: 'vulnerabilities',
+      content: 'Vulnerabilities',
       width: 25,
     },
     {
-      key: "additional",
-      content: "",
+      key: 'additional',
+      content: '',
       width: 25,
     },
   ],
 };
 
-const rows = (projects) => {
-  return projects.map((project) => {
-    return {
-      key: `row-${project.id}`,
-      cells: [
-        {
-          key: project.name,
-          content: <ProjectName name={project.name} type={project.type} />,
-        },
-        {
-          key: project.name,
-          content: <VulnarabilityBadges issueCounts={project.issueCounts} />,
-        },
-        {
-          key: project.name,
-          content: (
-            <TextWrapper>{getTestedMessage(project.testedAt)}</TextWrapper>
-          ),
-        },
-      ],
-    };
-  });
-};
+const rows = (projects) => projects.map((project) => ({
+  key: `row-${project.id}`,
+  cells: [
+    {
+      key: project.name,
+      content: <ProjectName name={project.name} type={project.type} />,
+    },
+    {
+      key: project.name,
+      content: <VulnarabilityBadges issueCounts={project.issueCounts} />,
+    },
+    {
+      key: project.name,
+      content: (
+        <TextWrapper>{getTestedMessage(project.testedAt)}</TextWrapper>
+      ),
+    },
+  ],
+}));
 
 const getTestedMessage = (testedAt) => {
-  const hours = moment().diff(moment(testedAt), "hours");
+  const hours = moment().diff(moment(testedAt), 'hours');
   if (hours > 24 * 365) {
     return `Tested ${Math.floor(hours / 24 / 365)} years ago`;
-  } else if (hours > 24) {
+  } if (hours > 24) {
     return `Tested ${Math.floor(hours / 24)} days ago`;
-  } else {
-    return `Tested ${hours} hours ago`;
   }
+  return `Tested ${hours} hours ago`;
 };
 
 export default function ProjectTable({ projects }) {
@@ -75,7 +70,7 @@ export default function ProjectTable({ projects }) {
       <DynamicTable
         head={head}
         rows={rows(projects)}
-        isLoading={projects ? false : true}
+        isLoading={!projects}
         loadingSpinnerSize="large"
       />
     </TableWrapper>

@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 export default function ProjectName({ name, type }) {
   const ImageWrapper = styled.span`
@@ -8,10 +9,10 @@ export default function ProjectName({ name, type }) {
   `;
 
   let icon = `${type}.svg`;
-  if (type.startsWith("go") && !type.startsWith("google")) {
-    icon = "go.svg";
-  } else if (type.startsWith("yarn")) {
-    icon = "yarn.svg";
+  if (type.startsWith('go') && !type.startsWith('google')) {
+    icon = 'go.svg';
+  } else if (type.startsWith('yarn')) {
+    icon = 'yarn.svg';
   }
 
   return (
@@ -23,3 +24,8 @@ export default function ProjectName({ name, type }) {
     </>
   );
 }
+
+ProjectName.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+};

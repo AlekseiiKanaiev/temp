@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Page, { Grid, GridColumn } from "@atlaskit/page";
-import VulnerabilityBanner from "./VulnerabilityBanner";
-import ProjectTable from "./projectTable/ProjectTable";
-import { getProjects } from "../services/SnykService";
+import React, { useEffect, useState } from 'react';
+import Page, { Grid, GridColumn } from '@atlaskit/page';
+import PropTypes from 'prop-types';
+import VulnerabilityBanner from './VulnerabilityBanner';
+import ProjectTable from './projectTable/ProjectTable';
+import getProjects from '../services/SnykService';
 
 export default function ProjectList({ apiKey }) {
   const [projects, setProjects] = useState([]);
@@ -10,15 +11,13 @@ export default function ProjectList({ apiKey }) {
   useEffect(() => {
     getProjects(apiKey).then((result) => {
       setProjects(
-        result.projects.map((project) => {
-          return {
-            id: project.id,
-            name: project.name,
-            type: project.type,
-            issueCounts: project.issueCountsBySeverity,
-            testedAt: project.lastTestedDate,
-          };
-        })
+        result.projects.map((project) => ({
+          id: project.id,
+          name: project.name,
+          type: project.type,
+          issueCounts: project.issueCountsBySeverity,
+          testedAt: project.lastTestedDate,
+        })),
       );
     });
   }, [apiKey]);
@@ -32,7 +31,7 @@ export default function ProjectList({ apiKey }) {
       medium += project.issueCounts.medium;
       low += project.issueCounts.low;
     });
-    return { high: high, medium: medium, low: low };
+    return { high, medium, low };
   };
 
   return (
@@ -52,3 +51,7 @@ export default function ProjectList({ apiKey }) {
     </Page>
   );
 }
+
+ProjectList.propTypes = {
+  apiKey: PropTypes.string.isRequired,
+};
