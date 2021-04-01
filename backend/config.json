@@ -1,6 +1,8 @@
 {
     "product": "bitbucket",
     "development": {
+        "snykOrgId": "orgid",
+        "snykApiToken" : "apitoken", 
         "port": 3000,
         "errorTemplate": true,
         "store": {
@@ -16,12 +18,12 @@
         "snyk": {
             "baseUrl": "https://snyk.io/api/v1/"
         },
-        "localBaseUrl": "https://b09b150603fd.ngrok.io"
+        "localBaseUrl": "https://4d452736d987.ngrok.io"
     },
     "production": {
         "port": "$PORT",
         "errorTemplate": true,
-        "localBaseUrl": "https://41a4eee2963f.ngrok.io",
+        "localBaseUrl": "$APP_URL",
         "store": {
             "type": "postgres",
             "url": "$DATABASE_URL"

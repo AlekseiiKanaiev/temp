@@ -32,7 +32,11 @@ module.exports = function routes (app, addon) {
   app.post('/uninstalled', addon.authenticate(), function (req, res) {
     const { clientKey } = req.context
     addon.settings.del('clientInfo', clientKey)
-      .then(() => res.status(status.OK).send())
+      .then(() => {addon.settings.del('snykSettings', clientKey)
+                  .then(() => res.status(status.OK).send())
+                  .catch((err) => res.status(status.BAD_REQUEST).send(err))
+                  
+      })
       .catch((err) => res.status(status.BAD_REQUEST).send(err))
   })
 

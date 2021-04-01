@@ -1,9 +1,9 @@
 {
-    "key": "snyk-bb-app-test",
-    "name": "Snyk Integration",
-    "description": "Snyk app for Bitbucket",
+    "key": "snyk-bb-app",
+    "name": "Snyk Security for Bitbucket Cloud",
+    "description": "Snyk Security for Bitbucket Cloud allows developers to easily find and fix security vulnerabilities in open source dependencies and container files, all from within Bitbucket",
     "vendor": {
-        "name": "snyk.io",
+        "name": "Snyk",
         "url": "https://snyk.io"
     },
     "baseUrl": "{{localBaseUrl}}",
