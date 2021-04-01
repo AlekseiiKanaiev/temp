@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import ProjectList from "./components/ProjectList";
 
-export default class General extends Component {
+export default class SnykRepoPage extends Component {
   constructor() {
     super();
   }
@@ -18,5 +18,5 @@ export default class General extends Component {
 
 window.addEventListener("load", function () {
   const wrapper = document.getElementById("container");
-  wrapper ? ReactDOM.render(<General />, wrapper) : false;
+  wrapper ? ReactDOM.render(<SnykRepoPage />, wrapper) : false;
 });

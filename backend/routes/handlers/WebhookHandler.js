@@ -30,8 +30,8 @@ class WebhookHandler {
     httpClient.get('/2.0/user/', function (err, resp, data) {
       try {
         data = JSON.parse(data)
-        res.render('connect-example', {
-          title: 'Atlassian Connect',
+        res.render('snyk-repo-page', {
+          title: 'SNYK',
           displayName: data.display_name,
           repoPath: req.query.repoPath
         })

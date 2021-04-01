@@ -43,6 +43,7 @@ app.set('port', port)
 // Static expiry middleware to help serve static resources efficiently
 process.env.PWD = process.env.PWD || process.cwd() // Fix expiry on Windows :(
 const expiry = require('static-expiry')
+const { add } = require('./logger/logger')
 
 const viewsDir = path.resolve(__dirname, 'views')
 app.engine('hbs', hbs.express4({ partialsDir: viewsDir }))
@@ -69,6 +70,9 @@ app.use(compression())
 
 // Use api.bitbucket.org instead of the deprecated bitbucket.org/api
 app.post('/installed', function (req, res, next) {
+  const settings = req.body;
+  addon.settings.set("snykSettings", {"apitoken" : addon.config.snykApiToken(), "orgid" : addon.config.snykOrgId()}, settings.clientKey)
+        
   const { baseUrl: snykUrl } = addon.config.snyk()
   const snykClient = SnykClient.newInstance(snykUrl)
 
