@@ -1,5 +1,6 @@
 const util = require('util')
 const { BBInstallationContext } = require('./../../entities')
+const {logger} = require('../../logger')
 
 class SnykAPIHandler {
   constructor (factory, addon) {
@@ -16,8 +17,16 @@ class SnykAPIHandler {
       colors: true,
       depth: null
     }))
-    const client = this.factory(req.context)
-    return client.pipe(req.path.replace('/snyk', ''), req, res)
+    this.addon.settings.get("snykSettings", req.context.clientKey) 
+    .then((settings)=> {
+      const client = this.factory(req.context, settings.apitoken)
+      return client.pipe(req.path.replace('/snyk', '').replace("orgid", settings.orgid), req, res)
+    }).catch((err) => {
+      logger.error(err)
+      return res.status(status.BAD_REQUEST).send("")
+    })
+
+    
   }
 }
 

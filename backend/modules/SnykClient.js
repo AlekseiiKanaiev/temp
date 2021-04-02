@@ -23,12 +23,15 @@ class SnykClient extends ApiClient {
     this.token = null
   }
 
-  static newInstance (baseUrl, context) {
+  static newInstance (baseUrl, context, apitoken) {
     const client = new SnykClient()
     client.setBaseUrl(baseUrl)
-    if (context != null) { client.setToken(context.snykUser.token) }
-
-    return client
+    if (context != null) { 
+        client.setToken(apitoken) 
+       
+    
+  }
+  return client
   }
 
   get authHeader () {
@@ -50,7 +53,7 @@ class SnykClient extends ApiClient {
     if (this.token == null) {
       throw new Error('')
     }
-    req.setHeader('Authorization', `token ${this.token}`)
+    req.headers = {'Authorization': `token ${this.token}`}
     super.pipe(url, req, res)
   }
 }

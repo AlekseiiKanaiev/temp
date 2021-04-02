@@ -6,6 +6,7 @@ const { SnykClient } = require('./../modules')
 
 module.exports = function routes (app, addon) {
   const { baseUrl } = addon.config.snyk()
+  const token = addon.config.snykApiToken()
   const snykApiHandler = SnykAPIHandler.newInstance(SnykClient.newInstance.bind(null, baseUrl), addon)
   const bbApiHandler = BitbucketAPIHandler.newInstance(addon)
   const webhookHander = WebhookHandler.newInstance(addon)
@@ -47,6 +48,6 @@ module.exports = function routes (app, addon) {
   // `atlassian-connect.json`
 
   app.post('/webhook', addon.authenticate(), webhookHander.handle)
-  app.all('/snyk/*', addon.authenticate(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.all('/snyk/*', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 }

@@ -17,11 +17,12 @@ const defaultBody = {
 };
 
 export default async function getProjects(apiKey) {
-  const url = `https://private-anon-7156f113fb-snyk.apiary-mock.com/api/v1/org/${apiKey}/projects`;
+  //const url = `https://private-anon-7156f113fb-snyk.apiary-mock.com/api/v1/org/${apiKey}/projects`;
+  const url = `/snyk/org/orgid/projects`;
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      Authorization: 'token API_KEY',
+      Authorization: `JWT ${apiKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(defaultBody),
