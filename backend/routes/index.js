@@ -1,4 +1,3 @@
-const util = require('util')
 const status = require('http-status')
 const RouteUtils = require('./RouteUtils')
 const { WebhookHandler, SnykAPIHandler, BitbucketAPIHandler } = require('./handlers/index')
@@ -6,7 +5,6 @@ const { SnykClient } = require('./../modules')
 
 module.exports = function routes (app, addon) {
   const { baseUrl } = addon.config.snyk()
-  const token = addon.config.snykApiToken()
   const snykApiHandler = SnykAPIHandler.newInstance(SnykClient.newInstance.bind(null, baseUrl), addon)
   const bbApiHandler = BitbucketAPIHandler.newInstance(addon)
   const webhookHander = WebhookHandler.newInstance(addon)
@@ -33,10 +31,10 @@ module.exports = function routes (app, addon) {
   app.post('/uninstalled', addon.authenticate(), function (req, res) {
     const { clientKey } = req.context
     addon.settings.del('clientInfo', clientKey)
-      .then(() => {addon.settings.del('snykSettings', clientKey)
-                  .then(() => res.status(status.OK).send())
-                  .catch((err) => res.status(status.BAD_REQUEST).send(err))
-                  
+      .then(() => {
+        addon.settings.del('snykSettings', clientKey)
+          .then(() => res.status(status.OK).send())
+          .catch((err) => res.status(status.BAD_REQUEST).send(err))
       })
       .catch((err) => res.status(status.BAD_REQUEST).send(err))
   })

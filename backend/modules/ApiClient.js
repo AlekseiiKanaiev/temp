@@ -27,7 +27,7 @@ class ApiClient {
 
   send (opts) {
     return new Promise((resolve, reject) => {
-      if (this.req == null) { reject('No defaults have been set') }
+      if (this.req == null) { reject(new Error('No defaults have been set')) }
       this.req.defaults(opts)(opts.url, (err, response, body) => {
         if (err) {
           reject(err)

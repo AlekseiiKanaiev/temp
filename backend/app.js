@@ -22,8 +22,8 @@ const path = require('path')
 // Routes live here; this is the C in MVC
 const routes = require('./routes')
 const { SnykClient } = require('./modules')
-const {logger} = require('./logger')
-const {httpLogger} = require('./logger')
+const { logger } = require('./logger')
+const { httpLogger } = require('./logger')
 
 // Bootstrap Express and atlassian-connect-express
 const app = express()
@@ -43,7 +43,6 @@ app.set('port', port)
 // Static expiry middleware to help serve static resources efficiently
 process.env.PWD = process.env.PWD || process.cwd() // Fix expiry on Windows :(
 const expiry = require('static-expiry')
-const { add } = require('./logger/logger')
 
 const viewsDir = path.resolve(__dirname, 'views')
 app.engine('hbs', hbs.express4({ partialsDir: viewsDir }))
@@ -55,7 +54,7 @@ hbs.registerHelper('furl', function (url) { return app.locals.furl(url) })
 const devEnv = app.get('env') === 'development'
 if (devEnv === 'development') {
   // only use in development
-  app.use(errorhandler({ log: errorNotification }))
+  app.use(errorhandler())
 }
 app.use(morgan(devEnv ? 'dev' : 'combined'))
 
@@ -70,9 +69,9 @@ app.use(compression())
 
 // Use api.bitbucket.org instead of the deprecated bitbucket.org/api
 app.post('/installed', function (req, res, next) {
-  const settings = req.body;
-  addon.settings.set("snykSettings", {"apitoken" : addon.config.snykApiToken(), "orgid" : addon.config.snykOrgId()}, settings.clientKey)
-        
+  const settings = req.body
+  addon.settings.set('snykSettings', { apitoken: addon.config.snykApiToken(), orgid: addon.config.snykOrgId() }, settings.clientKey)
+
   const { baseUrl: snykUrl } = addon.config.snyk()
   const snykClient = SnykClient.newInstance(snykUrl)
 
