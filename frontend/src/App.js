@@ -2,12 +2,13 @@ import React, { useLayoutEffect, useState } from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import ProjectList from './components/ProjectList';
 import ProjectImport from './components/ProjectImport';
-import getProjects from './services/SnykService';
+import { getProjects } from './services/SnykService';
 import Spinner from './components/Spinner';
 
 function App({ jwtToken }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useLayoutEffect(() => {
     getProjects(jwtToken).then((result) => {
       setProjects(
@@ -22,10 +23,11 @@ function App({ jwtToken }) {
       setLoading(false);
     });
   }, []);
+
   const element = projects.length === 0 ? (
     <ProjectImport />
   ) : (
-    <ProjectList projects={projects} />
+    <ProjectList projects={projects} jwtToken={jwtToken} />
   );
 
   const show = loading ? <Spinner /> : element;
