@@ -38,6 +38,15 @@ const defaultIssuesBody = {
     },
   },
 };
+
+const defaultImportProjectBody = {
+  target: {
+    owner: 'snyk',
+    name: 'goof',
+    //      "branch": "master"
+  },
+};
+
 export async function getProjects(jwtToken) {
   const url = '/snyk/org/orgid/projects';
   const res = await fetch(url, {
@@ -64,6 +73,23 @@ export async function getIssues(jwtToken, id) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(defaultIssuesBody),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function importProject(jwtToken) {
+  const url = '/snyk/org/orgid/integrations/integrationid/import';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `JWT ${jwtToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(defaultImportProjectBody),
   });
 
   if (!res.ok) {
