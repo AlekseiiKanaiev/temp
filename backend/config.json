@@ -3,7 +3,6 @@
     "development": {
         "snykOrgId": "",
         "snykApiToken" : "", 
-        "snykIntegrationId": "",
         "port": 3000,
         "errorTemplate": true,
         "store": {
@@ -19,7 +18,7 @@
         "snyk": {
             "baseUrl": "https://snyk.io/api/v1/"
         },
-        "localBaseUrl": "https://a0e3f08abbf0.ngrok.io"
+        "localBaseUrl": "https://2f1b1f46e31a.ngrok.io"
     },
     "stage": {
         "port": "$PORT",

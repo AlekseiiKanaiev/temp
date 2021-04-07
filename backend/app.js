@@ -70,7 +70,7 @@ app.use(compression())
 // Use api.bitbucket.org instead of the deprecated bitbucket.org/api
 app.post('/installed', function (req, res, next) {
   const settings = req.body
-  addon.settings.set('snykSettings', { apitoken: addon.config.snykApiToken(), orgid: addon.config.snykOrgId(), integrationd: addon.config.snykIntegrationId() }, settings.clientKey)
+  addon.settings.set('snykSettings', { apitoken: addon.config.snykApiToken(), orgid: addon.config.snykOrgId() }, settings.clientKey)
 
   const { baseUrl: snykUrl } = addon.config.snyk()
   const snykClient = SnykClient.newInstance(snykUrl)

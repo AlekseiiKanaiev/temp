@@ -17,8 +17,8 @@ const defaultProjectsBody = {
 };
 
 const defaultIssuesBody = {
-  includeDescription: false,
-  includeIntroducedThrough: false,
+  includeDescription: true,
+  includeIntroducedThrough: true,
   filters: {
     severities: ['high', 'medium', 'low'],
     exploitMaturity: [
@@ -43,7 +43,7 @@ const defaultImportProjectBody = {
   target: {
     owner: 'snyk',
     name: 'goof',
-    //      "branch": "master"
+    branch: 'master',
   },
 };
 
@@ -82,7 +82,11 @@ export async function getIssues(jwtToken, id) {
 }
 
 export async function importProject(jwtToken) {
-  const url = '/snyk/org/orgid/integrations/integrationid/import';
+  const integrationId = await getIntegrationId(jwtToken);
+  if (integrationId === '') {
+    throw new Error('integration is not set');
+  }
+  const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -96,4 +100,20 @@ export async function importProject(jwtToken) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
   }
   return res.json();
+}
+
+export async function getIntegrationId(jwtToken) {
+  const url = '/snyk/org/orgid/integrations';
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `JWT ${jwtToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  const resJson = await res.json();
+  return !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'];
 }
