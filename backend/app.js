@@ -59,8 +59,10 @@ if (devEnv === 'development') {
 app.use(morgan(devEnv ? 'dev' : 'combined'))
 
 // Include request parsers
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json({
+  limit: '1mb'
+}));
 app.use(cookieParser())
 app.use(httpLogger)
 
@@ -108,4 +110,6 @@ routes(app, addon)
 // Boot the HTTP server
 http.createServer(app).listen(port, () => {
   logger.info('App server running at ' + addon.config.localBaseUrl())
+  app.locals.addon = addon;
+  app.locals.url = addon.config.localBaseUrl();
 })

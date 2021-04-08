@@ -1,4 +1,5 @@
 const util = require('util')
+const status = require('http-status')
 const { logger } = require('../../logger')
 
 class SnykAPIHandler {

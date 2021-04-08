@@ -55,7 +55,7 @@ export async function getProjects(jwtToken) {
       Authorization: `JWT ${jwtToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(defaultProjectsBody),
+    body: JSON.stringify({}),
   });
 
   if (!res.ok) {
