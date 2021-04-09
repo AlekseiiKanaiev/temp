@@ -21,7 +21,10 @@
     ],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "no-use-before-define" : "off"
+        "no-use-before-define": "off",
+        "react/prop-types": "off",
+        "no-shadow": "off",
+        "no-nested-ternary": "off"
     }
     
 }

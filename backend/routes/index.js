@@ -1,4 +1,3 @@
-const util = require('util')
 const status = require('http-status')
 const RouteUtils = require('./RouteUtils')
 const { WebhookHandler, SnykAPIHandler, BitbucketAPIHandler } = require('./handlers/index')
@@ -32,10 +31,10 @@ module.exports = function routes (app, addon) {
   app.post('/uninstalled', addon.authenticate(), function (req, res) {
     const { clientKey } = req.context
     addon.settings.del('clientInfo', clientKey)
-      .then(() => {addon.settings.del('snykSettings', clientKey)
-                  .then(() => res.status(status.OK).send())
-                  .catch((err) => res.status(status.BAD_REQUEST).send(err))
-                  
+      .then(() => {
+        addon.settings.del('snykSettings', clientKey)
+          .then(() => res.status(status.OK).send())
+          .catch((err) => res.status(status.BAD_REQUEST).send(err))
       })
       .catch((err) => res.status(status.BAD_REQUEST).send(err))
   })
@@ -47,6 +46,6 @@ module.exports = function routes (app, addon) {
   // `atlassian-connect.json`
 
   app.post('/webhook', addon.authenticate(), webhookHander.handle)
-  app.all('/snyk/*', addon.authenticate(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.all('/snyk/*', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 }

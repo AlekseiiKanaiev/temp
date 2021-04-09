@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import Page, { Grid, GridColumn } from '@atlaskit/page';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { GridColumn } from '@atlaskit/page';
 import VulnerabilityBanner from './VulnerabilityBanner';
 import ProjectTable from './projectTable/ProjectTable';
-import getProjects from '../services/SnykService';
+import ProjectIssues from './ProjectIssues';
+import ProjectName from './projectTable/ProjectName';
+import NoIssuesFound from './NoIssuesFound';
 
-export default function ProjectList({ apiKey }) {
-  const [projects, setProjects] = useState([]);
+export default function ProjectList({ projects, jwtToken }) {
+  const [projectId, setProjectId] = useState();
 
-  useEffect(() => {
-    getProjects(apiKey).then((result) => {
-      setProjects(
-        result.projects.map((project) => ({
-          id: project.id,
-          name: project.name,
-          type: project.type,
-          issueCounts: project.issueCountsBySeverity,
-          testedAt: project.lastTestedDate,
-        })),
-      );
-    });
-  }, [apiKey]);
-
-  const totalIssueCounts = () => {
+  const totalIssueCounts = (projects) => {
     let high = 0;
     let medium = 0;
     let low = 0;
@@ -34,24 +21,44 @@ export default function ProjectList({ apiKey }) {
     return { high, medium, low };
   };
 
+  const project = projectId
+    ? projects.find((project) => project.id === projectId)
+    : undefined;
+
+  const issueCounts = projectId
+    ? totalIssueCounts([project])
+    : totalIssueCounts(projects);
+
+  const { low, high, medium } = issueCounts;
+
+  const view = projectId ? (
+    low + high + medium === 0 ? (
+      <NoIssuesFound />
+    ) : (
+      <ProjectIssues projectId={projectId} jwtToken={jwtToken} />
+    )
+  ) : (
+    <ProjectTable projects={projects} callback={setProjectId} />
+  );
+
   return (
-    <Page>
-      <Grid layout="fluid">
-        <GridColumn medium={12}>
-          <h1>Snyk</h1>
-          <h3>Security insights</h3>
-        </GridColumn>
-        <GridColumn medium={12}>
-          <VulnerabilityBanner issueCounts={totalIssueCounts()} />
-        </GridColumn>
-        <GridColumn medium={12}>
-          <ProjectTable projects={projects} />
-        </GridColumn>
-      </Grid>
-    </Page>
+    <>
+      <GridColumn medium={12}>
+        <h3>
+          Security insights
+          {' '}
+          {projectId && 'for '}
+          {projectId && (
+            <ProjectName
+              name={project.name}
+              type={project.type}
+              callback={setProjectId}
+            />
+          )}
+        </h3>
+        <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} />
+      </GridColumn>
+      <GridColumn medium={12}>{view}</GridColumn>
+    </>
   );
 }
-
-ProjectList.propTypes = {
-  apiKey: PropTypes.string.isRequired,
-};

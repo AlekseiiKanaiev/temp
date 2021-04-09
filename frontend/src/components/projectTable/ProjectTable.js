@@ -34,12 +34,19 @@ const head = {
   ],
 };
 
-const rows = (projects) => projects.map((project) => ({
+const rows = (projects, callback) => projects.map((project) => ({
   key: `row-${project.id}`,
   cells: [
     {
       key: project.name,
-      content: <ProjectName name={project.name} type={project.type} />,
+      content: (
+        <ProjectName
+          name={project.name}
+          type={project.type}
+          id={project.id}
+          callback={callback}
+        />
+      ),
     },
     {
       key: project.name,
@@ -64,12 +71,12 @@ const getTestedMessage = (testedAt) => {
   return `Tested ${hours} hours ago`;
 };
 
-export default function ProjectTable({ projects }) {
+export default function ProjectTable({ projects, callback }) {
   return (
     <TableWrapper>
       <DynamicTable
         head={head}
-        rows={rows(projects)}
+        rows={rows(projects, callback)}
         isLoading={!projects}
         loadingSpinnerSize="large"
       />
