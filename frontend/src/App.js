@@ -1,47 +1,39 @@
-import React, { useLayoutEffect, useState } from 'react';
-import Page, { Grid, GridColumn } from '@atlaskit/page';
-import ProjectList from './components/ProjectList';
-import ProjectImport from './components/projectImport/ProjectImport';
-import { getProjects } from './services/SnykService';
+import React, { useState, useLayoutEffect } from 'react';
+import SnykProjects from './components/SnykProjects';
+import SnykIntegration from './components/integration/SnykIntegration';
+import { getIntegration } from './services/SnykService';
 import Spinner from './components/Spinner';
 
 function App({ jwtToken }) {
-  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [integrated, setIntegrated] = useState(false);
   useLayoutEffect(() => {
-    getProjects(jwtToken).then((result) => {
-      setProjects(
-        result.projects.map((project) => ({
-          id: project.id,
-          name: project.name,
-          type: project.type,
-          issueCounts: project.issueCountsBySeverity,
-          testedAt: project.lastTestedDate,
-        })),
-      );
+    checkIntegration();
+  }, [jwtToken]);
+  const checkIntegration = () => {
+    getIntegration(jwtToken).then((result) => {
+      if (result['bitbucket-cloud']) {
+        setIntegrated(true);
+      } else {
+        setIntegrated(false);
+      }
       setLoading(false);
     });
-  }, []);
+  };
 
-  const element = projects.length === 0 ? (
-    <ProjectImport jwtToken={jwtToken} />
-  ) : (
-    <ProjectList projects={projects} jwtToken={jwtToken} />
-  );
+  const view = () => {
+    if (loading) {
+      return <Spinner />;
+    }
+    if (integrated) {
+      return <SnykProjects jwtToken={jwtToken} />;
+    }
+    return (
+      <SnykIntegration jwtToken={jwtToken} callback={checkIntegration} />
+    );
+  };
 
-  const show = loading ? <Spinner /> : element;
-
-  return (
-    <Page>
-      <Grid layout="fluid">
-        <GridColumn medium={12}>
-          <h1>Snyk</h1>
-        </GridColumn>
-        {show}
-      </Grid>
-    </Page>
-  );
+  return view();
 }
 
 export default App;

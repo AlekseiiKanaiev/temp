@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { GridColumn } from '@atlaskit/page';
+import styled from 'styled-components';
 import VulnerabilityBanner from './VulnerabilityBanner';
 import ProjectTable from './projectTable/ProjectTable';
 import ProjectIssues from './ProjectIssues';
 import ProjectName from './projectTable/ProjectName';
 import NoIssuesFound from './NoIssuesFound';
+
+const ContainerWrapper = styled.div`
+    margin-top: 5%;
+  `;
 
 export default function ProjectList({ projects, jwtToken }) {
   const [projectId, setProjectId] = useState();
@@ -44,19 +49,21 @@ export default function ProjectList({ projects, jwtToken }) {
   return (
     <>
       <GridColumn medium={12}>
-        <h3>
-          Security insights
-          {' '}
-          {projectId && 'for '}
-          {projectId && (
-            <ProjectName
-              name={project.name}
-              type={project.type}
-              callback={setProjectId}
-            />
-          )}
-        </h3>
-        <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} />
+        <ContainerWrapper>
+          <h3>
+            Security insights
+            {' '}
+            {projectId && 'for '}
+            {projectId && (
+              <ProjectName
+                name={project.name}
+                type={project.type}
+                callback={setProjectId}
+              />
+            )}
+          </h3>
+          <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} />
+        </ContainerWrapper>
       </GridColumn>
       <GridColumn medium={12}>{view}</GridColumn>
     </>
