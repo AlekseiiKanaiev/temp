@@ -41,6 +41,9 @@
             "type": "postgres",
             "url": "$DATABASE_URL"
         },
+        "snyk": {
+            "baseUrl": "https://snyk.io/api/v1/"
+        },
         "whitelist": [
             "bitbucket.org",
             "api.bitbucket.org"
