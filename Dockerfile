@@ -14,7 +14,7 @@ RUN apk add \
     --no-cache \
     --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main \
     nodejs \
-    npm=$NODE_VERSION
+    npm
 
 # Copy the source into the container
 COPY . /app
