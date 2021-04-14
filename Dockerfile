@@ -9,7 +9,6 @@ FROM alpine:$ALPINE_VERSION
 
 # Install required packages
 # Node lives in the Edge branch
-ARG NODE_VERSION
 RUN apk add \
     --no-cache \
     --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main \
