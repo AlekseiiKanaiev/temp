@@ -4,10 +4,6 @@
 # https://hub.docker.com/_/alpine
 ARG ALPINE_VERSION=3.13.4
 
-# NODE_VERSION should be a valid version from:
-# https://pkgs.alpinelinux.org/packages?name=nodejs&branch=edge
-ARG NODE_VERSION=14.16.1-r0
-
 # Get the base image
 FROM alpine:$ALPINE_VERSION
 
@@ -17,7 +13,7 @@ ARG NODE_VERSION
 RUN apk add \
     --no-cache \
     --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    nodejs=$NODE_VERSION \
+    nodejs \
     npm=$NODE_VERSION
 
 # Copy the source into the container
