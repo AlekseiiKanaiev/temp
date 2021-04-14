@@ -17,8 +17,8 @@ const defaultProjectsBody = {
 };
 
 const defaultIssuesBody = {
-  includeDescription: false,
-  includeIntroducedThrough: false,
+  includeDescription: true,
+  includeIntroducedThrough: true,
   filters: {
     severities: ['high', 'medium', 'low'],
     exploitMaturity: [
@@ -38,6 +38,15 @@ const defaultIssuesBody = {
     },
   },
 };
+
+const defaultImportProjectBody = {
+  target: {
+    owner: 'snyk',
+    name: 'goof',
+    branch: 'master',
+  },
+};
+
 export async function getProjects(jwtToken) {
   const url = '/snyk/org/orgid/projects';
   const res = await fetch(url, {
@@ -46,7 +55,7 @@ export async function getProjects(jwtToken) {
       Authorization: `JWT ${jwtToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(defaultProjectsBody),
+    body: JSON.stringify({}),
   });
 
   if (!res.ok) {
@@ -70,4 +79,41 @@ export async function getIssues(jwtToken, id) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
   }
   return res.json();
+}
+
+export async function importProject(jwtToken) {
+  const integrationId = await getIntegrationId(jwtToken);
+  if (integrationId === '') {
+    throw new Error('integration is not set');
+  }
+  const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `JWT ${jwtToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(defaultImportProjectBody),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function getIntegrationId(jwtToken) {
+  const url = '/snyk/org/orgid/integrations';
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `JWT ${jwtToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  const resJson = await res.json();
+  return !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'];
 }

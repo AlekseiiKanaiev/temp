@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import ProjectList from './components/ProjectList';
-import ProjectImport from './components/ProjectImport';
+import ProjectImport from './components/projectImport/ProjectImport';
 import { getProjects } from './services/SnykService';
 import Spinner from './components/Spinner';
 
@@ -25,7 +25,7 @@ function App({ jwtToken }) {
   }, []);
 
   const element = projects.length === 0 ? (
-    <ProjectImport />
+    <ProjectImport jwtToken={jwtToken} />
   ) : (
     <ProjectList projects={projects} jwtToken={jwtToken} />
   );

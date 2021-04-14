@@ -1,8 +1,5 @@
 const ApiClient = require('./ApiClient')
-const { Map: ImmMap } = require('immutable')
-const { BBInstallationContext } = require('./../entities')
 
-const clients = ImmMap().asMutable()
 const MOCK_USER = {
   id: 'bd956a95-fc92-446e-a327-0f4c2fd01b8e',
   username: 'sergeys',
@@ -33,12 +30,12 @@ class SnykClient extends ApiClient {
   }
 
   get authHeader () {
-    return { Authorization: `token ${this.token}` }
+    return `token ${this.token}`
   }
 
   setToken (token) {
     this.token = token
-    this.req.defaults({ headers: this.authHeader })
+    this.req = this.req.defaults({ headers: this.authHeader })
     return this
   }
 
@@ -51,7 +48,7 @@ class SnykClient extends ApiClient {
     if (this.token == null) {
       throw new Error('')
     }
-    req.headers = { Authorization: `token ${this.token}` }
+    req.headers.authorization = this.authHeader
     super.pipe(url, req, res)
   }
 }

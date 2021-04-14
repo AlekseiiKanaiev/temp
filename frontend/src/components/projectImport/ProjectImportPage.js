@@ -2,8 +2,9 @@ import { GridColumn } from '@atlaskit/page';
 import React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
+import { importProject } from '../../services/SnykService';
 
-export default function ProjectImport() {
+export default function ProjectImportPage({ callback, jwtToken }) {
   const ImageWrapper = styled.div`
     margin-top: 50px;
     height: 400px;
@@ -20,6 +21,10 @@ export default function ProjectImport() {
     margin-bottom: 100px;
   `;
 
+  const importProjectToSnyk = () => {
+    importProject(jwtToken).then((result) => callback(true));
+  };
+
   return (
     <GridColumn medium={12}>
       <ContentWrapper>
@@ -32,7 +37,7 @@ export default function ProjectImport() {
           continuously monitor your repo for vulnerabilities
         </p>
         <ButtonWrapper>
-          <Button appearance="primary">Import this repository</Button>
+          <Button appearance="primary" onClick={importProjectToSnyk}>Import this repository</Button>
         </ButtonWrapper>
         <p>
           To bulk import repositories from your account, open the&nbsp;

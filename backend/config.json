@@ -18,7 +18,7 @@
         "snyk": {
             "baseUrl": "https://snyk.io/api/v1/"
         },
-        "localBaseUrl": "https://3e39f79bbd77.ngrok.io"
+        "localBaseUrl": "https://12f10344e1c0.ngrok.io"
     },
     "stage": {
         "port": "$PORT",

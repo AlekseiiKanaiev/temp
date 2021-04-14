@@ -1,5 +1,6 @@
 const util = require('util')
 const request = require('request')
+const PERM_HEADERS = ['Authorization']
 
 class ApiClient {
   constructor () {
@@ -7,22 +8,39 @@ class ApiClient {
     this.post = util.promisify(request.post)
     this.put = util.promisify(request.put)
     this.delete = util.promisify(request.delete)
-    this.req = null
+    this.req = request.defaults()
     this.baseUrl = null
   }
 
+  static extractHeaders (req) {
+    return req.rawHeaders
+      .reduce((res, item, index) => {
+        if ((index & 1) === 0) { res.push([item]) } else { res[res.length - 1].push(item) }
+        return res
+      }, [])
+      .filter((pair) => PERM_HEADERS.indexOf(pair[0]) > -1)
+      .reduce((res, pair) => {
+        res[pair[0]] = pair[1] || null
+        return res
+      }, { Origin: req.app.locals.url })
+  }
+
   setBaseUrl (url) {
-    this.req = request.defaults({
-      baseUrl: url.trim().replace(/\/$/, ''),
-      uri: '/'
-    })
+    this.baseUrl = url.trim().replace(/\/$/, '')
+    this.req = this.req.defaults({ baseUrl: this.baseUrl })
     return this
   }
 
   pipe (url, req, res) {
     if (this.req == null) { throw new Error('No defaults have been set') }
-
-    req.pipe(this.req(url)).pipe(res)
+    const options = {
+      method: req.method.toUpperCase(),
+      headers: ApiClient.extractHeaders(req),
+      json: true
+    }
+    options.headers.Authorization = req.headers.authorization
+    if (req.body != null) { options.body = req.body }
+    this.req(url, options).pipe(res)
   }
 
   send (opts) {
