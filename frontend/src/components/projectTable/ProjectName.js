@@ -13,6 +13,7 @@ export default function ProjectName({
     cursor: pointer;
     color: blue;
     text-decoration: underline;
+    cursor: pointer;
   `;
 
   let icon = `${type}.svg`;
