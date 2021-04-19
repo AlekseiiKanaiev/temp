@@ -19,23 +19,17 @@ RUN apk add \
 COPY . /app
 
 # Install frontend
+# We need webpack to build the frontend stuff, so we can't do a production
+# install here.
 WORKDIR /app/frontend
-
-# fsevents is macOS only. We have to remove it before we can proceed.
-# This will also cause npm to.... install(!) dependencies, just to remove
-# something from the JSON.
-RUN npm uninstall --save-dev fsevents
-
-# npm install should work now as macOS specific packages are gone.
-RUN npm install --production
+RUN npm install
 
 # The prodbuild target disables the watch that's used during development
 RUN npm run prodbuild
 
 # Install backend
-WORKDIR /app/backend
-
 # atlassian-connect.json isn't reachable unless it's in the public/ directory
+WORKDIR /app/backend
 RUN cp atlassian-connect.json public/
 RUN npm install --production
 
