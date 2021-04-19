@@ -1,26 +1,32 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore everything by default
+*
 
-# dependencies
-**/node_modules
-/.pnp
-/node
-.pnp.js
+# Copying the Dockerfile to the container allows us to know how any given
+# container was built
+!Dockerfile
 
-# testing
-/coverage
+# Only allow specific files into the build context
+# Backend directories
+!backend/entities
+!backend/logger
+!backend/modules
+!backend/public
+!backend/routes
+!backend/views
 
-# production
-/build
+# Backend files
+!backend/app.js
+!backend/atlassian-connect.json
+!backend/config.js
+!backend/package-lock.json
+!backend/package.json
 
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Frontend directories
+!frontend/src
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-/node/
-/dist/
+# Frontend files
+!frontend/.babelrc
+!frontend/package-lock.json
+!frontend/package.json
+!frontend/pom.xml
+!frontend/webpack.config.js
