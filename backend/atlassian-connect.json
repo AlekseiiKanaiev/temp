@@ -33,7 +33,7 @@
                     "auiIcon": "aui-iconfont-doc"
                 },
                 "icon": {
-                    "url": "/assets/ico/SnykApi.svg",
+                    "url": "/ico/SnykApi.svg",
                     "width": 24,
                     "height": 24
                 }

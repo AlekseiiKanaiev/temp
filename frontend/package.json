@@ -26,6 +26,7 @@
   },
   "scripts": {
     "build": "webpack --mode production",
+    "prodbuild": "webpack --mode production --no-watch",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -63,11 +64,13 @@
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "fibers": "^5.0.0",
-    "fsevents": "^2.3.2",
     "node-sass": "^5.0.0",
     "sass": "^1.32.8",
     "typescript": "^4.2.3",
     "webpack": "^5.28.0",
     "webpack-cli": "^4.6.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
