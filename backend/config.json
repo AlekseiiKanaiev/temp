@@ -1,8 +1,8 @@
 {
     "product": "bitbucket",
     "development": {
-        "snykOrgId": "",
-        "snykApiToken" : "", 
+        "clientId": "",
+        "clientSecret": "",
         "port": 3000,
         "errorTemplate": true,
         "store": {
@@ -16,14 +16,17 @@
             "password": "ferwsjy785"
         },
         "snyk": {
-            "baseUrl": "https://snyk.io/api/v1/"
+            "baseUrl": "https://api.snyk.io/v1/",
+            "snykOauthUrl": "https://id.snyk.io/oauth/token"
         },
-        "localBaseUrl": "https://12f10344e1c0.ngrok.io"
+        "localBaseUrl": "https://ed8408c4befc.ngrok.io"
     },
     "stage": {
         "port": "$PORT",
         "errorTemplate": true,
         "localBaseUrl": "$APP_URL",
+        "clientId": "$CLIENTID",
+        "clientSecret": "$CLIENTSECRET",
         "store": {
             "type": "postgres",
             "url": "$DATABASE_URL"
@@ -31,22 +34,29 @@
         "whitelist": [
             "bitbucket.org",
             "api.bitbucket.org"
-        ]
+        ],
+        "snyk": {
+            "baseUrl": "https://api.snyk.io/v1/",
+            "snykOauthUrl": "https://id.snyk.io/oauth/token"
+        }
     },
     "production": {
         "port": "$PORT",
         "errorTemplate": true,
+        "clientId": "$CLIENTID",
+        "clientSecret": "$CLIENTSECRET",
         "localBaseUrl": "$APP_URL",
         "store": {
             "type": "postgres",
             "url": "$DATABASE_URL"
         },
-        "snyk": {
-            "baseUrl": "https://snyk.io/api/v1/"
-        },
         "whitelist": [
             "bitbucket.org",
             "api.bitbucket.org"
-        ]
+        ],
+        "snyk": {
+            "baseUrl": "https://api.snyk.io/v1/",
+            "snykOauthUrl": "https://id.snyk.io/oauth/token"
+        }
     }
 }

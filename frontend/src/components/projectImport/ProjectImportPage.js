@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { importProject } from '../../services/SnykService';
 
-export default function ProjectImportPage({ callback, jwtToken }) {
+export default function ProjectImportPage({
+  setIsImporting, callback, jwtToken, repoOwner, repoSlug, repoMainBranch,
+}) {
   const ImageWrapper = styled.div`
     margin-top: 50px;
     height: 400px;
@@ -22,7 +24,15 @@ export default function ProjectImportPage({ callback, jwtToken }) {
   `;
 
   const importProjectToSnyk = () => {
-    importProject(jwtToken).then((result) => callback(true));
+    setIsImporting(true);
+    importProject(jwtToken, repoOwner, repoSlug, repoMainBranch)
+      .then((result) => {
+        if (result.location) {
+          callback(result, false);
+        } else {
+          callback(result, true);
+        }
+      });
   };
 
   return (

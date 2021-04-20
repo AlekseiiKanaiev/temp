@@ -62,7 +62,7 @@ app.use(morgan(devEnv ? 'dev' : 'combined'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({
   limit: '1mb'
-}));
+}))
 app.use(cookieParser())
 app.use(httpLogger)
 
@@ -71,9 +71,6 @@ app.use(compression())
 
 // Use api.bitbucket.org instead of the deprecated bitbucket.org/api
 app.post('/installed', function (req, res, next) {
-  const settings = req.body
-  addon.settings.set('snykSettings', { apitoken: addon.config.snykApiToken(), orgid: addon.config.snykOrgId() }, settings.clientKey)
-
   const { baseUrl: snykUrl } = addon.config.snyk()
   const snykClient = SnykClient.newInstance(snykUrl)
 
@@ -110,6 +107,6 @@ routes(app, addon)
 // Boot the HTTP server
 http.createServer(app).listen(port, () => {
   logger.info('App server running at ' + addon.config.localBaseUrl())
-  app.locals.addon = addon;
-  app.locals.url = addon.config.localBaseUrl();
+  app.locals.addon = addon
+  app.locals.url = addon.config.localBaseUrl()
 })

@@ -39,14 +39,6 @@ const defaultIssuesBody = {
   },
 };
 
-const defaultImportProjectBody = {
-  target: {
-    owner: 'snyk',
-    name: 'goof',
-    branch: 'master',
-  },
-};
-
 const defaultIntegrationBody = {
   type: 'bitbucket-cloud',
   credentials: { token: '' },
@@ -54,14 +46,7 @@ const defaultIntegrationBody = {
 
 export async function getProjects(jwtToken) {
   const url = '/snyk/org/orgid/projects';
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `JWT ${jwtToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({}),
-  });
+  const res = await executePost(jwtToken, url, {});
 
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
@@ -71,14 +56,7 @@ export async function getProjects(jwtToken) {
 
 export async function getIssues(jwtToken, id) {
   const url = `/snyk/org/orgid/project/${id}/aggregated-issues`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `JWT ${jwtToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(defaultIssuesBody),
-  });
+  const res = await executePost(jwtToken, url, defaultIssuesBody);
 
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
@@ -86,25 +64,27 @@ export async function getIssues(jwtToken, id) {
   return res.json();
 }
 
-export async function importProject(jwtToken) {
+export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranch) {
   const integrationId = await getIntegrationId(jwtToken);
   if (integrationId === '') {
     throw new Error('integration is not set');
   }
-  const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `JWT ${jwtToken}`,
-      'Content-Type': 'application/json',
+  const importProjectBody = {
+    target: {
+      owner: repoOwner,
+      name: repoSlug,
+      branch: repoMainBranch,
     },
-    body: JSON.stringify(defaultImportProjectBody),
-  });
+  };
+  const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
+  const res = await executePost(jwtToken, url, importProjectBody);
 
   if (!res.ok) {
-    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+    console.error(`Could not fetch GET ${url}, received ${res}`);
+    return {};
   }
-  return res.json();
+  const result = { location: res.headers.get('location'), json: res.json() };
+  return result;
 }
 
 export async function getIntegrationId(jwtToken) {
@@ -112,10 +92,128 @@ export async function getIntegrationId(jwtToken) {
   return !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'];
 }
 
-export async function addIntegration(jwtToken, integrationToken) {
+export async function addIntegration(jwtToken, integrationToken, workspace) {
   const url = '/snyk/org/orgid/integrations';
   const body = defaultIntegrationBody;
-  body.credentials = { token: integrationToken };
+  body.credentials = { username: workspace, password: integrationToken };
+  const res = await executePost(jwtToken, url, body);
+  return res.json();
+}
+
+export async function getIntegration(jwtToken) {
+  const url = '/snyk/org/orgid/integrations';
+  const res = await executeGet(jwtToken, url);
+
+  if (!res.ok) {
+    // throw new Error(`Could not fetch GET ${url}, received ${res}`);
+    return [];
+  }
+  return res.json();
+}
+
+export async function getOrganizations(jwtToken) {
+  const user = await getSnykUser(jwtToken);
+  // const url = '/snyk/orgs';
+  // const res = await executeGet(jwtToken, url);
+
+  // if (!res.ok) {
+  //  throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  // }
+  return user;
+}
+
+export async function saveOrganization(jwtToken, org) {
+  const url = '/app/org';
+  const res = await executePost(jwtToken, url, org);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function getImportJobDetails(jwtToken, jobUrl) {
+  const url = `/snyk/${jobUrl}`;
+  const res = await executeGet(jwtToken, url);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function getNewState(jwtToken) {
+  const url = '/app/state';
+  const res = await executePost(jwtToken, url, {});
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function restartIntegration(jwtToken) {
+  const url = '/app/integration';
+  const res = await executePost(jwtToken, url, {});
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function getApiToken(jwtToken) {
+  const url = '/app/token';
+  const res = await executeGet(jwtToken, url);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function getSavedOrg(jwtToken) {
+  const url = '/app/org';
+  const res = await executeGet(jwtToken, url);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function getIntegrationTokenOrg(jwtToken) {
+  const token = await getApiToken(jwtToken);
+  const org = await getSavedOrg(jwtToken);
+  const integration = token.token && org.org ? await getIntegrationId(jwtToken) : false;
+  const integrationStatus = integration !== '';
+  return { integrated: integrationStatus, token: token.token, org: org.org };
+}
+
+export async function getSnykUser(jwtToken) {
+  const url = '/snyk/user/me';
+  const res = await executeGet(jwtToken, url);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+async function executeGet(jwtToken, uri) {
+  const url = uri;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `JWT ${jwtToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+}
+
+async function executePost(jwtToken, uri, body) {
+  const url = uri;
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -124,20 +222,5 @@ export async function addIntegration(jwtToken, integrationToken) {
     },
     body: JSON.stringify(body),
   });
-  return await res.json();
-}
-
-export async function getIntegration(jwtToken) {
-  const url = '/snyk/org/orgid/integrations';
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Authorization: `JWT ${jwtToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) {
-    throw new Error(`Could not fetch GET ${url}, received ${res}`);
-  }
-  return await res.json();
+  return res;
 }

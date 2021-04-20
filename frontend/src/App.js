@@ -1,22 +1,20 @@
 import React, { useState, useLayoutEffect } from 'react';
 import SnykProjects from './components/SnykProjects';
 import SnykIntegration from './components/integration/SnykIntegration';
-import { getIntegration } from './services/SnykService';
+import { getIntegrationTokenOrg } from './services/SnykService';
 import Spinner from './components/Spinner';
 
-function App({ jwtToken }) {
+function App({
+  jwtToken, workspace, repoOwner, repoSlug, repoMainBranch,
+}) {
   const [loading, setLoading] = useState(true);
-  const [integrated, setIntegrated] = useState(false);
+  const [integrationParams, setIntegrationParams] = useState({ integrated: false, token: false, org: false });
   useLayoutEffect(() => {
     checkIntegration();
   }, [jwtToken]);
   const checkIntegration = () => {
-    getIntegration(jwtToken).then((result) => {
-      if (result['bitbucket-cloud']) {
-        setIntegrated(true);
-      } else {
-        setIntegrated(false);
-      }
+    getIntegrationTokenOrg(jwtToken).then((result) => {
+      setIntegrationParams({ integrated: result.integrated, token: result.token, org: result.org });
       setLoading(false);
     });
   };
@@ -25,11 +23,23 @@ function App({ jwtToken }) {
     if (loading) {
       return <Spinner />;
     }
-    if (integrated) {
-      return <SnykProjects jwtToken={jwtToken} />;
+    if (integrationParams.integrated && integrationParams.token && integrationParams.org) {
+      return (
+        <SnykProjects
+          jwtToken={jwtToken}
+          repoOwner={repoOwner}
+          repoSlug={repoSlug}
+          repoMainBranch={repoMainBranch}
+        />
+      );
     }
     return (
-      <SnykIntegration jwtToken={jwtToken} callback={checkIntegration} />
+      <SnykIntegration
+        jwtToken={jwtToken}
+        callback={checkIntegration}
+        workspace={workspace}
+        integrationParams={integrationParams}
+      />
     );
   };
 

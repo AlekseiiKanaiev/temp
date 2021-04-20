@@ -39,7 +39,7 @@ class ApiClient {
       json: true
     }
     options.headers.Authorization = req.headers.authorization
-    if (req.body != null) { options.body = req.body }
+    if (req.body != null && req.method.toUpperCase() !== 'GET') { options.body = req.body }
     this.req(url, options).pipe(res)
   }
 

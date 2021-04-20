@@ -30,7 +30,7 @@ class SnykClient extends ApiClient {
   }
 
   get authHeader () {
-    return `token ${this.token}`
+    return `Bearer ${this.token}`
   }
 
   setToken (token) {

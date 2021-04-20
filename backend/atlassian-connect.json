@@ -23,7 +23,7 @@
         ],
         "repoPages": [
             {
-                "url": "/pages",
+                "url": "/pages/repo?workspaceSlug={repository.workspace.slug}&repoSlug={repository.slug}&repoMainBranch={repository.mainbranch.name}&repoOwner={repository.owner.username}",
                 "name": {
                     "value": "Snyk"
                 },
@@ -38,7 +38,26 @@
                     "height": 24
                 }
             }
-        ]
+        ],
+        "adminPages": [
+            {
+              "url": "/pages/account?useruuid={user.uuid}&targetuseruuid={target_user.uuid}&useraccountid={user.account_id}",
+              "location" : "org.bitbucket.account.admin",
+              "name": {
+                "value": "Integration Settings"
+              },
+              "key": "snyk-account-page",
+              "params": {
+                "auiIcon": "aui-iconfont-doc"
+                },
+            "icon": {
+                "url": "/ico/SnykApi.svg",
+                "width": 24,
+                "height": 24
+            }
+            }
+            
+          ]
     },
     "scopes": ["account", "repository"],
     "contexts": ["account"]

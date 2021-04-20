@@ -15,7 +15,8 @@ module.exports = {
     },
     watch: (process.argv.indexOf('--no-watch') > -1) ? false : true,
     entry: {
-       'snyk.repo.page': path.resolve('./src/snykRepoPage.js')
+       'snyk.repo.page': path.resolve('./src/SnykRepoPage.js'),
+       'snyk.account.page': path.resolve('./src/SnykAccountPage.js')
     },
     output: {
         filename: 'bundled.[name].js',

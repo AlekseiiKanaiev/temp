@@ -2,10 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-export default function SnykRepoPage({ jwtToken }) {
+export default function SnykRepoPage({
+  jwtToken, workspace, repoOwner, repoSlug, repoMainBranch,
+}) {
   return (
     <div>
-      <App jwtToken={jwtToken} />
+      <App
+        jwtToken={jwtToken}
+        workspace={workspace}
+        repoOwner={repoOwner}
+        repoSlug={repoSlug}
+        repoMainBranch={repoMainBranch}
+      />
     </div>
   );
 }
@@ -13,5 +21,18 @@ export default function SnykRepoPage({ jwtToken }) {
 window.addEventListener('load', () => {
   const wrapper = document.getElementById('container');
   const jwtToken = document.getElementById('jwttoken').value;
-  wrapper ? ReactDOM.render(<SnykRepoPage jwtToken={jwtToken} />, wrapper) : false;
+  const workspace = document.getElementById('workspace').value;
+  const repoOwner = document.getElementById('repoOwner').value;
+  const repoSlug = document.getElementById('repoSlug').value;
+  const repoMainBranch = document.getElementById('repoMainBranch').value;
+  wrapper ? ReactDOM.render(
+    <SnykRepoPage
+      jwtToken={jwtToken}
+      workspace={workspace}
+      repoOwner={repoOwner}
+      repoSlug={repoSlug}
+      repoMainBranch={repoMainBranch}
+    />,
+    wrapper,
+  ) : false;
 });

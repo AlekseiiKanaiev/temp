@@ -1,6 +1,6 @@
 const status = require('http-status')
 const RouteUtils = require('./RouteUtils')
-const { WebhookHandler, SnykAPIHandler, BitbucketAPIHandler } = require('./handlers/index')
+const { WebhookHandler, SnykAPIHandler, BitbucketAPIHandler, AppAPIHandler } = require('./handlers/index')
 const { SnykClient } = require('./../modules')
 
 module.exports = function routes (app, addon) {
@@ -8,6 +8,7 @@ module.exports = function routes (app, addon) {
   const snykApiHandler = SnykAPIHandler.newInstance(SnykClient.newInstance.bind(null, baseUrl), addon)
   const bbApiHandler = BitbucketAPIHandler.newInstance(addon)
   const webhookHander = WebhookHandler.newInstance(addon)
+  const appAPIHandler = AppAPIHandler.newInstance(addon)
 
   // healthcheck route used by micros to ensure the addon is running.
   app.get('/healthcheck', RouteUtils.sendOK)
@@ -33,12 +34,21 @@ module.exports = function routes (app, addon) {
     addon.settings.del('clientInfo', clientKey)
       .then(() => {
         addon.settings.del('snykSettings', clientKey)
-          .then(() => res.status(status.OK).send())
+          .then(() => {
+            addon.settings.del('token', clientKey)
+              .then(() => res.status(status.OK).send())
+          })
           .catch((err) => res.status(status.BAD_REQUEST).send(err))
       })
       .catch((err) => res.status(status.BAD_REQUEST).send(err))
   })
 
+  app.post('/app/org', addon.checkValidToken(), appAPIHandler.saveOrg.bind(appAPIHandler))
+  app.get('/app/org', addon.checkValidToken(), appAPIHandler.getOrg.bind(appAPIHandler))
+  app.get('/app/token', addon.checkValidToken(), appAPIHandler.getToken.bind(appAPIHandler))
+  app.get('/app/oauth', appAPIHandler.oauth.bind(appAPIHandler))
+  app.post('/app/state', addon.checkValidToken(), appAPIHandler.setState.bind(appAPIHandler))
+  app.post('/app/integration', addon.checkValidToken(), appAPIHandler.restartIntegration.bind(appAPIHandler))
   app.get('/pages*', addon.authenticate(), webhookHander.pages.bind(webhookHander))
 
   // This route will handle webhooks from repositories this add-on is installed for.

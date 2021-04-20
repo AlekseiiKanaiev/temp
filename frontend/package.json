@@ -15,7 +15,7 @@
     "@atlaskit/spinner": "^15.0.7",
     "@atlaskit/textfield": "^5.0.1",
     "@atlaskit/theme": "^11.0.3",
-    "@atlaskit/progress-bar": "^0.3.6",
+    "@atlaskit/modal-dialog": "^11.2.9",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
@@ -28,7 +28,8 @@
     "build": "webpack --mode production",
     "prodbuild": "webpack --mode production --no-watch",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/** --fix"
   },
   "eslintConfig": {
     "extends": "react-app"

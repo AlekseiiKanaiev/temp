@@ -8,6 +8,7 @@ const ContainerWrapper = styled.div`
   max-width: 650px;
   height: 400px;
   margin-top: 5%;
+  margin-bottom: 5%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);

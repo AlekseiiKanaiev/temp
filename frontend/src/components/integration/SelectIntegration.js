@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import { saveOrganization, getOrganizations } from '../../services/SnykService';
+
+import Spinner from '../Spinner';
 
 const ContainerWrapper = styled.div`
   min-width: 650px;
   max-width: 650px;
   height: 300px;
   margin-top: 5%;
+  margin-bottom: 5%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -34,53 +38,90 @@ const ButtonWrapper = styled.span`
   margin-right: 20px;
 `;
 
-export default function SelectIntegration({ setStage, setOrganization }) {
-  const options = [
-    { label: 'Organization 1', value: 'org1' },
-    { label: 'Organization 2', value: 'org2' },
-    { label: 'Organization 3', value: 'org3' },
-  ];
-
+export default function SelectIntegration({
+  setStage, setOrganization, jwtToken,
+}) {
+  const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <GridColumn medium={12}>
-      <ContainerWrapper>
-        <TitleWrapper>
-          <h2>Create an integration</h2>
-        </TitleWrapper>
-        <ContentWrapper>
-          Select the organization in Snyk, you would like to associate your
-          workspace with:
-        </ContentWrapper>
-        <ContentWrapper>
-          <Select
-            placeholder="Select the organization in Snyk"
-            options={options}
-            onChange={(item) => setSelected(item.value)}
-          />
-        </ContentWrapper>
-        <ButtonWrapper>
-          <Button
-            onClick={() => {
-              setOrganization(selected);
-            }}
-            isDisabled={!selected}
-            appearance="primary"
-          >
-            Done
-          </Button>
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <Button
-            onClick={() => {
-              setStage(1);
-            }}
-          >
-            Back
-          </Button>
-        </ButtonWrapper>
-      </ContainerWrapper>
-    </GridColumn>
-  );
+  useLayoutEffect(() => {
+    fetchOrganizations();
+  }, [jwtToken]);
+
+  const fetchOrganizations = () => {
+    getOrganizations(jwtToken).then((result) => {
+      const orgs = [];
+      if (result.orgs) {
+        result.orgs.forEach((org) => {
+          orgs.push({ label: org.name, value: org.id });
+        });
+      }
+      if (orgs.length === 1) {
+        saveOrg(orgs[0]);
+      }
+      setOrganizations(orgs);
+      setLoading(false);
+    });
+  };
+
+  const saveOrg = (orgJson) => {
+    if (!orgJson.label) {
+      const org = getOrgByValue(orgJson.id);
+      if (org.length === 0) {
+        throw new Error(`Could not find org for ${orgJson.id}`);
+      }
+      orgJson = org[0];
+    }
+    saveOrganization(jwtToken, { id: orgJson.value, name: orgJson.label });
+    setOrganization(orgJson.value);
+  };
+
+  const getOrgByValue = (value) => organizations.filter((org) => org.value === value);
+
+  const view = () => {
+    if (loading) {
+      return <Spinner />;
+    }
+    return (
+      <GridColumn medium={12}>
+        <ContainerWrapper>
+          <TitleWrapper>
+            <h2>Create an integration</h2>
+          </TitleWrapper>
+          <ContentWrapper>
+            Select the organization in Snyk, you would like to associate your
+            workspace with:
+          </ContentWrapper>
+          <ContentWrapper>
+            <Select
+              placeholder="Select the organization in Snyk"
+              options={organizations}
+              onChange={(item) => setSelected(item.value)}
+            />
+          </ContentWrapper>
+          <ButtonWrapper>
+            <Button
+              onClick={() => saveOrg({ id: selected })}
+              isDisabled={!selected}
+              appearance="primary"
+            >
+              Done
+            </Button>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Button
+              onClick={() => {
+                setStage(1);
+              }}
+            >
+              Back
+            </Button>
+          </ButtonWrapper>
+        </ContainerWrapper>
+      </GridColumn>
+    );
+  };
+
+  return view();
 }
