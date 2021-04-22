@@ -26,7 +26,8 @@ export default function LogInSpinner({ jwtToken, setStage, setProcessingOauth })
       .then((result) => {
         if (result.token) {
           clearInterval(intervalObj);
-          setStage(2);
+          setProcessingOauth(false);
+          setStage(1);
         }
       }).catch((err) => {
         clearInterval(intervalObj);

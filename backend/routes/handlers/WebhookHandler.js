@@ -32,7 +32,7 @@ class WebhookHandler {
 
   pagesRepo (req, res) {
     const httpClient = this.addon.httpClient(req)
-    const { workspaceSlug, repoSlug, repoMainBranch, repoOwner } = req.query
+    const { workspaceSlug, repoSlug, repoMainBranch, repoOwner, useruuid, targetuseruuid } = req.query
     const owner = repoOwner === '{repository.owner.username}' ? workspaceSlug : repoOwner
     /* httpClient.get(`/2.0/repositories/${workspace}/${repoSlug}`, function (err, resp, data) {
       try {
@@ -50,7 +50,7 @@ class WebhookHandler {
           title: 'SNYK',
           displayName: data.display_name,
           repoPath: req.query.repoPath,
-          workspace: workspaceSlug,
+          username:  useruuid == targetuseruuid ? data.username : '',
           repoOwner: owner,
           repoSlug: repoSlug,
           repoMainBranch: repoMainBranch
@@ -63,7 +63,7 @@ class WebhookHandler {
   }
 
   pagesAccount (req, res) {
-    const { useruuid, targetuseruuid, useraccountid } = req.query
+    const { useruuid, targetuseruuid } = req.query
     const httpClient = this.addon.httpClient(req)
     /* const url = `/2.0/user`
     httpClient.asUserByAccountId('ebcab857-c769-4fbd-8ad6-469510a43b87').get(url, function (err, resp, data) {
@@ -83,7 +83,7 @@ class WebhookHandler {
             data = JSON.parse(data)
             res.render('snyk-account-page', {
               title: 'Account',
-              workspace: data.username
+              username:  useruuid == targetuseruuid ? data.username : ''
             })
           } catch (e) {
             console.log(e)

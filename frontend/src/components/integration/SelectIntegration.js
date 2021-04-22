@@ -3,7 +3,7 @@ import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import { saveOrganization, getOrganizations } from '../../services/SnykService';
+import { saveOrganization, getOrganizations, deleteToken } from '../../services/SnykService';
 
 import Spinner from '../Spinner';
 
@@ -39,7 +39,7 @@ const ButtonWrapper = styled.span`
 `;
 
 export default function SelectIntegration({
-  setStage, setOrganization, jwtToken,
+  setStage, setOrganization, jwtToken, callback
 }) {
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
@@ -54,7 +54,7 @@ export default function SelectIntegration({
       const orgs = [];
       if (result.orgs) {
         result.orgs.forEach((org) => {
-          orgs.push({ label: org.name, value: org.id });
+          orgs.push({ label: org.name, value: org.id, orgslug: org.slug });
         });
       }
       if (orgs.length === 1) {
@@ -65,6 +65,15 @@ export default function SelectIntegration({
     });
   };
 
+  const backButton = () => {
+    deleteToken(jwtToken)
+    .then(() => callback(true))
+    .catch((err) => {
+      throw new Error(err)
+    })
+    
+  }
+
   const saveOrg = (orgJson) => {
     if (!orgJson.label) {
       const org = getOrgByValue(orgJson.id);
@@ -73,8 +82,9 @@ export default function SelectIntegration({
       }
       orgJson = org[0];
     }
-    saveOrganization(jwtToken, { id: orgJson.value, name: orgJson.label });
+    saveOrganization(jwtToken, { id: orgJson.value, name: orgJson.label, slug: orgJson.orgslug });
     setOrganization(orgJson.value);
+    callback(true)
   };
 
   const getOrgByValue = (value) => organizations.filter((org) => org.value === value);
@@ -112,7 +122,7 @@ export default function SelectIntegration({
           <ButtonWrapper>
             <Button
               onClick={() => {
-                setStage(1);
+                backButton();
               }}
             >
               Back

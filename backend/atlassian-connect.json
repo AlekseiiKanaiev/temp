@@ -23,7 +23,7 @@
         ],
         "repoPages": [
             {
-                "url": "/pages/repo?workspaceSlug={repository.workspace.slug}&repoSlug={repository.slug}&repoMainBranch={repository.mainbranch.name}&repoOwner={repository.owner.username}",
+                "url": "/pages/repo?useruuid={user.uuid}&targetuseruuid={target_user.uuid}&workspaceSlug={repository.workspace.slug}&repoSlug={repository.slug}&repoMainBranch={repository.mainbranch.name}&repoOwner={repository.owner.username}",
                 "name": {
                     "value": "Snyk"
                 },
@@ -41,7 +41,7 @@
         ],
         "adminPages": [
             {
-              "url": "/pages/account?useruuid={user.uuid}&targetuseruuid={target_user.uuid}&useraccountid={user.account_id}",
+              "url": "/pages/account?useruuid={user.uuid}&targetuseruuid={target_user.uuid}",
               "location" : "org.bitbucket.account.admin",
               "name": {
                 "value": "Integration Settings"

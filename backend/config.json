@@ -19,7 +19,7 @@
             "baseUrl": "https://api.snyk.io/v1/",
             "snykOauthUrl": "https://id.snyk.io/oauth/token"
         },
-        "localBaseUrl": "https://ed8408c4befc.ngrok.io"
+        "localBaseUrl": "https://5e4dae095462.ngrok.io"
     },
     "stage": {
         "port": "$PORT",

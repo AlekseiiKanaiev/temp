@@ -8,7 +8,7 @@ module.exports = function routes (app, addon) {
   const snykApiHandler = SnykAPIHandler.newInstance(SnykClient.newInstance.bind(null, baseUrl), addon)
   const bbApiHandler = BitbucketAPIHandler.newInstance(addon)
   const webhookHander = WebhookHandler.newInstance(addon)
-  const appAPIHandler = AppAPIHandler.newInstance(addon)
+  const appAPIHandler = AppAPIHandler.newInstance(addon, app)
 
   // healthcheck route used by micros to ensure the addon is running.
   app.get('/healthcheck', RouteUtils.sendOK)
@@ -45,7 +45,9 @@ module.exports = function routes (app, addon) {
 
   app.post('/app/org', addon.checkValidToken(), appAPIHandler.saveOrg.bind(appAPIHandler))
   app.get('/app/org', addon.checkValidToken(), appAPIHandler.getOrg.bind(appAPIHandler))
+  app.delete('/app/org', addon.checkValidToken(), appAPIHandler.deleteOrg.bind(appAPIHandler))
   app.get('/app/token', addon.checkValidToken(), appAPIHandler.getToken.bind(appAPIHandler))
+  app.delete('/app/token', addon.checkValidToken(), appAPIHandler.deleteToken.bind(appAPIHandler))
   app.get('/app/oauth', appAPIHandler.oauth.bind(appAPIHandler))
   app.post('/app/state', addon.checkValidToken(), appAPIHandler.setState.bind(appAPIHandler))
   app.post('/app/integration', addon.checkValidToken(), appAPIHandler.restartIntegration.bind(appAPIHandler))

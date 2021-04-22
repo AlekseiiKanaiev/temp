@@ -4,7 +4,6 @@ import { ProgressTracker } from '@atlaskit/progress-tracker';
 export default function IntegrationEventTracker({ stage }) {
   const stagesList = [
     'Log in or sign up to Snyk',
-    'Provide permissions to your Snyk account',
     'Integrate with Snyk',
   ];
 

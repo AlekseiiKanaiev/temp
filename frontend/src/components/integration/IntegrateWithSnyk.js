@@ -1,10 +1,10 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { Grid, GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
-import { LoadingButton } from '@atlaskit/button';
+import Button, { LoadingButton } from '@atlaskit/button';
 import Textfield from '@atlaskit/textfield';
 import { ErrorMessage } from '@atlaskit/form';
-import { addIntegration } from '../../services/SnykService';
+import { addIntegration, deleteOrg, getIntegrationId } from '../../services/SnykService';
 import Spinner from '../Spinner';
 
 const ImageWrapper = styled.div`
@@ -50,39 +50,50 @@ const TextWrapper = styled.div`
 `;
 
 export default function IntegrateWithSnyk({
-  jwtToken, callback, workspace, integrated,
+  jwtToken, callback, username, integrated,
 }) {
   const [password, setPassword] = useState('');
+  const [usernamel, setUsername] = useState(username);
   const [exception, setException] = useState('');
   const [loading, setLoading] = useState(false);
-  const formLoadingInitialState = !!integrated;
-  // console.log("a " + integrated)
-  // console.log("a1 " + formLoadingInitialState)
-  const [formLoading, setFormLoading] = useState(formLoadingInitialState);
-  if (formLoading !== formLoadingInitialState) {
-    setFormLoading(formLoadingInitialState);
-  }
+  const [formLoading, setFormLoading] = useState(true);
 
   useLayoutEffect(() => {
-    if (integrated) {
-      callback();
-    }
+    getIntegrationId(jwtToken)
+    .then((integrationId) => {
+      if (integrationId) {
+        callback(true);
+      } else {
+        setFormLoading(false)
+      }
+    }).catch((err) => {
+      throw new Error(err)
+    })
+     
+    
   }, [jwtToken]);
 
   const requestIntegration = () => {
     setLoading(true);
-    addIntegration(jwtToken, password, workspace).then((result) => {
+    addIntegration(jwtToken, password, usernamel).then((result) => {
       if (result.code) {
         setException(result.message);
       } else {
-        callback();
+        callback(true);
       }
       setLoading(false);
     });
   };
 
+  const backButton = () => {
+    deleteOrg(jwtToken)
+    .then(() => callback(true))
+    .catch((err) => {
+      throw new Error(err)
+    })
+  }
+
   const view = () => {
-  //  console.log(formLoading)
     if (formLoading) {
       return <Spinner />;
     }
@@ -136,7 +147,25 @@ export default function IntegrateWithSnyk({
                     </li>
                   </ul>
                 </TextWrapper>
+                { !username && (
                 <TextWrapper>
+                  Username (you can find your username in <a
+                          href="https://bitbucket.org/account/settings/"
+                          target="_blank"
+                          rel="noreferrer"
+                        >Personal Settings</a>)
+                  <Textfield
+                    value={usernamel}
+                    placeholder="e.g. JoeBlogs"
+                    onChange={(event) => {
+                      setException('');
+                      setUsername(event.target.value);
+                    }}
+                  />
+                </TextWrapper>
+                )}
+                <TextWrapper>
+                  App Password
                   <Textfield
                     value={password}
                     placeholder="e.g. AXd0shyPTjjZnuMoD7C1"
@@ -156,7 +185,7 @@ export default function IntegrateWithSnyk({
               <GridColumn medium={12}>
                 <ButtonWrapper>
                   <LoadingButton
-                    isDisabled={!password}
+                    isDisabled={!(password && usernamel)}
                     appearance="primary"
                     onClick={() => requestIntegration()}
                     isLoading={loading}
@@ -164,6 +193,15 @@ export default function IntegrateWithSnyk({
                     Done
                   </LoadingButton>
                 </ButtonWrapper>
+                <ButtonWrapper>
+            <Button
+              onClick={() => {
+                backButton();
+              }}
+            >
+              Back
+            </Button>
+          </ButtonWrapper>
               </GridColumn>
             </Grid>
           </ContainerWrapper>

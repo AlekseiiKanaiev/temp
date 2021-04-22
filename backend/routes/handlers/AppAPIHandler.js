@@ -3,22 +3,59 @@ const { logger } = require('../../logger')
 const TokenService = require('../../modules/TokenService')
 
 class AppAPIHandler {
-  constructor (addon) {
+  constructor (addon, app) {
     this.addon = addon
+    this.app = app
   }
 
-  static newInstance (addon) {
-    return new AppAPIHandler(addon)
+  static newInstance (addon, app) {
+    return new AppAPIHandler(addon, app)
   }
 
   getOrg (req, res) {
     this.addon.settings.get('snykSettings', req.context.clientKey)
       .then((settings) => {
         if (settings && settings.orgid) {
-          return res.status(200).send({ org: true, orgname: settings.orgname })
+          return res.status(200).send({ org: true, orgname: settings.orgname, orgslug: settings.orgslug })
         } else {
           return res.status(200).send({ org: false })
         }
+      })
+      .catch((err) => {
+        logger.error(err)
+        return res.status(status.BAD_REQUEST).send('')
+      })
+  }
+
+  deleteOrg (req, res) {
+    this.addon.settings.get('snykSettings', req.context.clientKey)
+      .then((settings) => {
+        if (settings && settings.orgid) {
+            delete settings.orgid
+        }
+        if (settings && settings.orgname) {
+          delete settings.orgname
+        }
+        if (settings && settings.orgslug) {
+          delete settings.orgslug
+        }
+        this.addon.settings.set('snykSettings', settings, req.context.clientKey)
+        .then (() => res.status(200).send({ message: "success" }))
+        .catch((err) => {
+          logger.error(err)
+          return res.status(status.BAD_REQUEST).send('')
+        })
+      })
+      .catch((err) => {
+        logger.error(err)
+        return res.status(status.BAD_REQUEST).send('')
+      })
+  }
+
+  deleteToken (req, res) {
+    this.addon.settings.del('snykSettings', req.context.clientKey)
+      .then((settings) => {
+          return res.status(200).send({ message: "success" })        
       })
       .catch((err) => {
         logger.error(err)
@@ -50,7 +87,9 @@ class AppAPIHandler {
         if (snykApiTokenBody.error) {
           return res.status(status.BAD_REQUEST).send(snykApiTokenBody.error)
         }
-        return res.status(200).send({ snykApiTokenBody: snykApiTokenBody })
+        return this.app.get('env') === 'development' ?
+          res.status(200).send({code: code,  snykApiTokenBody: snykApiTokenBody }) :
+          res.status(200).send({message : "you can close the tab" })
       })
   }
 
@@ -81,6 +120,7 @@ class AppAPIHandler {
       .then((settings) => {
         settings.orgid = req.body.id
         settings.orgname = req.body.name
+        settings.orgslug = req.body.slug
         this.addon.settings.set('snykSettings', settings, req.context.clientKey)
           .then(() => res.status(201).send({ id: settings.orgid, name: settings.orgname }))
           .catch((err) => {

@@ -28,7 +28,7 @@ export default function ProjectName({
       <ImageWrapper>
         <img src={`/ico/${icon}`} alt={type} />
       </ImageWrapper>
-      <LinkWrapper onClick={() => callback(id)}>{name}</LinkWrapper>
+      <LinkWrapper onClick={() => callback(id)}>{name.substring(name.indexOf(":") + 1)}</LinkWrapper>
     </>
   );
 }

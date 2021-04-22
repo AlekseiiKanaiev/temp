@@ -11,7 +11,7 @@ const ContainerWrapper = styled.div`
     margin-top: 5%;
   `;
 
-export default function ProjectList({ projects, jwtToken }) {
+export default function ProjectList({ projects, jwtToken, orgname }) {
   const [projectId, setProjectId] = useState();
 
   const totalIssueCounts = (projects) => {
@@ -40,7 +40,7 @@ export default function ProjectList({ projects, jwtToken }) {
     low + high + medium === 0 ? (
       <NoIssuesFound />
     ) : (
-      <ProjectIssues projectId={projectId} jwtToken={jwtToken} />
+      <ProjectIssues projectId={projectId} jwtToken={jwtToken}/>
     )
   ) : (
     <ProjectTable projects={projects} callback={setProjectId} />
@@ -62,7 +62,7 @@ export default function ProjectList({ projects, jwtToken }) {
               />
             )}
           </h3>
-          <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} />
+          <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} orgname={orgname}/>
         </ContainerWrapper>
       </GridColumn>
       <GridColumn medium={12}>{view}</GridColumn>

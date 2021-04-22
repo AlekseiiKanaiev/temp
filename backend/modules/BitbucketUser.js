@@ -2,12 +2,16 @@ const request = require('request')
 const { logger } = require('../logger')
 
 class BitbucketUser {
-  static async getUsernameByToken (token) {
+  constructor(addon) {
+    this.addon = addon
+  }
+
+  async getUsernameByToken (token) {
     const restApiToken = await BitbucketUser.getRestApiToken(token)
     const aa = ''
   }
 
-  static async getRestApiToken (token) {
+  async getRestApiToken (token) {
     return await new Promise((resolve, reject) => {
       request.post(
         'https://bitbucket.org/site/oauth2/access_token',

@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 export default function SnykRepoPage({
-  jwtToken, workspace, repoOwner, repoSlug, repoMainBranch,
+  jwtToken, username, repoOwner, repoSlug, repoMainBranch,
 }) {
   return (
     <div>
       <App
         jwtToken={jwtToken}
-        workspace={workspace}
+        username={username}
         repoOwner={repoOwner}
         repoSlug={repoSlug}
         repoMainBranch={repoMainBranch}
@@ -21,14 +21,14 @@ export default function SnykRepoPage({
 window.addEventListener('load', () => {
   const wrapper = document.getElementById('container');
   const jwtToken = document.getElementById('jwttoken').value;
-  const workspace = document.getElementById('workspace').value;
+  const username = document.getElementById('username').value;
   const repoOwner = document.getElementById('repoOwner').value;
   const repoSlug = document.getElementById('repoSlug').value;
   const repoMainBranch = document.getElementById('repoMainBranch').value;
   wrapper ? ReactDOM.render(
     <SnykRepoPage
       jwtToken={jwtToken}
-      workspace={workspace}
+      username={username}
       repoOwner={repoOwner}
       repoSlug={repoSlug}
       repoMainBranch={repoMainBranch}

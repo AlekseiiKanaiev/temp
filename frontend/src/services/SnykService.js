@@ -44,9 +44,14 @@ const defaultIntegrationBody = {
   credentials: { token: '' },
 };
 
-export async function getProjects(jwtToken) {
+export async function getProjects(jwtToken, projectName) {
   const url = '/snyk/org/orgid/projects';
-  const res = await executePost(jwtToken, url, {});
+  const projectBody = {
+    filters: {
+      name: projectName,
+    },
+  };
+  const res = await executePost(jwtToken, url, projectBody);
 
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
@@ -112,14 +117,14 @@ export async function getIntegration(jwtToken) {
 }
 
 export async function getOrganizations(jwtToken) {
-  const user = await getSnykUser(jwtToken);
-  // const url = '/snyk/orgs';
-  // const res = await executeGet(jwtToken, url);
+  //const user = await getSnykUser(jwtToken);
+   const url = '/snyk/orgs';
+   const res = await executeGet(jwtToken, url);
 
-  // if (!res.ok) {
-  //  throw new Error(`Could not fetch GET ${url}, received ${res}`);
-  // }
-  return user;
+   if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+   }
+  return res.json();
 }
 
 export async function saveOrganization(jwtToken, org) {
@@ -185,7 +190,7 @@ export async function getSavedOrg(jwtToken) {
 export async function getIntegrationTokenOrg(jwtToken) {
   const token = await getApiToken(jwtToken);
   const org = await getSavedOrg(jwtToken);
-  const integration = token.token && org.org ? await getIntegrationId(jwtToken) : false;
+  const integration = token.token && org.org ? await getIntegrationId(jwtToken) : '';
   const integrationStatus = integration !== '';
   return { integrated: integrationStatus, token: token.token, org: org.org };
 }
@@ -193,6 +198,26 @@ export async function getIntegrationTokenOrg(jwtToken) {
 export async function getSnykUser(jwtToken) {
   const url = '/snyk/user/me';
   const res = await executeGet(jwtToken, url);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function deleteToken(jwtToken) {
+  const url = '/app/token';
+  const res = await executeDelete(jwtToken, url);
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function deleteOrg(jwtToken) {
+  const url = '/app/org';
+  const res = await executeDelete(jwtToken, url);
 
   if (!res.ok) {
     throw new Error(`Could not fetch GET ${url}, received ${res}`);
@@ -222,5 +247,18 @@ async function executePost(jwtToken, uri, body) {
     },
     body: JSON.stringify(body),
   });
+  return res;
+}
+
+async function executeDelete(jwtToken, uri) {
+  const url = uri;
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `JWT ${jwtToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
   return res;
 }

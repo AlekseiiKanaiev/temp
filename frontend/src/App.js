@@ -5,17 +5,22 @@ import { getIntegrationTokenOrg } from './services/SnykService';
 import Spinner from './components/Spinner';
 
 function App({
-  jwtToken, workspace, repoOwner, repoSlug, repoMainBranch,
+  jwtToken, username, repoOwner, repoSlug, repoMainBranch,
 }) {
   const [loading, setLoading] = useState(true);
+  const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);
   const [integrationParams, setIntegrationParams] = useState({ integrated: false, token: false, org: false });
+
   useLayoutEffect(() => {
-    checkIntegration();
+    checkIntegration(false);
   }, [jwtToken]);
-  const checkIntegration = () => {
+  const checkIntegration = (skipImportProjectPage) => {
+    setSkipImportProjectPage(skipImportProjectPage)
     getIntegrationTokenOrg(jwtToken).then((result) => {
       setIntegrationParams({ integrated: result.integrated, token: result.token, org: result.org });
       setLoading(false);
+    }).catch((err) => {
+      throw new Error(err)
     });
   };
 
@@ -30,6 +35,7 @@ function App({
           repoOwner={repoOwner}
           repoSlug={repoSlug}
           repoMainBranch={repoMainBranch}
+          skipImportProjectPage={skipImportProjectPage}
         />
       );
     }
@@ -37,7 +43,7 @@ function App({
       <SnykIntegration
         jwtToken={jwtToken}
         callback={checkIntegration}
-        workspace={workspace}
+        username={username}
         integrationParams={integrationParams}
       />
     );

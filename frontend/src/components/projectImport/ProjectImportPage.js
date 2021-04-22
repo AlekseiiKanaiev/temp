@@ -5,7 +5,7 @@ import Button from '@atlaskit/button';
 import { importProject } from '../../services/SnykService';
 
 export default function ProjectImportPage({
-  setIsImporting, callback, jwtToken, repoOwner, repoSlug, repoMainBranch,
+  setIsImporting, callback, jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage
 }) {
   const ImageWrapper = styled.div`
     margin-top: 50px;
@@ -34,6 +34,10 @@ export default function ProjectImportPage({
         }
       });
   };
+
+  if (skipImportProjectPage) {
+    importProjectToSnyk()
+  }
 
   return (
     <GridColumn medium={12}>

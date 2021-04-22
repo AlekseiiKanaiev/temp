@@ -4,14 +4,14 @@ import SnykIntegration from './components/integration/SnykIntegration';
 import { getIntegrationTokenOrg, restartIntegration } from './services/SnykService';
 import Spinner from './components/Spinner';
 
-function AppAccount({ jwtToken, workspace }) {
+function AppAccount({ jwtToken, username }) {
   const [loading, setLoading] = useState(true);
   const [integrationParams, setIntegrationParams] = useState({ integrated: false, token: false, org: false });
 
   useLayoutEffect(() => {
-    checkIntegration();
+    checkIntegration(false);
   }, [jwtToken]);
-  const checkIntegration = () => {
+  const checkIntegration = (skipImportProjectPage) => {
     getIntegrationTokenOrg(jwtToken).then((result) => {
       setIntegrationParams({ integrated: result.integrated, token: result.token, org: result.org });
       setLoading(false);
@@ -38,7 +38,7 @@ function AppAccount({ jwtToken, workspace }) {
       );
     }
     return (
-      <SnykIntegration jwtToken={jwtToken} callback={checkIntegration} workspace={workspace} integrationParams={integrationParams} />
+      <SnykIntegration jwtToken={jwtToken} callback={checkIntegration} username={username} integrationParams={integrationParams} />
     );
   };
 
