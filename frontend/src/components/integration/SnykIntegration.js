@@ -20,8 +20,6 @@ export default function SnykIntegration({
   const [stage, setStage] = useState(0);
   const [organization, setOrganization] = useState();
   const [processingOauth, setProcessingOauth] = useState(false);
-  console.log(integrationParams)
-  console.log(organization)
   useLayoutEffect(() => {
     if (!integrationParams.token) {
       setStage(0);
@@ -46,21 +44,31 @@ export default function SnykIntegration({
           </EventTrackerWrapper>
         </GridColumn>
         {stage === 0 && !processingOauth && !integrationParams.token && (
-          <LogIn setProcessingOauth={setProcessingOauth} jwtToken={jwtToken} />
+          <LogIn
+            setProcessingOauth={setProcessingOauth}
+            jwtToken={jwtToken}
+          />
         )}
         {stage === 0 && processingOauth && !integrationParams.token && (
-          <LogInSpinner jwtToken={jwtToken} setStage={setStage} setProcessingOauth={setProcessingOauth} />
+          <LogInSpinner
+            jwtToken={jwtToken}
+            setStage={setStage}
+            setProcessingOauth={setProcessingOauth}
+          />
         )}
         {stage === 1 && !organization && (
           <SelectIntegration
-            setStage={setStage}
             setOrganization={setOrganization}
             jwtToken={jwtToken}
             callback={callback}
           />
         )}
-        {stage === 1 && organization &&(
-          <IntegrateWithSnyk jwtToken={jwtToken} callback={callback} username={username} integrated={integrationParams.integrated} />
+        {stage === 1 && organization && (
+          <IntegrateWithSnyk
+            jwtToken={jwtToken}
+            callback={callback}
+            username={username}
+          />
         )}
       </Grid>
     </Page>

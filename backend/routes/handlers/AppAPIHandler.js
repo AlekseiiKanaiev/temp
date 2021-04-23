@@ -13,7 +13,8 @@ class AppAPIHandler {
   }
 
   getOrg (req, res) {
-    this.addon.settings.get('snykSettings', req.context.clientKey)
+    const clientKey = req.context.clientKey
+    this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
         if (settings && settings.orgid) {
           return res.status(200).send({ org: true, orgname: settings.orgname, orgslug: settings.orgslug })
@@ -22,16 +23,17 @@ class AppAPIHandler {
         }
       })
       .catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }
 
   deleteOrg (req, res) {
-    this.addon.settings.get('snykSettings', req.context.clientKey)
+    const clientKey = req.context.clientKey
+    this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
         if (settings && settings.orgid) {
-            delete settings.orgid
+          delete settings.orgid
         }
         if (settings && settings.orgname) {
           delete settings.orgname
@@ -39,32 +41,34 @@ class AppAPIHandler {
         if (settings && settings.orgslug) {
           delete settings.orgslug
         }
-        this.addon.settings.set('snykSettings', settings, req.context.clientKey)
-        .then (() => res.status(200).send({ message: "success" }))
-        .catch((err) => {
-          logger.error(err)
-          return res.status(status.BAD_REQUEST).send('')
-        })
+        this.addon.settings.set('snykSettings', settings, clientKey)
+          .then(() => res.status(200).send({ message: 'success' }))
+          .catch((err) => {
+            logger.error({ message: err.toString(), clientkey: clientKey })
+            return res.status(status.BAD_REQUEST).send('')
+          })
       })
       .catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }
 
   deleteToken (req, res) {
-    this.addon.settings.del('snykSettings', req.context.clientKey)
+    const clientKey = req.context.clientKey
+    this.addon.settings.del('snykSettings', clientKey)
       .then((settings) => {
-          return res.status(200).send({ message: "success" })        
+        return res.status(200).send({ message: 'success' })
       })
       .catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }
 
   getToken (req, res) {
-    this.addon.settings.get('snykSettings', req.context.clientKey)
+    const clientKey = req.context.clientKey
+    this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
         if (settings && settings.apitoken) {
           return res.status(200).send({ token: true })
@@ -73,7 +77,7 @@ class AppAPIHandler {
         }
       })
       .catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }
@@ -87,9 +91,11 @@ class AppAPIHandler {
         if (snykApiTokenBody.error) {
           return res.status(status.BAD_REQUEST).send(snykApiTokenBody.error)
         }
-        return this.app.get('env') === 'development' ?
-          res.status(200).send({code: code,  snykApiTokenBody: snykApiTokenBody }) :
-          res.status(200).send({message : "you can close the tab" })
+        // res.redirect(307, 'https://bitbucket.org/alex1mmmcprime/workspace/settings/addon/admin/snyk-bb-app-test/snyk-account-page');
+        // res.render('snyk-redirect-page', {})
+        return this.app.get('env') === 'development'
+          ? res.status(200).send({ code: code, snykApiTokenBody: snykApiTokenBody })
+          : res.status(200).send({ message: 'you can close the tab' })
       })
   }
 
@@ -100,7 +106,8 @@ class AppAPIHandler {
   }
 
   setState (req, res) {
-    const tokenService = new TokenService(this.addon, req.context.clientKey)
+    const clientKey = req.context.clientKey
+    const tokenService = new TokenService(this.addon, clientKey)
     const redirectUri = tokenService.getRedirectUri(this.addon.config.localBaseUrl())
     tokenService.generateNewToken()
       .then((state) => {
@@ -110,25 +117,26 @@ class AppAPIHandler {
         res.status(200).send({ token: state, clientid: this.addon.config.clientId(), url: redirectUri })
       })
       .catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }
 
   saveOrg (req, res) {
-    this.addon.settings.get('snykSettings', req.context.clientKey)
+    const clientKey = req.context.clientKey
+    this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
         settings.orgid = req.body.id
         settings.orgname = req.body.name
         settings.orgslug = req.body.slug
-        this.addon.settings.set('snykSettings', settings, req.context.clientKey)
+        this.addon.settings.set('snykSettings', settings, clientKey)
           .then(() => res.status(201).send({ id: settings.orgid, name: settings.orgname }))
           .catch((err) => {
-            logger.error(err)
+            logger.error({ message: err.toString(), clientkey: clientKey })
             return res.status(status.BAD_REQUEST).send('')
           })
       }).catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }

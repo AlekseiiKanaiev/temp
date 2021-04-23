@@ -50,7 +50,7 @@ const TextWrapper = styled.div`
 `;
 
 export default function IntegrateWithSnyk({
-  jwtToken, callback, username, integrated,
+  jwtToken, callback, username,
 }) {
   const [password, setPassword] = useState('');
   const [usernamel, setUsername] = useState(username);
@@ -60,17 +60,15 @@ export default function IntegrateWithSnyk({
 
   useLayoutEffect(() => {
     getIntegrationId(jwtToken)
-    .then((integrationId) => {
-      if (integrationId) {
-        callback(true);
-      } else {
-        setFormLoading(false)
-      }
-    }).catch((err) => {
-      throw new Error(err)
-    })
-     
-    
+      .then((integrationId) => {
+        if (integrationId) {
+          callback(true);
+        } else {
+          setFormLoading(false);
+        }
+      }).catch((err) => {
+        throw new Error(err);
+      });
   }, [jwtToken]);
 
   const requestIntegration = () => {
@@ -87,11 +85,11 @@ export default function IntegrateWithSnyk({
 
   const backButton = () => {
     deleteOrg(jwtToken)
-    .then(() => callback(true))
-    .catch((err) => {
-      throw new Error(err)
-    })
-  }
+      .then(() => callback(true))
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
 
   const view = () => {
     if (formLoading) {
@@ -149,11 +147,16 @@ export default function IntegrateWithSnyk({
                 </TextWrapper>
                 { !username && (
                 <TextWrapper>
-                  Username (you can find your username in <a
-                          href="https://bitbucket.org/account/settings/"
-                          target="_blank"
-                          rel="noreferrer"
-                        >Personal Settings</a>)
+                  Username (you can find your username in
+                  {' '}
+                  <a
+                    href="https://bitbucket.org/account/settings/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Personal Settings
+                  </a>
+                  )
                   <Textfield
                     value={usernamel}
                     placeholder="e.g. JoeBlogs"
@@ -194,14 +197,14 @@ export default function IntegrateWithSnyk({
                   </LoadingButton>
                 </ButtonWrapper>
                 <ButtonWrapper>
-            <Button
-              onClick={() => {
-                backButton();
-              }}
-            >
-              Back
-            </Button>
-          </ButtonWrapper>
+                  <Button
+                    onClick={() => {
+                      backButton();
+                    }}
+                  >
+                    Back
+                  </Button>
+                </ButtonWrapper>
               </GridColumn>
             </Grid>
           </ContainerWrapper>

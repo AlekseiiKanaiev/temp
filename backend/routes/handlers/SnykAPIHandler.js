@@ -1,4 +1,3 @@
-const util = require('util')
 const status = require('http-status')
 const { logger } = require('../../logger')
 const TokenService = require('../../modules/TokenService')
@@ -15,23 +14,20 @@ class SnykAPIHandler {
   }
 
   pipe (req, res) {
-    console.log(util.inspect(req.context, {
-      colors: true,
-      depth: null
-    }))
-    this.addon.settings.get('snykSettings', req.context.clientKey)
+    const clientKey = req.context.clientKey
+    this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
-        this.tokenService.getToken(req.context.clientKey)
+        this.tokenService.getToken(clientKey)
           .then((token) => {
             const client = this.factory(req.context, token)
             return client.pipe(req.path.replace('/snyk', '').replace('orgid', settings.orgid), req, res)
           })
           .catch((err) => {
-            logger.error(err)
+            logger.error({ message: err.toString(), clientkey: clientKey })
             return res.status(status.BAD_REQUEST).send('')
           })
       }).catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
         return res.status(status.BAD_REQUEST).send('')
       })
   }

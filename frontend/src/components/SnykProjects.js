@@ -8,7 +8,7 @@ import NoFilesDetected from './NoFilesDetected';
 import ErrorImporting from './ErrorImporting';
 
 export default function SnykProjects({
-  jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage
+  jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage,
 }) {
   const [projects, setProjects] = useState();
   const [loading, setLoading] = useState(true);
@@ -21,10 +21,8 @@ export default function SnykProjects({
 
   const refreshProjects = (imported) => {
     getSavedOrg(jwtToken).then((result) => {
-      setOrgName(result.orgslug)
+      setOrgName(result.orgslug);
       getProjects(jwtToken, `${repoOwner}/${repoSlug}:`).then((result) => {
-        console.log("alexey")
-        console.log(result)
         setProjects(result.projects.filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`)).map((project) => ({
           id: project.id,
           name: project.name,
@@ -35,12 +33,11 @@ export default function SnykProjects({
         setLoading(false);
         setImported(imported);
       }).catch((err) => {
-        throw new Error(err)
+        throw new Error(err);
       });
-  }).catch((err) => {
-    throw new Error(err)
-  }
-  )
+    }).catch((err) => {
+      throw new Error(err);
+    });
   };
 
   const show = () => {
@@ -65,7 +62,14 @@ export default function SnykProjects({
     } if (projects.length === 0 && imported) {
       return <NoFilesDetected />;
     }
-    return <ProjectList projects={projects} jwtToken={jwtToken} orgname={orgName}/>;
+    return (
+      <ProjectList
+        projects={projects}
+        jwtToken={jwtToken}
+        orgname={orgName}
+        repoSlug={repoSlug}
+      />
+    );
   };
 
   return (

@@ -2,7 +2,7 @@ const request = require('request')
 const { logger } = require('../logger')
 
 class BitbucketUser {
-  constructor(addon) {
+  constructor (addon) {
     this.addon = addon
   }
 

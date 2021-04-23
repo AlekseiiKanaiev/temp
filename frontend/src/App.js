@@ -9,18 +9,22 @@ function App({
 }) {
   const [loading, setLoading] = useState(true);
   const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);
-  const [integrationParams, setIntegrationParams] = useState({ integrated: false, token: false, org: false });
+  const [integrationParams, setIntegrationParams] = useState({
+    integrated: false,
+    token: false,
+    org: false,
+  });
 
   useLayoutEffect(() => {
     checkIntegration(false);
   }, [jwtToken]);
   const checkIntegration = (skipImportProjectPage) => {
-    setSkipImportProjectPage(skipImportProjectPage)
+    setSkipImportProjectPage(skipImportProjectPage);
     getIntegrationTokenOrg(jwtToken).then((result) => {
       setIntegrationParams({ integrated: result.integrated, token: result.token, org: result.org });
       setLoading(false);
     }).catch((err) => {
-      throw new Error(err)
+      throw new Error(err);
     });
   };
 

@@ -45,6 +45,7 @@ const rows = (projects, callback) => projects.map((project) => ({
           type={project.type}
           id={project.id}
           callback={callback}
+          repoSlug={undefined}
         />
       ),
     },

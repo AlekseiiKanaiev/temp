@@ -39,7 +39,7 @@ const ButtonWrapper = styled.span`
 `;
 
 export default function SelectIntegration({
-  setStage, setOrganization, jwtToken, callback
+  setOrganization, jwtToken, callback,
 }) {
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
@@ -67,12 +67,11 @@ export default function SelectIntegration({
 
   const backButton = () => {
     deleteToken(jwtToken)
-    .then(() => callback(true))
-    .catch((err) => {
-      throw new Error(err)
-    })
-    
-  }
+      .then(() => callback(true))
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
 
   const saveOrg = (orgJson) => {
     if (!orgJson.label) {
@@ -84,7 +83,7 @@ export default function SelectIntegration({
     }
     saveOrganization(jwtToken, { id: orgJson.value, name: orgJson.label, slug: orgJson.orgslug });
     setOrganization(orgJson.value);
-    callback(true)
+    callback(true);
   };
 
   const getOrgByValue = (value) => organizations.filter((org) => org.value === value);

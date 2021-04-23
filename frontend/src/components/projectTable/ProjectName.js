@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default function ProjectName({
-  name, type, id, callback,
+  name, type, id, callback, repoSlug,
 }) {
   const ImageWrapper = styled.span`
     margin-right: 10px;
@@ -28,7 +28,20 @@ export default function ProjectName({
       <ImageWrapper>
         <img src={`/ico/${icon}`} alt={type} />
       </ImageWrapper>
-      <LinkWrapper onClick={() => callback(id)}>{name.substring(name.indexOf(":") + 1)}</LinkWrapper>
+      {repoSlug && (
+      <>
+        <LinkWrapper onClick={() => callback(id)}>
+          {repoSlug}
+        </LinkWrapper>
+        /
+        {name.substring(name.indexOf(':') + 1)}
+      </>
+      )}
+      {!repoSlug && (
+        <LinkWrapper onClick={() => callback(id)}>
+          {name.substring(name.indexOf(':') + 1)}
+        </LinkWrapper>
+      )}
     </>
   );
 }

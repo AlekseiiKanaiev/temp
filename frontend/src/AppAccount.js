@@ -6,7 +6,11 @@ import Spinner from './components/Spinner';
 
 function AppAccount({ jwtToken, username }) {
   const [loading, setLoading] = useState(true);
-  const [integrationParams, setIntegrationParams] = useState({ integrated: false, token: false, org: false });
+  const [integrationParams, setIntegrationParams] = useState({
+    integrated: false,
+    token: false,
+    org: false,
+  });
 
   useLayoutEffect(() => {
     checkIntegration(false);
@@ -34,11 +38,19 @@ function AppAccount({ jwtToken, username }) {
     }
     if (integrationParams.integrated && integrationParams.token && integrationParams.org) {
       return (
-        <SnykIntegrationsSettings jwtToken={jwtToken} callback={snykSettingsCallback} />
+        <SnykIntegrationsSettings
+          jwtToken={jwtToken}
+          callback={snykSettingsCallback}
+        />
       );
     }
     return (
-      <SnykIntegration jwtToken={jwtToken} callback={checkIntegration} username={username} integrationParams={integrationParams} />
+      <SnykIntegration
+        jwtToken={jwtToken}
+        callback={checkIntegration}
+        username={username}
+        integrationParams={integrationParams}
+      />
     );
   };
 

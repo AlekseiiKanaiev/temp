@@ -8,7 +8,6 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
-const util = require('util')
 const hbs = require('express-hbs')
 const errorhandler = require('errorhandler')
 
@@ -21,7 +20,6 @@ const path = require('path')
 
 // Routes live here; this is the C in MVC
 const routes = require('./routes')
-const { SnykClient } = require('./modules')
 const { logger } = require('./logger')
 const { httpLogger } = require('./logger')
 
@@ -71,21 +69,8 @@ app.use(compression())
 
 // Use api.bitbucket.org instead of the deprecated bitbucket.org/api
 app.post('/installed', function (req, res, next) {
-  const { baseUrl: snykUrl } = addon.config.snyk()
-  const snykClient = SnykClient.newInstance(snykUrl)
-
   req.body.baseUrl = req.body.baseApiUrl
-
-  snykClient.install(req.body).then((snykUser) => {
-    req.body.snykUser = snykUser
-    if (devEnv) {
-      console.log(util.inspect(req.body, {
-        colors: true,
-        depth: null
-      }))
-    }
-    next('route')
-  })
+  next('route')
 })
 
 // Include atlassian-connect-express middleware
@@ -106,7 +91,7 @@ routes(app, addon)
 
 // Boot the HTTP server
 http.createServer(app).listen(port, () => {
-  logger.info('App server running at ' + addon.config.localBaseUrl())
+  logger.info({ clientkey: 'app', message: 'App server running at ' + addon.config.localBaseUrl() })
   app.locals.addon = addon
   app.locals.url = addon.config.localBaseUrl()
 })

@@ -31,7 +31,7 @@ class TokenService {
         const clientKeys = settings.filter((element) => element.token === token).map((element) => element.clientKey)
         return clientKeys.length === 0 ? '' : clientKeys[0]
       }).catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: this.clientKey })
         return ''
       })
   }
@@ -59,7 +59,7 @@ class TokenService {
       return { error: `client key for ${state} not found` }
     }
 
-    //const bitbucketUsername = await BitbucketUser.getUsernameByToken(code)
+    // const bitbucketUsername = await BitbucketUser.getUsernameByToken(code)
 
     const snykApiTokenBody = await this.getSnykApiToken(clientId, clientSecret, redirectUri, code, snykOauthUrl)
     if (!(snykApiTokenBody.access_token && snykApiTokenBody.refresh_token) && !snykApiTokenBody.error) {
@@ -69,7 +69,7 @@ class TokenService {
     if (snykApiTokenBody.error) {
       return snykApiTokenBody
     }
-    
+
     await this.saveSnykApiTokenToDb(snykApiTokenBody, clientKey)
     return snykApiTokenBody
   }
@@ -89,7 +89,7 @@ class TokenService {
         },
         (error, res, body) => {
           if (error) {
-            logger.error(error)
+            logger.error({ message: error.toString(), clientkey: this.clientKey })
             resolve({ error: 'error receiving snyk api token' })
           }
           return resolve(body)
@@ -113,7 +113,7 @@ class TokenService {
           .then(() => {
           })
       })
-      .catch((err) => logger.error(err))
+      .catch((err) => logger.error({ message: err.toString(), clientkey: clientKey }))
   }
 
   async getToken (clientKey) {
@@ -135,7 +135,7 @@ class TokenService {
         return settings
       })
       .catch((err) => {
-        logger.error(err)
+        logger.error({ message: err.toString(), clientkey: clientKey })
       })
   }
 
@@ -156,7 +156,7 @@ class TokenService {
         },
         (error, res, body) => {
           if (error) {
-            logger.error(error)
+            logger.error({ message: error.toString(), clientkey: this.clientKey })
             resolve({ error: 'error receiving snyk api token' })
           }
           return resolve(body)

@@ -6,7 +6,13 @@ import { getImportJobDetails } from '../../services/SnykService';
 let intervalObj = 0;
 
 export default function ProjectImport({
-  jwtToken, repoOwner, repoSlug, repoMainBranch, refreshProjects, setErrorsOnImport, skipImportProjectPage
+  jwtToken,
+  repoOwner,
+  repoSlug,
+  repoMainBranch,
+  refreshProjects,
+  setErrorsOnImport,
+  skipImportProjectPage,
 }) {
   const [isImporting, setIsImporting] = useState(false);
 

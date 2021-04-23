@@ -5,7 +5,7 @@ import Button from '@atlaskit/button';
 import { importProject } from '../../services/SnykService';
 
 export default function ProjectImportPage({
-  setIsImporting, callback, jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage
+  setIsImporting, callback, jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage,
 }) {
   const ImageWrapper = styled.div`
     margin-top: 50px;
@@ -36,7 +36,7 @@ export default function ProjectImportPage({
   };
 
   if (skipImportProjectPage) {
-    importProjectToSnyk()
+    importProjectToSnyk();
   }
 
   return (
