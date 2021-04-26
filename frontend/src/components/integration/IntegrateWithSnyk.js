@@ -74,12 +74,21 @@ export default function IntegrateWithSnyk({
   const requestIntegration = () => {
     setLoading(true);
     addIntegration(jwtToken, password, usernamel).then((result) => {
-      if (result.code) {
-        setException(result.message);
-      } else {
-        callback(true);
-      }
-      setLoading(false);
+      
+        if (result.error) {
+          setException(result.message);
+        } else {
+          if (body.code) {
+              setException(body.message);
+          } else {
+            callback(true);
+          }
+        }
+        setLoading(false);
+    
+
+    }).catch((err) => {
+      throw new Error(err)
     });
   };
 

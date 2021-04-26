@@ -117,12 +117,13 @@ export async function getIntegration(jwtToken) {
 }
 
 export async function getOrganizations(jwtToken) {
-  // const user = await getSnykUser(jwtToken);
+  return await getSnykUser(jwtToken);
+
   const url = '/snyk/orgs';
   const res = await executeGet(jwtToken, url);
 
   if (!res.ok) {
-    throw new Error(`Could not fetch GET ${url}, received ${res}`);
+    console.log(`Could not fetch GET ${url}, received ${res}`);
   }
   return res.json();
 }

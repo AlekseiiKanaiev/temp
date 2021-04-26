@@ -3,6 +3,7 @@ import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import { ErrorMessage } from '@atlaskit/form';
 import { saveOrganization, getOrganizations, deleteToken } from '../../services/SnykService';
 
 import Spinner from '../Spinner';
@@ -44,6 +45,7 @@ export default function SelectIntegration({
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useLayoutEffect(() => {
     fetchOrganizations();
@@ -52,13 +54,18 @@ export default function SelectIntegration({
   const fetchOrganizations = () => {
     getOrganizations(jwtToken).then((result) => {
       const orgs = [];
-      if (result.orgs) {
-        result.orgs.forEach((org) => {
-          orgs.push({ label: org.name, value: org.id, orgslug: org.slug });
-        });
-      }
-      if (orgs.length === 1) {
-        saveOrg(orgs[0]);
+      if (result.error) {
+        setError(result.message)
+      } else {
+        if (result.orgs) {
+          result.orgs.forEach((org) => {
+            orgs.push({ label: org.name, value: org.id, orgslug: org.slug });
+          });
+        }
+        if (orgs.length === 1) {
+          saveOrg(orgs[0]);
+        }
+        setError('')
       }
       setOrganizations(orgs);
       setLoading(false);
@@ -128,6 +135,7 @@ export default function SelectIntegration({
             </Button>
           </ButtonWrapper>
         </ContainerWrapper>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </GridColumn>
     );
   };
