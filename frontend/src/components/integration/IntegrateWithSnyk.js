@@ -60,8 +60,8 @@ export default function IntegrateWithSnyk({
 
   useLayoutEffect(() => {
     getIntegrationId(jwtToken)
-      .then((integrationId) => {
-        if (integrationId) {
+      .then((res) => {
+        if (res.id) {
           callback(true);
         } else {
           setFormLoading(false);
@@ -78,8 +78,8 @@ export default function IntegrateWithSnyk({
         if (result.error) {
           setException(result.message);
         } else {
-          if (body.code) {
-              setException(body.message);
+          if (result.code) {
+              setException(result.message);
           } else {
             callback(true);
           }
