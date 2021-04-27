@@ -3,6 +3,7 @@ import SnykIntegrationsSettings from './components/integration/SnykIntegrationSe
 import SnykIntegration from './components/integration/SnykIntegration';
 import { getIntegrationTokenOrg, restartIntegration } from './services/SnykService';
 import Spinner from './components/Spinner';
+import ErrorPage from './components/ErrorPage';
 
 function AppAccount({ jwtToken, username }) {
   const [loading, setLoading] = useState(true);
@@ -11,12 +12,15 @@ function AppAccount({ jwtToken, username }) {
     token: false,
     org: false,
   });
-
+  const [error, setError] = useState('');
   useLayoutEffect(() => {
     checkIntegration(false);
   }, [jwtToken]);
   const checkIntegration = (skipImportProjectPage) => {
     getIntegrationTokenOrg(jwtToken).then((result) => {
+      if (result.error) {
+        setError(result.message);
+      }
       setIntegrationParams({ integrated: result.integrated, token: result.token, org: result.org });
       setLoading(false);
     }).catch((err) => {
@@ -35,6 +39,9 @@ function AppAccount({ jwtToken, username }) {
   const view = () => {
     if (loading) {
       return <Spinner />;
+    }
+    if (error) {
+      return <ErrorPage error={error} />;
     }
     if (integrationParams.integrated && integrationParams.token && integrationParams.org) {
       return (

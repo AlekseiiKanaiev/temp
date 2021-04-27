@@ -3,7 +3,7 @@ import SnykProjects from './components/SnykProjects';
 import SnykIntegration from './components/integration/SnykIntegration';
 import { getIntegrationTokenOrg } from './services/SnykService';
 import Spinner from './components/Spinner';
-import Error from './components/Error'
+import ErrorPage from './components/ErrorPage';
 
 function App({
   jwtToken, username, repoOwner, repoSlug, repoMainBranch,
@@ -15,7 +15,7 @@ function App({
     token: false,
     org: false,
   });
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
 
   useLayoutEffect(() => {
     checkIntegration(false);
@@ -24,7 +24,7 @@ function App({
     setSkipImportProjectPage(skipImportProjectPage);
     getIntegrationTokenOrg(jwtToken).then((result) => {
       if (result.error) {
-        setError(result.message)
+        setError(result.message);
       }
       setIntegrationParams({ integrated: result.integrated, token: result.token, org: result.org });
       setLoading(false);
@@ -39,8 +39,8 @@ function App({
     }
     if (error) {
       return (
-        <Error error={error}/>
-      )
+        <ErrorPage error={error} />
+      );
     }
     if (integrationParams.integrated && integrationParams.token && integrationParams.org) {
       return (

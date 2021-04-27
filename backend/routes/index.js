@@ -15,7 +15,6 @@ module.exports = function routes (app, addon) {
 
   // Root route. This route will redirect to the add-on descriptor: `atlassian-connect.json`.
   app.get('/', function (req, res) {
-    console.log('ROOT ENDPOINT')
     res.format({
       // If the request content-type is text-html, it will decide which to serve up
       'text/html': () => {

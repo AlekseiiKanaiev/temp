@@ -66,12 +66,12 @@ export async function getIssues(jwtToken, id) {
   if (!res.ok) {
     console.error(`Could not fetch POST ${url}, received ${res}`);
   }
-  return {error:!res.ok, status: res.status, body: await res.json()};
+  return { error: !res.ok, status: res.status, body: await res.json() };
 }
 
 export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranch) {
   const integrationJson = await getIntegrationId(jwtToken);
-  const integrationId = integrationJson.id
+  const integrationId = integrationJson.id;
   if (integrationId === '') {
     throw new Error('integration is not set');
   }
@@ -95,10 +95,11 @@ export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranc
 
 export async function getIntegrationId(jwtToken) {
   const resJson = await getIntegration(jwtToken);
-  return { id: !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'],
-           error: resJson.error ? error : false,
-           message: resJson.message ? message : '',
-        }
+  return {
+    id: !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'],
+    error: resJson.error ? error : false,
+    message: resJson.message ? message : '',
+  };
 }
 
 export async function addIntegration(jwtToken, integrationToken, workspace) {
@@ -121,13 +122,13 @@ export async function getIntegration(jwtToken) {
 }
 
 export async function getOrganizations(jwtToken) {
-  //return await getSnykUser(jwtToken);
+  // return await getSnykUser(jwtToken);
 
   const url = '/snyk/orgs';
   const res = await executeGet(jwtToken, url);
 
   if (!res.ok) {
-    console.log(`Could not fetch GET ${url}, received ${res}`);
+    console.error(`Could not fetch GET ${url}, received ${res}`);
   }
   return res.json();
 }
@@ -195,9 +196,11 @@ export async function getSavedOrg(jwtToken) {
 export async function getIntegrationTokenOrg(jwtToken) {
   const token = await getApiToken(jwtToken);
   const org = await getSavedOrg(jwtToken);
-  const integration = token.token && org.org ? await getIntegrationId(jwtToken) : {id : ''};
+  const integration = token.token && org.org ? await getIntegrationId(jwtToken) : { id: '' };
   const integrationStatus = integration.id !== '';
-  return { integrated: integrationStatus, token: token.token, org: org.org, error: integration.error, message: integration.message };
+  return {
+    integrated: integrationStatus, token: token.token, org: org.org, error: integration.error, message: integration.message,
+  };
 }
 
 export async function getSnykUser(jwtToken) {

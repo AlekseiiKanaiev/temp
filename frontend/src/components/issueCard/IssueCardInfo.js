@@ -32,7 +32,7 @@ export default function IssueCardInfo({ issue }) {
       <AdditionalInfoParentSpan>
         Fixed in
         <AdditionalInfoChildSpan>
-          {issue.fixInfo.nearestFixedInVersion ? issue.fixInfo.nearestFixedInVersion: issue.fixInfo.fixedIn ? issue.fixInfo.fixedIn.join(",") : ""}
+          {issue.fixInfo.nearestFixedInVersion ? issue.fixInfo.nearestFixedInVersion : issue.fixInfo.fixedIn ? issue.fixInfo.fixedIn.join(',') : ''}
         </AdditionalInfoChildSpan>
       </AdditionalInfoParentSpan>
     </>

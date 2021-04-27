@@ -55,7 +55,7 @@ export default function SelectIntegration({
     getOrganizations(jwtToken).then((result) => {
       const orgs = [];
       if (result.error) {
-        setError(result.message)
+        setError(result.message);
       } else {
         if (result.orgs) {
           result.orgs.forEach((org) => {
@@ -65,7 +65,7 @@ export default function SelectIntegration({
         if (orgs.length === 1) {
           saveOrg(orgs[0]);
         }
-        setError('')
+        setError('');
       }
       setOrganizations(orgs);
       setLoading(false);

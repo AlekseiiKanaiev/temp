@@ -5,7 +5,7 @@ import ProjectImport from './projectImport/ProjectImport';
 import { getProjects, getSavedOrg } from '../services/SnykService';
 import Spinner from './Spinner';
 import NoFilesDetected from './NoFilesDetected';
-import ErrorImporting from './ErrorImporting';
+import ErrorPage from './ErrorPage';
 
 export default function SnykProjects({
   jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage,
@@ -45,7 +45,7 @@ export default function SnykProjects({
       return <Spinner />;
     }
     if (errorsOnImport) {
-      return (<ErrorImporting />);
+      return (<ErrorPage error="Error importing this repository" />);
     }
     if (projects.length === 0 && !imported) {
       return (
