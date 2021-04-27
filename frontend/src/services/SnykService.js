@@ -63,10 +63,7 @@ export async function getIssues(jwtToken, id) {
   const url = `/snyk/org/orgid/project/${id}/aggregated-issues`;
   const res = await executePost(jwtToken, url, defaultIssuesBody);
 
-  if (!res.ok) {
-    console.error(`Could not fetch POST ${url}, received ${res}`);
-  }
-  return { error: !res.ok, status: res.status, body: await res.json() };
+  return await getJsonFromRequestResult(res, false);
 }
 
 export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranch) {
@@ -85,11 +82,8 @@ export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranc
   const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
   const res = await executePost(jwtToken, url, importProjectBody);
 
-  if (!res.ok) {
-    console.error(`Could not fetch GET ${url}, received ${res}`);
-    return {};
-  }
-  const result = { location: res.headers.get('location'), json: res.json() };
+  let result = await getJsonFromRequestResult(res, false)
+  result.location = res.headers.get('location');
   return result;
 }
 
@@ -97,8 +91,8 @@ export async function getIntegrationId(jwtToken) {
   const resJson = await getIntegration(jwtToken);
   return {
     id: !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'],
-    error: resJson.error ? error : false,
-    message: resJson.message ? message : '',
+    error: resJson.error ? resJson.error : false,
+    message: resJson.message ? resJson.message : '',
   };
 }
 
@@ -107,30 +101,22 @@ export async function addIntegration(jwtToken, integrationToken, workspace) {
   const body = defaultIntegrationBody;
   body.credentials = { username: workspace, password: integrationToken };
   const res = await executePost(jwtToken, url, body);
-  return res.json();
+  return await getJsonFromRequestResult(res, false);
 }
 
 export async function getIntegration(jwtToken) {
   const url = '/snyk/org/orgid/integrations';
   const res = await executeGet(jwtToken, url);
 
-  if (!res.ok) {
-    // throw new Error(`Could not fetch GET ${url}, received ${res}`);
-    return [];
-  }
-  return res.json();
+  return await getJsonFromRequestResult(res, false);
 }
 
 export async function getOrganizations(jwtToken) {
   // return await getSnykUser(jwtToken);
 
   const url = '/snyk/orgs';
-  const res = await executeGet(jwtToken, url);
-
-  if (!res.ok) {
-    console.error(`Could not fetch GET ${url}, received ${res}`);
-  }
-  return res.json();
+  const res = await executeGet(jwtToken, url);  
+  return await getJsonFromRequestResult(res, false);
 }
 
 export async function saveOrganization(jwtToken, org) {
@@ -147,10 +133,7 @@ export async function getImportJobDetails(jwtToken, jobUrl) {
   const url = `/snyk/${jobUrl}`;
   const res = await executeGet(jwtToken, url);
 
-  if (!res.ok) {
-    throw new Error(`Could not fetch GET ${url}, received ${res}`);
-  }
-  return res.json();
+  return await getJsonFromRequestResult(res, false);
 }
 
 export async function getNewState(jwtToken) {
@@ -269,4 +252,29 @@ async function executeDelete(jwtToken, uri) {
   });
 
   return res;
+}
+
+async function getJsonFromRequestResult(res, isArray) {
+  let ret = {}
+  if (!res.ok) {
+    console.error(`Could not fetch GET ${res.url}, received ${res}`);
+    ret.error = true
+    ret.message= `Could not fetch GET ${res.url}, received ${res.status} ${await res.text()}`
+    if (isArray) {
+      ret.json = []
+    }
+  } else {
+    if (isArray) {
+      ret = {json: await res.json()}
+    } else {
+      ret = await res.json()
+    }
+    if (!ret.error) {
+      ret.error = false
+    }
+    if (!ret.message) {
+      ret.message = ''
+    }
+  }
+  return ret
 }

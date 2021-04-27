@@ -22,8 +22,7 @@ export default function ProjectImport({
     } else {
       const jobUrl = getJobUrl(result);
       if (jobUrl === '') {
-        setErrorsOnImport(true);
-        throw new Error('job url not found in the location header');
+        setErrorsOnImport('Job url not found in the location header');
       } else {
         const interval = setInterval(() => {
           checkJob(jobUrl);
@@ -35,18 +34,21 @@ export default function ProjectImport({
 
   const checkJob = (jobId) => {
     getImportJobDetails(jwtToken, jobId).then((result) => {
-      if (result.status) {
-        if ((result.status === 'complete') || (result.status === 'pending' && result.logs && result.logs.length > 0 && result.logs[0].status === 'complete')) {
-          clearInterval(intervalObj);
-          refreshProjects(true);
-        }
-        if (result.status === 'failed' || result.status === 'aborted') {
-          clearInterval(intervalObj);
-          setErrorsOnImport(true);
-          throw new Error(`job status ${result.status}`);
-        }
+      if (result.error) {
+        setErrorsOnImport(result.message);
       } else {
-        setErrorsOnImport(true);
+        if (result.status) {
+          if ((result.status === 'complete') || (result.status === 'pending' && result.logs && result.logs.length > 0 && result.logs[0].status === 'complete')) {
+            clearInterval(intervalObj);
+            refreshProjects(true);
+          }
+          if (result.status === 'failed' || result.status === 'aborted') {
+            clearInterval(intervalObj);
+            setErrorsOnImport(`job status ${result.status}`);
+          }
+        } else {
+          setErrorsOnImport(`job status ${result.status}`);
+        }
       }
     });
   };

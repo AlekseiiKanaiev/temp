@@ -71,9 +71,6 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
                   Connected Snyk user
                   <Textfield
                     value={user}
-                    onChange={(event) => {
-                      setUser(event.target.value);
-                    }}
                   />
                 </BoldTextWrapper>
               </TextFieldWrapper>
@@ -82,9 +79,6 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
                   Connected Snyk organization
                   <Textfield
                     value={organization}
-                    onChange={(event) => {
-                      setOrganization(event.target.value);
-                    }}
                   />
                 </BoldTextWrapper>
               </TextFieldWrapper>

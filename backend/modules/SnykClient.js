@@ -29,6 +29,7 @@ class SnykClient extends ApiClient {
     if (this.token == null) {
       throw new Error('')
     }
+    //res.status(500).send("my error message")
     req.headers.authorization = this.authHeader
     super.pipe(url, req, res)
   }

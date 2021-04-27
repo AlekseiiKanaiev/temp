@@ -14,7 +14,7 @@ export default function SnykProjects({
   const [loading, setLoading] = useState(true);
   const [imported, setImported] = useState(false);
   const [orgName, setOrgName] = useState('');
-  const [errorsOnImport, setErrorsOnImport] = useState(false);
+  const [errorsOnImport, setErrorsOnImport] = useState('');
   useLayoutEffect(() => {
     refreshProjects(false);
   }, [jwtToken]);
@@ -45,7 +45,7 @@ export default function SnykProjects({
       return <Spinner />;
     }
     if (errorsOnImport) {
-      return (<ErrorPage error="Error importing this repository" />);
+      return (<ErrorPage error={`Error importing this repository. ${errorsOnImport}`} />);
     }
     if (projects.length === 0 && !imported) {
       return (

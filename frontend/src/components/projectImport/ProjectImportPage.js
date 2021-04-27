@@ -27,10 +27,14 @@ export default function ProjectImportPage({
     setIsImporting(true);
     importProject(jwtToken, repoOwner, repoSlug, repoMainBranch)
       .then((result) => {
-        if (result.location) {
-          callback(result, false);
+        if (result.error) {
+          callback(result, result.message)
         } else {
-          callback(result, true);
+          if (!result.location) {
+            callback(result, 'Location not found in the response header');
+          } else {
+            callback(result, '');
+          }
         }
       });
   };
@@ -53,6 +57,7 @@ export default function ProjectImportPage({
         <ButtonWrapper>
           <Button appearance="primary" onClick={importProjectToSnyk}>Import this repository</Button>
         </ButtonWrapper>
+
         <p>
           To bulk import repositories from your account, open the&nbsp;
           <a href="#">Add project dialog</a>

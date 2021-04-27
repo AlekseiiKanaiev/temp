@@ -12,9 +12,9 @@ export default function ProjectIssues({ jwtToken, projectId }) {
     if (projectId) {
       getIssues(jwtToken, projectId).then((result) => {
         if (result.error) {
-          setError(`${result.status} ${result.body}`);
+          setError(result.message);
         } else {
-          setIssues(result.body.issues);
+          setIssues(result.issues);
         }
       }).catch((err) => {
         throw new Error(err);
