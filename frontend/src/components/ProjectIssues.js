@@ -29,7 +29,7 @@ export default function ProjectIssues({ jwtToken, projectId, projectLink }) {
     return issues.length === 0 ? (
       <Spinner />
     ) : (
-      issues.map((issue) => <IssueCard issue={issue} projectLink={projectLink}/>)
+      issues.map((issue) => <IssueCard issue={issue} projectLink={projectLink} />)
     );
   };
   return view();

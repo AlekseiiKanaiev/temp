@@ -63,7 +63,7 @@ export async function getIssues(jwtToken, id) {
   const url = `/snyk/org/orgid/project/${id}/aggregated-issues`;
   const res = await executePost(jwtToken, url, defaultIssuesBody);
 
-  return await getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res, false);
 }
 
 export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranch) {
@@ -82,7 +82,7 @@ export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranc
   const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
   const res = await executePost(jwtToken, url, importProjectBody);
 
-  let result = await getJsonFromRequestResult(res, false)
+  const result = await getJsonFromRequestResult(res, false);
   result.location = res.headers.get('location');
   return result;
 }
@@ -101,22 +101,22 @@ export async function addIntegration(jwtToken, integrationToken, workspace) {
   const body = defaultIntegrationBody;
   body.credentials = { username: workspace, password: integrationToken };
   const res = await executePost(jwtToken, url, body);
-  return await getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res, false);
 }
 
 export async function getIntegration(jwtToken) {
   const url = '/snyk/org/orgid/integrations';
   const res = await executeGet(jwtToken, url);
 
-  return await getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res, false);
 }
 
 export async function getOrganizations(jwtToken) {
   // return await getSnykUser(jwtToken);
 
   const url = '/snyk/orgs';
-  const res = await executeGet(jwtToken, url);  
-  return await getJsonFromRequestResult(res, false);
+  const res = await executeGet(jwtToken, url);
+  return getJsonFromRequestResult(res, false);
 }
 
 export async function saveOrganization(jwtToken, org) {
@@ -133,7 +133,7 @@ export async function getImportJobDetails(jwtToken, jobUrl) {
   const url = `/snyk/${jobUrl}`;
   const res = await executeGet(jwtToken, url);
 
-  return await getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res, false);
 }
 
 export async function getNewState(jwtToken) {
@@ -182,7 +182,11 @@ export async function getIntegrationTokenOrg(jwtToken) {
   const integration = token.token && org.org ? await getIntegrationId(jwtToken) : { id: '' };
   const integrationStatus = integration.id !== '';
   return {
-    integrated: integrationStatus, token: token.token, org: org.org, error: integration.error, message: integration.message,
+    integrated: integrationStatus,
+    token: token.token,
+    org: org.org,
+    error: integration.error,
+    message: integration.message,
   };
 }
 
@@ -255,26 +259,26 @@ async function executeDelete(jwtToken, uri) {
 }
 
 async function getJsonFromRequestResult(res, isArray) {
-  let ret = {}
+  let ret = {};
   if (!res.ok) {
     console.error(`Could not fetch GET ${res.url}, received ${res}`);
-    ret.error = true
-    ret.message= `Could not fetch GET ${res.url}, received ${res.status} ${await res.text()}`
+    ret.error = true;
+    ret.message = `Could not fetch GET ${res.url}, received ${res.status} ${await res.text()}`;
     if (isArray) {
-      ret.json = []
+      ret.json = [];
     }
   } else {
     if (isArray) {
-      ret = {json: await res.json()}
+      ret = { json: await res.json() };
     } else {
-      ret = await res.json()
+      ret = await res.json();
     }
     if (!ret.error) {
-      ret.error = false
+      ret.error = false;
     }
     if (!ret.message) {
-      ret.message = ''
+      ret.message = '';
     }
   }
-  return ret
+  return ret;
 }

@@ -42,7 +42,7 @@ export default function ProjectList({
     low + high + medium === 0 ? (
       <NoIssuesFound />
     ) : (
-      <ProjectIssues projectId={projectId} jwtToken={jwtToken} projectLink={`https://app.snyk.io/org/${orgname}/project/${projectId}`}/>
+      <ProjectIssues projectId={projectId} jwtToken={jwtToken} projectLink={`https://app.snyk.io/org/${orgname}/project/${projectId}`} />
     )
   ) : (
     <ProjectTable projects={projects} callback={setProjectId} />

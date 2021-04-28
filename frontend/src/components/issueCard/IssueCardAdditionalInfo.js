@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function IssueCardAdditionalInfo({ issue, projectLink }) {
+export default function IssueCardAdditionalInfo({ projectLink }) {
   const AdditionalTextWrapper = styled.p`
     margin: 20px;
     font-size: smaller;

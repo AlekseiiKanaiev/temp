@@ -28,13 +28,11 @@ export default function ProjectImportPage({
     importProject(jwtToken, repoOwner, repoSlug, repoMainBranch)
       .then((result) => {
         if (result.error) {
-          callback(result, result.message)
+          callback(result, result.message);
+        } else if (!result.location) {
+          callback(result, 'Location not found in the response header');
         } else {
-          if (!result.location) {
-            callback(result, 'Location not found in the response header');
-          } else {
-            callback(result, '');
-          }
+          callback(result, '');
         }
       });
   };

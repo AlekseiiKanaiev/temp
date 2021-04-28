@@ -38,7 +38,7 @@ export default function IssueCard({ issue, projectLink }) {
       <SectionWrapper>
         <IssueCardOverview issue={issue} />
       </SectionWrapper>
-      <IssueCardAdditionalInfo issue={issue} projectLink={projectLink}/>
+      <IssueCardAdditionalInfo projectLink={projectLink} />
     </CardWrapper>
   );
 }

@@ -36,19 +36,17 @@ export default function ProjectImport({
     getImportJobDetails(jwtToken, jobId).then((result) => {
       if (result.error) {
         setErrorsOnImport(result.message);
-      } else {
-        if (result.status) {
-          if ((result.status === 'complete') || (result.status === 'pending' && result.logs && result.logs.length > 0 && result.logs[0].status === 'complete')) {
-            clearInterval(intervalObj);
-            refreshProjects(true);
-          }
-          if (result.status === 'failed' || result.status === 'aborted') {
-            clearInterval(intervalObj);
-            setErrorsOnImport(`job status ${result.status}`);
-          }
-        } else {
+      } else if (result.status) {
+        if ((result.status === 'complete') || (result.status === 'pending' && result.logs && result.logs.length > 0 && result.logs[0].status === 'complete')) {
+          clearInterval(intervalObj);
+          refreshProjects(true);
+        }
+        if (result.status === 'failed' || result.status === 'aborted') {
+          clearInterval(intervalObj);
           setErrorsOnImport(`job status ${result.status}`);
         }
+      } else {
+        setErrorsOnImport(`job status ${result.status}`);
       }
     });
   };
