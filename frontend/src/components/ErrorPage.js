@@ -24,7 +24,7 @@ export default function ErrorPage({ error }) {
           <p>
             Please try again later or
             {' '}
-            <a href="https://snyk.io/contact-us/">contact our support</a>
+            <a href="https://snyk.io/contact-us/" target="_blank">contact our support</a>
           </p>
         </ContentWrapper>
       </GridColumn>

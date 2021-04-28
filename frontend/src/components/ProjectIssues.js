@@ -4,7 +4,7 @@ import Spinner from './Spinner';
 import IssueCard from './issueCard/IssueCard';
 import ErrorPage from './ErrorPage';
 
-export default function ProjectIssues({ jwtToken, projectId }) {
+export default function ProjectIssues({ jwtToken, projectId, projectLink }) {
   const [issues, setIssues] = useState([]);
   const [error, setError] = useState(false);
 
@@ -29,7 +29,7 @@ export default function ProjectIssues({ jwtToken, projectId }) {
     return issues.length === 0 ? (
       <Spinner />
     ) : (
-      issues.map((issue) => <IssueCard issue={issue} />)
+      issues.map((issue) => <IssueCard issue={issue} projectLink={projectLink}/>)
     );
   };
   return view();

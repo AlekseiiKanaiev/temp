@@ -42,7 +42,7 @@ export default function ProjectList({
     low + high + medium === 0 ? (
       <NoIssuesFound />
     ) : (
-      <ProjectIssues projectId={projectId} jwtToken={jwtToken} />
+      <ProjectIssues projectId={projectId} jwtToken={jwtToken} projectLink={`https://app.snyk.io/org/${orgname}/project/${projectId}`}/>
     )
   ) : (
     <ProjectTable projects={projects} callback={setProjectId} />
@@ -65,7 +65,7 @@ export default function ProjectList({
               />
             )}
           </h3>
-          <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} orgname={orgname} />
+          <VulnerabilityBanner issueCounts={issueCounts} projectId={projectId} projectLink={`https://app.snyk.io/org/${orgname}/project/${projectId}`} />
         </ContainerWrapper>
       </GridColumn>
       <GridColumn medium={12}>{view}</GridColumn>

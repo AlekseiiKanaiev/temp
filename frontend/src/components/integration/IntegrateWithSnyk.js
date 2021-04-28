@@ -151,7 +151,7 @@ export default function IntegrateWithSnyk({
                 </TextWrapper>
                 { !username && (
                 <TextWrapper>
-                  Username (you can find your username in
+                  Username (can be found in
                   {' '}
                   <a
                     href="https://bitbucket.org/account/settings/"

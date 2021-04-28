@@ -6,7 +6,7 @@ import IssueCardInfo from './IssueCardInfo';
 import IssueCardOverview from './IssueCardOverview';
 import IssueCardAdditionalInfo from './IssueCardAdditionalInfo';
 
-export default function IssueCard({ issue }) {
+export default function IssueCard({ issue, projectLink }) {
   const LineWrapper = styled.div`
     margin-top: 10px;
     margin-bottom: 20px;
@@ -38,7 +38,7 @@ export default function IssueCard({ issue }) {
       <SectionWrapper>
         <IssueCardOverview issue={issue} />
       </SectionWrapper>
-      <IssueCardAdditionalInfo issue={issue} />
+      <IssueCardAdditionalInfo issue={issue} projectLink={projectLink}/>
     </CardWrapper>
   );
 }
