@@ -4,7 +4,11 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import { ErrorMessage } from '@atlaskit/form';
-import { saveOrganization, getOrganizations, deleteToken } from '../../services/SnykService';
+import {
+  saveOrganization,
+  getOrganizations,
+  deleteToken,
+} from '../../services/SnykService';
 
 import Spinner from '../Spinner';
 
@@ -31,16 +35,39 @@ const ContentWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: 20px;
   margin-right: 40px;
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 24px;
 `;
 
 const ButtonWrapper = styled.span`
   float: right;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-right: 20px;
 `;
 
+const H1TextWrapper = styled.h1`
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 24px;
+`;
+
+const ButtonTextWrapper = styled.label`
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
 export default function SelectIntegration({
-  setOrganization, jwtToken, callback,
+  setOrganization,
+  jwtToken,
+  callback,
 }) {
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
@@ -88,12 +115,17 @@ export default function SelectIntegration({
       }
       orgJson = org[0];
     }
-    saveOrganization(jwtToken, { id: orgJson.value, name: orgJson.label, slug: orgJson.orgslug });
+    saveOrganization(jwtToken, {
+      id: orgJson.value,
+      name: orgJson.label,
+      slug: orgJson.orgslug,
+    });
     setOrganization(orgJson.value);
     callback(true);
   };
 
-  const getOrgByValue = (value) => organizations.filter((org) => org.value === value);
+  const getOrgByValue = (value) =>
+    organizations.filter((org) => org.value === value);
 
   const view = () => {
     if (loading) {
@@ -103,7 +135,7 @@ export default function SelectIntegration({
       <GridColumn medium={12}>
         <ContainerWrapper>
           <TitleWrapper>
-            <h2>Create an integration</h2>
+            <H1TextWrapper>Create an integration</H1TextWrapper>
           </TitleWrapper>
           <ContentWrapper>
             Select the organization in Snyk, you would like to associate your
@@ -111,7 +143,7 @@ export default function SelectIntegration({
           </ContentWrapper>
           <ContentWrapper>
             <Select
-              placeholder="Select the organization in Snyk"
+              placeholder='Select the organization in Snyk'
               options={organizations}
               onChange={(item) => setSelected(item.value)}
             />
@@ -120,9 +152,9 @@ export default function SelectIntegration({
             <Button
               onClick={() => saveOrg({ id: selected })}
               isDisabled={!selected}
-              appearance="primary"
+              appearance='primary'
             >
-              Done
+              <ButtonTextWrapper>Done</ButtonTextWrapper>
             </Button>
           </ButtonWrapper>
           <ButtonWrapper>
@@ -131,7 +163,7 @@ export default function SelectIntegration({
                 backButton();
               }}
             >
-              Back
+              <ButtonTextWrapper>Back</ButtonTextWrapper>
             </Button>
           </ButtonWrapper>
         </ContainerWrapper>

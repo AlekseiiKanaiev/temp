@@ -15,7 +15,10 @@ const EventTrackerWrapper = styled.div`
 `;
 
 export default function SnykIntegration({
-  jwtToken, callback, username, integrationParams,
+  jwtToken,
+  callback,
+  username,
+  integrationParams,
 }) {
   const [stage, setStage] = useState(0);
   const [organization, setOrganization] = useState();
@@ -37,17 +40,14 @@ export default function SnykIntegration({
 
   const view = () => (
     <Page>
-      <Grid layout="fluid">
+      <Grid layout='fluid'>
         <GridColumn medium={12}>
           <EventTrackerWrapper>
             <IntegrationEventTracker stage={stage} />
           </EventTrackerWrapper>
         </GridColumn>
         {stage === 0 && !processingOauth && !integrationParams.token && (
-          <LogIn
-            setProcessingOauth={setProcessingOauth}
-            jwtToken={jwtToken}
-          />
+          <LogIn setProcessingOauth={setProcessingOauth} jwtToken={jwtToken} />
         )}
         {stage === 0 && processingOauth && !integrationParams.token && (
           <LogInSpinner

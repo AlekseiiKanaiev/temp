@@ -5,7 +5,13 @@ import Button from '@atlaskit/button';
 import { importProject } from '../../services/SnykService';
 
 export default function ProjectImportPage({
-  setIsImporting, callback, jwtToken, repoOwner, repoSlug, repoMainBranch, skipImportProjectPage,
+  setIsImporting,
+  callback,
+  jwtToken,
+  repoOwner,
+  repoSlug,
+  repoMainBranch,
+  skipImportProjectPage,
 }) {
   const ImageWrapper = styled.div`
     margin-top: 50px;
@@ -23,10 +29,26 @@ export default function ProjectImportPage({
     margin-bottom: 100px;
   `;
 
+  const H1TextWrapper = styled.h1`
+    font-family: 'Open Sans';
+    font-weight: 700;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 24px;
+  `;
+
+  const TextWrapper = styled.p`
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+  `;
+
   const importProjectToSnyk = () => {
     setIsImporting(true);
-    importProject(jwtToken, repoOwner, repoSlug, repoMainBranch)
-      .then((result) => {
+    importProject(jwtToken, repoOwner, repoSlug, repoMainBranch).then(
+      (result) => {
         if (result.error) {
           callback(result, result.message);
         } else if (!result.location) {
@@ -34,7 +56,8 @@ export default function ProjectImportPage({
         } else {
           callback(result, '');
         }
-      });
+      }
+    );
   };
 
   if (skipImportProjectPage) {
@@ -45,23 +68,23 @@ export default function ProjectImportPage({
     <GridColumn medium={12}>
       <ContentWrapper>
         <ImageWrapper>
-          <img src="/ico/addRepository.svg" alt="Add Repository" />
+          <img src='/ico/addRepository.svg' alt='Add Repository' />
         </ImageWrapper>
-        <h1>Add your repository to Snyk</h1>
-        <p>
+        <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
+        <TextWrapper>
           Import your repository to Snyk to find security issues and to
           continuously monitor your repo for vulnerabilities
-        </p>
+        </TextWrapper>
         <ButtonWrapper>
-          <Button appearance="primary" onClick={importProjectToSnyk}>Import this repository</Button>
+          <Button appearance='primary' onClick={importProjectToSnyk}>
+            <TextWrapper>Import this repository</TextWrapper>
+          </Button>
         </ButtonWrapper>
 
-        <p>
+        <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href="#">Add project dialog</a>
-          {' '}
-          in Snyk app
-        </p>
+          <a href='#'>Add project dialog</a> in Snyk app
+        </TextWrapper>
       </ContentWrapper>
     </GridColumn>
   );

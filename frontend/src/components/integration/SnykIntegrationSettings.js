@@ -24,11 +24,48 @@ const LinkWrapper = styled.span`
   cursor: pointer;
   color: blue;
   text-decoration: underline;
-  cursor: pointer;
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 const BoldTextWrapper = styled.label`
-  font-weight: bold;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+`;
+
+const H1TextWrapper = styled.label`
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 28px;
+`;
+
+const ModalH1TextWrapper = styled.label`
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 24px;
+`;
+
+const ModalGeneralTextWrapper = styled.label`
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
+const ButtonTextWrapper = styled.label`
+  font-family: sans-serif;
+  font-size: 14px;
 `;
 
 export default function SnykIntegrationsSettings({ jwtToken, callback }) {
@@ -41,17 +78,21 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
     getUserAndOrg();
   }, [jwtToken]);
   const getUserAndOrg = () => {
-    getSnykUser(jwtToken).then((result) => {
-      setUser(result.username);
-      getSavedOrg(jwtToken).then((result) => {
-        setOrganization(result.orgname);
-        setLoading(false);
-      }).catch((err) => {
+    getSnykUser(jwtToken)
+      .then((result) => {
+        setUser(result.username);
+        getSavedOrg(jwtToken)
+          .then((result) => {
+            setOrganization(result.orgname);
+            setLoading(false);
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
+      })
+      .catch((err) => {
         throw new Error(err);
       });
-    }).catch((err) => {
-      throw new Error(err);
-    });
   };
 
   const view = () => {
@@ -60,26 +101,22 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
     }
     return (
       <Page>
-        <Grid layout="fluid">
+        <Grid layout='fluid'>
           <GridColumn medium={6}>
             <ContainerWrapper>
               <ContentWrapper>
-                <h1>Snyk Integrations Settings</h1>
+                <H1TextWrapper>Snyk Integrations Settings</H1TextWrapper>
               </ContentWrapper>
               <TextFieldWrapper>
                 <BoldTextWrapper>
                   Connected Snyk user
-                  <Textfield
-                    value={user}
-                  />
+                  <Textfield value={user} />
                 </BoldTextWrapper>
               </TextFieldWrapper>
               <TextFieldWrapper>
                 <BoldTextWrapper>
                   Connected Snyk organization
-                  <Textfield
-                    value={organization}
-                  />
+                  <Textfield value={organization} />
                 </BoldTextWrapper>
               </TextFieldWrapper>
               <LinkWrapper onClick={() => setIsOpen(true)}>
@@ -88,27 +125,33 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
             </ContainerWrapper>
             <ModalTransition>
               {isOpen && (
-              <Modal
-                actions={[
-                  {
-                    text: 'Confirm',
-                    onClick: () => {
-                      setIsOpen(false);
-                      callback({ user, organization });
+                <Modal
+                  actions={[
+                    {
+                      text: <ButtonTextWrapper>Confirm</ButtonTextWrapper>,
+                      onClick: () => {
+                        setIsOpen(false);
+                        callback({ user, organization });
+                      },
                     },
-                  },
-                  {
-                    text: 'Cancel',
-                    onClick: () => {
-                      setIsOpen(false);
+                    {
+                      text: <ButtonTextWrapper>Cancel</ButtonTextWrapper>,
+                      onClick: () => {
+                        setIsOpen(false);
+                      },
                     },
-                  },
-                ]}
-                onClose={() => setIsOpen(false)}
-                heading="This restarts the whole integration settings process"
-              >
-                Are you sure you want to continue?
-              </Modal>
+                  ]}
+                  onClose={() => setIsOpen(false)}
+                  heading={
+                    <ModalH1TextWrapper>
+                      This restarts the whole integration settings process
+                    </ModalH1TextWrapper>
+                  }
+                >
+                  <ModalGeneralTextWrapper>
+                    Are you sure you want to continue?
+                  </ModalGeneralTextWrapper>
+                </Modal>
               )}
             </ModalTransition>
           </GridColumn>

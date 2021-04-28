@@ -4,6 +4,19 @@ import styled from 'styled-components';
 export default function IssueCardOverview({ issue }) {
   const OverviewTextWrapper = styled.p`
     white-space: pre-line;
+    font-family: 'Open Sans';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 22px;
+  `;
+
+  const H3TextWrapper = styled.h3`
+    font-family: 'Open Sans';
+    font-weight: 600;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 28px;
   `;
 
   const overview = () => {
@@ -18,23 +31,24 @@ export default function IssueCardOverview({ issue }) {
     const links = unformatedOverview.match(linkRegExp);
     let linksInDescription = '';
     if (links) {
-      linksInDescription = unformatedOverview.split(linkRegExp)
-        .map((part) => (links.find((link) => link === part) ? (
-          <a href={part.substring(part.indexOf('(') + 1, part.indexOf(')'))}>
-            {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
-          </a>
-        ) : (
-          part
-        )));
+      linksInDescription = unformatedOverview
+        .split(linkRegExp)
+        .map((part) =>
+          links.find((link) => link === part) ? (
+            <a href={part.substring(part.indexOf('(') + 1, part.indexOf(')'))}>
+              {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
+            </a>
+          ) : (
+            part
+          )
+        );
     }
-    return links
-      ? linksInDescription
-      : [unformatedOverview];
+    return links ? linksInDescription : [unformatedOverview];
   };
 
   return (
     <>
-      <h3>Overview</h3>
+      <H3TextWrapper>Overview</H3TextWrapper>
       <OverviewTextWrapper>
         {overview().map((part) => part)}
       </OverviewTextWrapper>

@@ -26,13 +26,29 @@ const ButtonWrapper = styled.div`
   margin-bottom: 100px;
 `;
 
+const H1TextWrapper = styled.h1`
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 24px;
+  margin-bottom: 30px;
+`;
+
+const MainTextWrapper = styled.label`
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
 export default function LogIn({ setProcessingOauth, jwtToken }) {
   const logIn = () => {
-    getNewState(jwtToken)
-      .then((result) => {
-        const href = `https://id.snyk.io/authorize?response_type=code&client_id=${result.clientid}&state=${result.token}&redirect_uri=${result.url}&scope=offline_access&audience=https://api.snyk.io&utm_campaign=Bitbucket-connect-promotion&utm_medium=Partner&utm_source=Bitbucket`;
-        window.open(href, '_blank');
-      });
+    getNewState(jwtToken).then((result) => {
+      const href = `https://id.snyk.io/authorize?response_type=code&client_id=${result.clientid}&state=${result.token}&redirect_uri=${result.url}&scope=offline_access&audience=https://api.snyk.io&utm_campaign=Bitbucket-connect-promotion&utm_medium=Partner&utm_source=Bitbucket`;
+      window.open(href, '_blank');
+    });
     setProcessingOauth(true);
   };
 
@@ -40,14 +56,19 @@ export default function LogIn({ setProcessingOauth, jwtToken }) {
     <GridColumn medium={12}>
       <ContainerWrapper>
         <ContentWrapper>
-          <h1>Log in or sign up to Snyk</h1>
+          <H1TextWrapper>Log in or sign up to Snyk</H1TextWrapper>
           <p>
-            To secure your repositories, you need to first have a Snyk account.
+            <MainTextWrapper>
+              To secure your repositories, you need to first have a Snyk
+              account.
+            </MainTextWrapper>
           </p>
-          <p>It's quick and easy.</p>
+          <p>
+            <MainTextWrapper>It's quick and easy.</MainTextWrapper>
+          </p>
           <ButtonWrapper>
-            <Button onClick={() => logIn()} appearance="primary">
-              Log in or sign up to Snyk
+            <Button onClick={() => logIn()} appearance='primary'>
+              <MainTextWrapper>Log in or sign up to Snyk</MainTextWrapper>
             </Button>
           </ButtonWrapper>
         </ContentWrapper>

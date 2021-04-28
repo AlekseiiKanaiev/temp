@@ -20,16 +20,24 @@ const ContentWrapper = styled.div`
   display: inline-block;
 `;
 
+const TextWrapper = styled.p`
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+`;
+
 export default function ImportRepositorySpinner() {
   return (
     <GridColumn medium={12}>
       <ContainerWrapper>
         <ContentWrapper>
           <Spinner />
-          <p>
+          <TextWrapper>
             Importing your repository to Snyk and scanning it for
             vulnerabilities...
-          </p>
+          </TextWrapper>
         </ContentWrapper>
       </ContainerWrapper>
     </GridColumn>
