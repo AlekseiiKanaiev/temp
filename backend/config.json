@@ -17,9 +17,10 @@
         },
         "snyk": {
             "baseUrl": "https://api.snyk.io/v1/",
-            "snykOauthUrl": "https://id.snyk.io/oauth/token"
+            "snykOauthUrl": "https://id.snyk.io/oauth/token",
+            "snykAnalyticsKey" : "$SNYKANALYTICSKEY"
         },
-        "localBaseUrl": "$NGROKURL"
+        "localBaseUrl": "$APP_URL"
     },
     "stage": {
         "port": "$PORT",

@@ -20,8 +20,11 @@ const path = require('path')
 
 // Routes live here; this is the C in MVC
 const routes = require('./routes')
+const events = require('./events')
 const { logger } = require('./logger')
 const { httpLogger } = require('./logger')
+const ConfigParameters = require('./modules/ConfigParameters')
+
 
 // Bootstrap Express and atlassian-connect-express
 const app = express()
@@ -41,6 +44,7 @@ app.set('port', port)
 // Static expiry middleware to help serve static resources efficiently
 process.env.PWD = process.env.PWD || process.cwd() // Fix expiry on Windows :(
 const expiry = require('static-expiry')
+const { exit } = require('process')
 
 const viewsDir = path.resolve(__dirname, 'views')
 app.engine('hbs', hbs.express4({ partialsDir: viewsDir }))
@@ -85,9 +89,13 @@ app.use(expiry(app, { dir: staticDir, debug: devEnv }))
 
 // Show nicer errors in dev mode
 // if (devEnv) app.use(errorHandler());
-
+// Wire up app events
+events(addon)
 // Wire up routes
 routes(app, addon)
+if (!ConfigParameters.allParametersExist(addon)) {
+  exit(1)
+}
 
 // Boot the HTTP server
 http.createServer(app).listen(port, () => {

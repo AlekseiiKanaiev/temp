@@ -5,5 +5,5 @@ const BBClient = require('./BBClient')
 module.exports = {
   ApiClient,
   SnykClient,
-  BBClient
+  BBClient,
 }

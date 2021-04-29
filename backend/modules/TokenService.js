@@ -2,6 +2,7 @@ const request = require('request')
 const jwtDecode = require('jwt-decode')
 const { logger } = require('../logger')
 const BitbucketUser = require('./BitbucketUser')
+const AnalyticsClient = require('../modules/AnalyticsClient')
 
 class TokenService {
   constructor (addon, clientKey) {
@@ -70,8 +71,40 @@ class TokenService {
       return snykApiTokenBody
     }
 
+    const snykUserId = await this.getSnykUserName(snykApiTokenBody.access_token)
+    snykApiTokenBody.snykUserId = snykUserId
     await this.saveSnykApiTokenToDb(snykApiTokenBody, clientKey)
+    await this.sendIdentifyToAnalytics(snykUserId, clientKey)
+    await this.sendEventToAnalytics(snykUserId, clientKey)
     return snykApiTokenBody
+  }
+
+  async sendEventToAnalytics(snykUserId, clientKey) {
+    const eventProperties = await AnalyticsClient.getEventProperties(clientKey)
+    const eventMessage = {
+      userId: snykUserId,
+      event: 'connect_app_user_authenticated',
+          properties: {
+              client_key: clientKey,
+              workspace_name: eventProperties.workspaceName,
+              workspace_id: eventProperties.workspaceId,
+              bb_user_id: eventProperties.bbUserId,
+              snyk_user_id: snykUserId,
+          }
+      }
+      AnalyticsClient.sendEvent(eventMessage)
+
+  }
+
+  async sendIdentifyToAnalytics(snykUserId, clientKey) {
+    await this.addon.settings.get('snykSettings', clientKey)
+    .then((settings) => {
+      const identMessage = {
+        anonymousId: settings.anonymousid,
+        userId: snykUserId
+      }
+      AnalyticsClient.sendIdentify(identMessage)
+    })
   }
 
   async getSnykApiToken (clientId, clientSecret, redirectUri, code, snykOauthUrl) {
@@ -98,6 +131,28 @@ class TokenService {
     })
   }
 
+  async getSnykUserName(access_token) {
+    return await new Promise((resolve, reject) => {
+      const {baseUrl} = this.addon.config.snyk()
+      request.get(
+        `${baseUrl}user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        },
+        (error, res, body) => {
+          console.warn("alexey")
+          if (error) {
+            logger.error({ message: error.toString(), clientkey: this.clientKey })
+            resolve({ error: 'error receiving snyk user id' })
+          }
+          return resolve(JSON.parse(body).id)
+        }
+      )
+    })
+  }
+
   async saveSnykApiTokenToDb (snykApiTokenBody, clientKey) {
     await this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
@@ -105,6 +160,7 @@ class TokenService {
           settings = {}
         }
         settings.apitoken = snykApiTokenBody.access_token
+        settings.snykuserid =snykApiTokenBody.snykUserId
         if (snykApiTokenBody.refresh_token) {
           settings.refresh_token = snykApiTokenBody.refresh_token
         }

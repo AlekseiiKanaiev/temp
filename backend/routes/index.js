@@ -2,6 +2,8 @@ const status = require('http-status')
 const RouteUtils = require('./RouteUtils')
 const { WebhookHandler, SnykAPIHandler, BitbucketAPIHandler, AppAPIHandler } = require('./handlers/index')
 const { SnykClient } = require('./../modules')
+const AnalyticsClient = require('../modules/AnalyticsClient')
+const { logger } = require('../logger')
 
 module.exports = function routes (app, addon) {
   const { baseUrl } = addon.config.snyk()
@@ -29,17 +31,61 @@ module.exports = function routes (app, addon) {
   })
 
   app.post('/uninstalled', addon.authenticate(), function (req, res) {
+    logger.info(req.body)
     const { clientKey } = req.context
-    addon.settings.del('clientInfo', clientKey)
-      .then(() => {
-        addon.settings.del('snykSettings', clientKey)
-          .then(() => {
-            addon.settings.del('token', clientKey)
-              .then(() => res.status(status.OK).send())
-          })
-          .catch((err) => res.status(status.BAD_REQUEST).send(err))
-      })
-      .catch((err) => res.status(status.BAD_REQUEST).send(err))
+    addon.settings.get('clientInfo', clientKey)
+    .then((settings) => {
+      const workspaceName = settings.principal.username
+      const workspaceId = settings.principal.uuid
+      const bbUserId = req.body.user.uuid
+      addon.settings.del('clientInfo', clientKey)
+        .then(() => {
+          
+              addon.settings.del('token', clientKey)
+                .then(() => {
+                  addon.settings.get('snykSettings', clientKey)
+                  .then((settings) => {
+                    if (settings && settings.snykuserid) {
+                      const eventMessage = {
+                        userId: settings.snykuserid,
+                        event: 'connect_app_app_uninstalled',
+                            properties: {
+                                client_key: clientKey,
+                                workspace_name: workspaceName,
+                                workspace_id: workspaceId,
+                                bb_user_id: bbUserId
+                            }
+                        }
+                      AnalyticsClient.sendEvent(eventMessage)
+                    } else {
+                      if (settings && settings.anonymousid) {
+                        const eventMessage = {
+                            anonymousId: settings.anonymousid,
+                            event: 'connect_app_app_uninstalled',
+                                properties: {
+                                    client_key: clientKey,
+                                    workspace_name: workspaceName,
+                                    workspace_id: workspaceId,
+                                    bb_user_id: bbUserId
+                                }
+                            }
+                        AnalyticsClient.sendEvent(eventMessage)
+                      } else {
+                        logger.error({clientkey: clientKey, message: "anonymousid and snykuserid not found in db on uninstall"})
+                      }
+                    }
+                    addon.settings.del('snykSettings', clientKey)
+                    .then(() => {
+                      res.status(status.OK).send()
+                    })
+                  })
+                })
+            
+        })
+    }).catch((err) => {
+      logger.info({clientkey: clientKey, message: err.toString()})
+      res.status(status.BAD_REQUEST).send(err)
+    })
   })
 
   app.post('/app/org', addon.checkValidToken(), appAPIHandler.saveOrg.bind(appAPIHandler))

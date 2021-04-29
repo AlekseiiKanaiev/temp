@@ -5,7 +5,7 @@ import { getIntegrationTokenOrg, restartIntegration } from './services/SnykServi
 import Spinner from './components/Spinner';
 import ErrorPage from './components/ErrorPage';
 
-function AppAccount({ jwtToken, username }) {
+function AppAccount({ jwtToken, username, currentuserid }) {
   const [loading, setLoading] = useState(true);
   const [integrationParams, setIntegrationParams] = useState({
     integrated: false,
@@ -29,7 +29,7 @@ function AppAccount({ jwtToken, username }) {
   };
 
   const snykSettingsCallback = () => {
-    restartIntegration(jwtToken)
+    restartIntegration(jwtToken, currentuserid)
       .then(() => checkIntegration())
       .catch((err) => {
         throw new Error(err);

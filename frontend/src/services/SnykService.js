@@ -146,9 +146,9 @@ export async function getNewState(jwtToken) {
   return res.json();
 }
 
-export async function restartIntegration(jwtToken) {
+export async function restartIntegration(jwtToken, currentuserid) {
   const url = '/app/integration';
-  const res = await executePost(jwtToken, url, {});
+  const res = await executePost(jwtToken, url, {currentuserid : currentuserid});
 
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);

@@ -1,6 +1,7 @@
 const status = require('http-status')
 const { logger } = require('../../logger')
 const TokenService = require('../../modules/TokenService')
+const AnalyticsClient = require('../../modules/AnalyticsClient')
 
 class AppAPIHandler {
   constructor (addon, app) {
@@ -56,9 +57,23 @@ class AppAPIHandler {
 
   deleteToken (req, res) {
     const clientKey = req.context.clientKey
-    this.addon.settings.del('snykSettings', clientKey)
+    this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
-        return res.status(200).send({ message: 'success' })
+        if (settings && settings.apitoken) {
+          delete settings.apitoken
+        }
+        if (settings && settings.refresh_token) {
+          delete settings.refresh_token
+        }
+        if (settings && settings.snykuserid) {
+          delete settings.snykuserid
+        }
+        this.addon.settings.set('snykSettings', settings, clientKey)
+          .then(() => res.status(200).send({ message: 'success' }))
+          .catch((err) => {
+            logger.error({ message: err.toString(), clientkey: clientKey })
+            return res.status(status.BAD_REQUEST).send('')
+          })
       })
       .catch((err) => {
         logger.error({ message: err.toString(), clientkey: clientKey })
@@ -100,9 +115,38 @@ class AppAPIHandler {
   }
 
   restartIntegration (req, res) {
-    this.addon.settings.del('snykSettings', req.context.clientKey)
-      .then(() => res.status(200).send({ status: 'restarted' }))
-      .catch((err) => res.status(status.BAD_REQUEST).send(err))
+    const {clientKey} = req.context
+    const bbUserId = JSON.stringify(req.body).currentuserid
+    AnalyticsClient.getEventProperties(clientKey)
+    .then((eventProperties) => {
+    const eventMessage = {
+      userId: eventProperties.snykUserId,
+      event: 'connect_app_app_uninstalled',
+          properties: {
+              client_key: clientKey,
+              workspace_name: eventProperties.workspaceName,
+              workspace_id: eventProperties.workspaceId,
+              bb_user_id: bbUserId,
+              snyk_user_id: eventProperties.snykUserId,
+              snyk_org_id: eventProperties.snykOrgId
+          }
+      }
+    AnalyticsClient.sendEvent(eventMessage)
+    this.addon.settings.get('snykSettings', clientKey)
+      .then((settings) => {
+        if (settings && settings.anonymousid) {
+          this.addon.settings.set('snykSettings',{anonymousid: settings.anonymousid} ,clientKey)
+          .then (() => res.status(200).send({ status: 'restarted' }))
+        } else {
+          this.addon.settings.del('snykSettings',clientKey)
+          .then (() => res.status(200).send({ status: 'restarted' }))
+        }        
+      })
+     
+    }).catch((err) => {
+      logger.error({clientkey: clientKey, message: err.toString()})
+      res.status(status.BAD_REQUEST).send(err)
+    })
   }
 
   setState (req, res) {

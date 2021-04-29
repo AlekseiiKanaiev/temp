@@ -56,11 +56,13 @@ class WebhookHandler {
       } catch (e) {
         logger.warn({ message: e.toString(), clientkey: clientKey })
       }
+            
       res.render('snyk-repo-page', {
         title: 'SNYK',
         displayName: data.display_name,
         repoPath: req.query.repoPath,
         username: useruuid === targetuseruuid ? username : '',
+        currentuserid: useruuid,
         repoOwner: owner,
         repoSlug: repoSlug,
         repoMainBranch: repoMainBranch
