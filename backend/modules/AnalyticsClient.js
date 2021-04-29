@@ -39,7 +39,7 @@ class AnalyticsClient {
         const workspaceName = clientSettings.principal.username
         const workspaceId = clientSettings.principal.uuid
         const bbUserId = clientSettings.actor.uuid
-        const snykUserId = snykSettings.snykUserId
+        const snykUserId = snykSettings.snykuserid
         const snykOrgId = snykSettings.orgid
         return {workspaceName: workspaceName, 
                 workspaceId: workspaceId,

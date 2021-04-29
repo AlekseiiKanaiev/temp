@@ -121,7 +121,7 @@ class AppAPIHandler {
     .then((eventProperties) => {
     const eventMessage = {
       userId: eventProperties.snykUserId,
-      event: 'connect_app_app_uninstalled',
+      event: 'connect_app_reset_settings',
           properties: {
               client_key: clientKey,
               workspace_name: eventProperties.workspaceName,
