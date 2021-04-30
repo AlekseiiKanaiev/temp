@@ -80,31 +80,28 @@ class TokenService {
   }
 
   async sendEventToAnalytics(snykUserId, clientKey) {
-    const eventProperties = await AnalyticsClient.getEventProperties(clientKey)
     const eventMessage = {
       userId: snykUserId,
       event: 'connect_app_user_authenticated',
           properties: {
               client_key: clientKey,
-              workspace_name: eventProperties.workspaceName,
-              workspace_id: eventProperties.workspaceId,
-              bb_user_id: eventProperties.bbUserId,
+              workspace_name: '{workspacename}',
+              workspace_id: '{workspaceid}',
+              bb_user_id: '{bbuserid}',
               snyk_user_id: snykUserId,
           }
       }
-      AnalyticsClient.sendEvent(eventMessage)
+      await AnalyticsClient.sendEvent(clientKey, eventMessage)
 
   }
 
   async sendIdentifyToAnalytics(snykUserId, clientKey) {
-    await this.addon.settings.get('snykSettings', clientKey)
-    .then((settings) => {
-      const identMessage = {
-        anonymousId: settings.anonymousid,
-        userId: snykUserId
-      }
-      AnalyticsClient.sendIdentify(identMessage)
-    })
+    const identMessage = {
+      anonymousId: '{anonymousid}',
+      userId: snykUserId
+    }  
+    await AnalyticsClient.sendIdentify(clientKey,identMessage)
+    
   }
 
   async getSnykApiToken (clientId, clientSecret, redirectUri, code, snykOauthUrl) {

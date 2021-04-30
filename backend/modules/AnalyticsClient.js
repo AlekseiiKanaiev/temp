@@ -11,23 +11,26 @@ class AnalyticsClient {
         this.addon = addon
     }
 
-    sendEvent(eventMessage) {
-        logger.info(eventMessage)
+    async sendEvent(clientKey, eventMessage) {
+        const eventMessageToSend = await this.replaceTemplateVariables(clientKey, eventMessage)
+        logger.info(eventMessageToSend)
         /*this.analytics.track(
-            eventMessage, (err, data) => {
+            eventMessageToSend, (err, data) => {
                 if (err) {
-                    logger.error({clientkey: eventMessage.properties.client_key, message: err})
+                    logger.error({clientkey: clientKey, message: err})
                 }
             })
             */
     }
 
-    sendIdentify(identMessage) {
-        logger.info(`ident: ${JSON.stringify(identMessage)}`)
+    async sendIdentify(clientKey, identMessage) {
+        const identMessageToSend = await this.replaceTemplateVariables(clientKey, identMessage)
+        
+        logger.info(`ident: ${JSON.stringify(identMessageToSend)}`)
         /*this.analytics.identify(
-            eventMessage, (err, data) => {
+            identMessageToSend, (err, data) => {
                 if (err) {
-                    logger.error({clientkey: eventMessage.properties.client_key, message: err})
+                    logger.error({clientkey: clientKey, message: err})
                 }
             })
             */
@@ -36,16 +39,42 @@ class AnalyticsClient {
     async getEventProperties(clientKey) {
         const clientSettings = await this.addon.settings.get('clientInfo', clientKey)
         const snykSettings = await this.addon.settings.get('snykSettings', clientKey)
-        const workspaceName = clientSettings.principal.username
+        const workspaceName = snykSettings.workspacename
         const workspaceId = clientSettings.principal.uuid
         const bbUserId = clientSettings.actor.uuid
         const snykUserId = snykSettings.snykuserid
         const snykOrgId = snykSettings.orgid
+        const anonymousId = snykSettings.anonymousid
         return {workspaceName: workspaceName, 
                 workspaceId: workspaceId,
                 bbUserId: bbUserId,
                 snykUserId: snykUserId,
-                snykOrgId: snykOrgId}
+                snykOrgId: snykOrgId,
+                anonymousId: anonymousId}
+    }
+
+    async replaceTemplateVariables(clientKey, eventMessage) {
+        const eventProperties = await this.getEventProperties(clientKey)
+        let eventMessageString = JSON.stringify(eventMessage)
+        if (eventProperties.workspaceName) {
+            eventMessageString = eventMessageString.replace(/{workspacename}/g, eventProperties.workspaceName)
+        }
+        if (eventProperties.workspaceId) {
+            eventMessageString = eventMessageString.replace(/{workspaceid}/g, eventProperties.workspaceId)
+        }
+        if (eventProperties.bbUserId) {
+            eventMessageString = eventMessageString.replace(/{bbuserid}/g, eventProperties.bbUserId)
+        }
+        if (eventProperties.snykUserId) {
+            eventMessageString = eventMessageString.replace(/{snykuserid}/g, eventProperties.snykUserId)
+        }
+        if (eventProperties.snykOrgId) {
+            eventMessageString = eventMessageString.replace(/{snykorgid}/g, eventProperties.snykOrgId)
+        }
+        if (eventProperties.anonymousId) {
+            eventMessageString = eventMessageString.replace(/{anonymousid}/g, eventProperties.anonymousId)            
+        }
+        return JSON.parse(eventMessageString)
     }
 }
 module.exports = new AnalyticsClient();

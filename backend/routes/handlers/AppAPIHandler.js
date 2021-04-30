@@ -114,28 +114,44 @@ class AppAPIHandler {
       })
   }
 
+  sendToAnalytics(req, res) {
+    const {clientKey} = req.context
+    const body = JSON.parse(req.body)
+    try {
+      if (body.type === "identify") {
+          AnalyticsClient.sendIdentify(clientKey, body.eventMessage)
+          .then(() =>res.status(200))
+        } else {
+          AnalyticsClient.sendEvent(clientKey, body.eventMessage)
+          .then(() => res.status(200))
+        }
+    } catch (err) {
+      logger.error({clientkey: clientKey, message: err.toString()})
+      return res.status(500).send('')
+    }
+  }
+
   restartIntegration (req, res) {
     const {clientKey} = req.context
     const bbUserId = JSON.stringify(req.body).currentuserid
-    AnalyticsClient.getEventProperties(clientKey)
-    .then((eventProperties) => {
     const eventMessage = {
-      userId: eventProperties.snykUserId,
+      userId: '{snykorgid}',
       event: 'connect_app_reset_settings',
           properties: {
               client_key: clientKey,
-              workspace_name: eventProperties.workspaceName,
-              workspace_id: eventProperties.workspaceId,
-              bb_user_id: bbUserId,
-              snyk_user_id: eventProperties.snykUserId,
-              snyk_org_id: eventProperties.snykOrgId
+              workspace_name: '{workspacename}',
+              workspace_id: '{workspaceid}',
+              bb_user_id: '{bbuserid}',
+              snyk_user_id: '{snykuserid}',
+              snyk_org_id: '{snykorgid}'
           }
       }
-    AnalyticsClient.sendEvent(eventMessage)
+    AnalyticsClient.sendEvent(clientKey, eventMessage)
+    .then(() => {
     this.addon.settings.get('snykSettings', clientKey)
       .then((settings) => {
         if (settings && settings.anonymousid) {
-          this.addon.settings.set('snykSettings',{anonymousid: settings.anonymousid} ,clientKey)
+          this.addon.settings.set('snykSettings',{anonymousid: settings.anonymousid, workspacename: settings.workspacename} ,clientKey)
           .then (() => res.status(200).send({ status: 'restarted' }))
         } else {
           this.addon.settings.del('snykSettings',clientKey)

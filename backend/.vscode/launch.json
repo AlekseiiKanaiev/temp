@@ -16,7 +16,7 @@
             "env": {
                 "CLIENTID": "ANNVUPy1iSwZtZJ5NenRdZtbMGRxtsMp",
                 "CLIENTSECRET" : "e1--yjm8JdP7wtoDQio_0EQTBAS1_ffJ8_TZ5kDMlFUZS83Q1lY3Gv6r0cStHLYs",
-                "APP_URL": "https://c24fef8cbf3a.ngrok.io",
+                "APP_URL": "https://656b1e8c2a07.ngrok.io",
                 "SNYKANALYTICSKEY": "t6YUatFEdl288SFfz4OSzdUBJcLNSWiX"
             }
         }
