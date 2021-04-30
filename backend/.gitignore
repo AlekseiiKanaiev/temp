@@ -39,3 +39,4 @@ test/*.log
 
 frontend/dist/
 /public/dist/
+/.vscode/
