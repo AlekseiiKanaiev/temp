@@ -74,7 +74,6 @@ class TokenService {
     const snykUserId = await this.getSnykUserName(snykApiTokenBody.access_token)
     snykApiTokenBody.snykUserId = snykUserId
     await this.saveSnykApiTokenToDb(snykApiTokenBody, clientKey)
-    await this.sendIdentifyToAnalytics(snykUserId, clientKey)
     await this.sendEventToAnalytics(snykUserId, clientKey)
     return snykApiTokenBody
   }
@@ -84,11 +83,9 @@ class TokenService {
       userId: snykUserId,
       event: 'connect_app_user_authenticated',
       properties: {
-        client_key: clientKey,
         workspace_name: '{workspacename}',
         workspace_id: '{workspaceid}',
         bb_user_id: '{bbuserid}',
-        snyk_user_id: snykUserId
       }
     }
     await AnalyticsClient.sendEvent(clientKey, eventMessage)

@@ -83,7 +83,6 @@ module.exports = function routes (app, addon) {
           userId: '{snykuserid}',
           event: 'connect_app_app_uninstalled',
           properties: {
-            client_key: clientKey,
             workspace_name: '{workspacename}',
             workspace_id: '{workspaceid}',
             bb_user_id: '{bbuserid}'
@@ -95,7 +94,6 @@ module.exports = function routes (app, addon) {
           anonymousId: '{anonymousid}',
           event: 'connect_app_app_uninstalled',
           properties: {
-            client_key: clientKey,
             workspace_name: '{workspacename}',
             workspace_id: '{workspaceid}',
             bb_user_id: '{bbuserid}'

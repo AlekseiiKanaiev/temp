@@ -134,14 +134,12 @@ class AppAPIHandler {
   restartIntegration (req, res) {
     const { clientKey } = req.context
     const eventMessage = {
-      userId: '{snykorgid}',
+      userId: '{snykuserid}',
       event: 'connect_app_reset_settings',
       properties: {
-        client_key: clientKey,
         workspace_name: '{workspacename}',
         workspace_id: '{workspaceid}',
         bb_user_id: '{bbuserid}',
-        snyk_user_id: '{snykuserid}',
         snyk_org_id: '{snykorgid}'
       }
     }

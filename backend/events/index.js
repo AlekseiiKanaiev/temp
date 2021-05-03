@@ -39,9 +39,8 @@ module.exports = function events(addon) {
                 anonymousId: anonymousId,
                 event: 'connect_app_app_installed',
                     properties: {
-                        client_key: clientKey,
                         workspace_name: workspaceName,
-                        workspace_id: data.principal.uuid,
+                        workspace_id: data.principal.uuid.replace('{','').replace('}',  ''),
                         bb_user_id: data.actor.uuid
                     }
                 }

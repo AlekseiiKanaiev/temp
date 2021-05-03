@@ -123,11 +123,9 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
               userId: '{snykorgid}',
               event: 'connect_app_integration_created',
               properties: {
-                client_key: '{clientkey}',
                 workspace_name: '{workspacename}',
                 workspace_id: '{workspaceid}',
                 bb_user_id: '{bbuserid}',
-                snyk_user_id: '{snykuserid}',
                 snyk_org_id: '{snykorgid}',
               },
             },

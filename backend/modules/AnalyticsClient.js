@@ -46,13 +46,14 @@ class AnalyticsClient {
       bbUserId: bbUserId,
       snykUserId: snykUserId,
       snykOrgId: snykOrgId,
-      anonymousId: anonymousId
+      anonymousId: anonymousId,
+      clientKey: clientKey
     }
   }
 
   async replaceTemplateVariables (clientKey, eventMessage) {
     const eventProperties = await this.getEventProperties(clientKey)
-    let eventMessageString = JSON.stringify(eventMessage)
+    let eventMessageString = JSON.stringify(await this.addAttributesToEventMessage(eventProperties, eventMessage))
     eventMessageString = eventMessageString.replace(/{clientkey}/g, clientKey)
     if (eventProperties.workspaceName) {
       eventMessageString = eventMessageString.replace(/{workspacename}/g, eventProperties.workspaceName)
@@ -73,6 +74,33 @@ class AnalyticsClient {
       eventMessageString = eventMessageString.replace(/{anonymousid}/g, eventProperties.anonymousId)
     }
     return JSON.parse(eventMessageString)
+  }
+
+  async addAttributesToEventMessage(eventProperties, eventMessage) {
+    let eventMessageCopy = eventMessage
+    if (eventProperties.anonymousId) {
+      eventMessageCopy.anonymousId = eventProperties.anonymousId
+    }
+    if (eventMessage.properties) {
+      eventMessageCopy.properties.connect_app_client_key = eventProperties.clientKey
+    } else {
+      eventMessageCopy.properties = {connect_app_client_key : eventProperties.clientKey}
+    }
+    if (eventProperties.worspaceName) {
+      eventMessageCopy.properties.workspace_name = eventProperties.workspaceName
+    }
+    if (eventProperties.worspaceId) {
+      eventMessageCopy.properties.workspace_name = eventProperties.workspaceId
+    }
+    if (eventProperties.snykUserId) 
+    eventMessageCopy.userId = eventProperties.snykUserId
+    if (eventProperties.bbUserId) {
+      eventMessageCopy.properties.bb_user_id = eventProperties.bbUserId
+    }
+    if (eventProperties.snykOrgId) {
+      eventMessageCopy.properties.snyk_org_id = eventProperties.snykOrgId
+    }
+    return eventMessageCopy
   }
 }
 module.exports = new AnalyticsClient()

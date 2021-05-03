@@ -58,16 +58,14 @@ export default function SnykProjects({
               sendToAnalytics(jwtToken, {
                 type: 'track',
                 eventMessage: {
-                  userId: '{snykorgid}',
+                  userId: '{snykuserid}',
                   event: 'connect_app_repo_imported',
                   properties: {
-                    client_key: '{clientkey}',
                     workspace_name: '{workspacename}',
                     workspace_id: '{workspaceid}',
                     bb_user_id: '{bbuserid}',
-                    snyk_user_id: '{snykuserid}',
                     snyk_org_id: '{snykorgid}',
-                    repo_slug: repoSlug,
+                    repo_slug: `${repoOwner}/${repoSlug}`,
                     import_result: 'success',
                     number_of_imported_projects: projects.length,
                   },
