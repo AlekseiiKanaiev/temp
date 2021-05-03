@@ -34,7 +34,7 @@ export default function IssueCardInfo({ issue }) {
       <AdditionalInfoParentSpan>
         Exploit maturity
         <AdditionalInfoChildSpan>
-          <Lozenge appearance='new'>{issue.issueData.exploitMaturity}</Lozenge>
+          <Lozenge appearance="new">{issue.issueData.exploitMaturity}</Lozenge>
         </AdditionalInfoChildSpan>
       </AdditionalInfoParentSpan>
       <AdditionalInfoParentSpan>
@@ -43,8 +43,8 @@ export default function IssueCardInfo({ issue }) {
           {issue.fixInfo.nearestFixedInVersion
             ? issue.fixInfo.nearestFixedInVersion
             : issue.fixInfo.fixedIn
-            ? issue.fixInfo.fixedIn.join(',')
-            : ''}
+              ? issue.fixInfo.fixedIn.join(',')
+              : ''}
         </AdditionalInfoChildSpan>
       </AdditionalInfoParentSpan>
     </>

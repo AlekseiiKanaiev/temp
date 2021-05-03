@@ -56,7 +56,7 @@ export default function ProjectImportPage({
         } else {
           callback(result, '');
         }
-      }
+      },
     );
   };
 
@@ -68,7 +68,7 @@ export default function ProjectImportPage({
     <GridColumn medium={12}>
       <ContentWrapper>
         <ImageWrapper>
-          <img src='/ico/addRepository.svg' alt='Add Repository' />
+          <img src="/ico/addRepository.svg" alt="Add Repository" />
         </ImageWrapper>
         <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
         <TextWrapper>
@@ -76,14 +76,16 @@ export default function ProjectImportPage({
           continuously monitor your repo for vulnerabilities
         </TextWrapper>
         <ButtonWrapper>
-          <Button appearance='primary' onClick={importProjectToSnyk}>
+          <Button appearance="primary" onClick={importProjectToSnyk}>
             <TextWrapper>Import this repository</TextWrapper>
           </Button>
         </ButtonWrapper>
 
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href='#'>Add project dialog</a> in Snyk app
+          <a href="#">Add project dialog</a>
+          {' '}
+          in Snyk app
         </TextWrapper>
       </ContentWrapper>
     </GridColumn>

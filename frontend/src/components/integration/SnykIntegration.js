@@ -40,7 +40,7 @@ export default function SnykIntegration({
 
   const view = () => (
     <Page>
-      <Grid layout='fluid'>
+      <Grid layout="fluid">
         <GridColumn medium={12}>
           <EventTrackerWrapper>
             <IntegrationEventTracker stage={stage} />

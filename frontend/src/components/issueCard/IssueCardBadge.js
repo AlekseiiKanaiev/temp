@@ -27,13 +27,13 @@ export default function IssueCardBadge({ issue }) {
         return <Lozenge isBold>{data}</Lozenge>;
       case 'medium':
         return (
-          <Lozenge appearance='moved' isBold>
+          <Lozenge appearance="moved" isBold>
             {data}
           </Lozenge>
         );
       case 'high':
         return (
-          <Lozenge appearance='removed' isBold>
+          <Lozenge appearance="removed" isBold>
             {data}
           </Lozenge>
         );
@@ -44,7 +44,9 @@ export default function IssueCardBadge({ issue }) {
 
   return (
     <>
-      {badge()} <PackageNameWrapper>{issue.pkgName}</PackageNameWrapper>
+      {badge()}
+      {' '}
+      <PackageNameWrapper>{issue.pkgName}</PackageNameWrapper>
       <PackageDescWrapper>{` - ${issue.issueData.title}`}</PackageDescWrapper>
     </>
   );

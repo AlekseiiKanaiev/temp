@@ -1,12 +1,16 @@
 import React, { useLayoutEffect, useState } from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
+import styled from 'styled-components';
 import ProjectList from './ProjectList';
 import ProjectImport from './projectImport/ProjectImport';
-import { getProjects, getSavedOrg } from '../services/SnykService';
+import {
+  getProjects,
+  getSavedOrg,
+  sendToAnalytics,
+} from '../services/SnykService';
 import Spinner from './Spinner';
 import NoFilesDetected from './NoFilesDetected';
 import ErrorPage from './ErrorPage';
-import styled from 'styled-components';
 
 const H1TextWrapper = styled.h1`
   font-family: 'Open Sans';
@@ -38,21 +42,38 @@ export default function SnykProjects({
         setOrgName(result.orgslug);
         getProjects(jwtToken, `${repoOwner}/${repoSlug}:`)
           .then((result) => {
-            setProjects(
-              result.projects
-                .filter((project) =>
-                  project.name.startsWith(`${repoOwner}/${repoSlug}`)
-                )
-                .map((project) => ({
-                  id: project.id,
-                  name: project.name,
-                  type: project.type,
-                  issueCounts: project.issueCountsBySeverity,
-                  testedAt: project.lastTestedDate,
-                }))
-            );
+            const projects = result.projects
+              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`))
+              .map((project) => ({
+                id: project.id,
+                name: project.name,
+                type: project.type,
+                issueCounts: project.issueCountsBySeverity,
+                testedAt: project.lastTestedDate,
+              }));
+            setProjects(projects);
             setLoading(false);
             setImported(imported);
+            if (imported) {
+              sendToAnalytics(jwtToken, {
+                type: 'track',
+                eventMessage: {
+                  userId: '{snykorgid}',
+                  event: 'connect_app_repo_imported',
+                  properties: {
+                    client_key: '{clientkey}',
+                    workspace_name: '{workspacename}',
+                    workspace_id: '{workspaceid}',
+                    bb_user_id: '{bbuserid}',
+                    snyk_user_id: '{snykuserid}',
+                    snyk_org_id: '{snykorgid}',
+                    repo_slug: repoSlug,
+                    import_result: 'success',
+                    number_of_imported_projects: projects.length,
+                  },
+                },
+              });
+            }
           })
           .catch((err) => {
             throw new Error(err);
@@ -102,7 +123,7 @@ export default function SnykProjects({
 
   return (
     <Page>
-      <Grid layout='fluid'>
+      <Grid layout="fluid">
         <GridColumn medium={12}>
           <H1TextWrapper>Snyk</H1TextWrapper>
         </GridColumn>

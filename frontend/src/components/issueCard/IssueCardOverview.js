@@ -33,15 +33,13 @@ export default function IssueCardOverview({ issue }) {
     if (links) {
       linksInDescription = unformatedOverview
         .split(linkRegExp)
-        .map((part) =>
-          links.find((link) => link === part) ? (
-            <a href={part.substring(part.indexOf('(') + 1, part.indexOf(')'))}>
-              {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
-            </a>
-          ) : (
-            part
-          )
-        );
+        .map((part) => (links.find((link) => link === part) ? (
+          <a href={part.substring(part.indexOf('(') + 1, part.indexOf(')'))}>
+            {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
+          </a>
+        ) : (
+          part
+        )));
     }
     return links ? linksInDescription : [unformatedOverview];
   };

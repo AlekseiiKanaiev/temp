@@ -101,7 +101,7 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
     }
     return (
       <Page>
-        <Grid layout='fluid'>
+        <Grid layout="fluid">
           <GridColumn medium={6}>
             <ContainerWrapper>
               <ContentWrapper>
@@ -142,11 +142,11 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
                     },
                   ]}
                   onClose={() => setIsOpen(false)}
-                  heading={
+                  heading={(
                     <ModalH1TextWrapper>
                       This restarts the whole integration settings process
                     </ModalH1TextWrapper>
-                  }
+                  )}
                 >
                   <ModalGeneralTextWrapper>
                     Are you sure you want to continue?

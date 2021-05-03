@@ -34,31 +34,27 @@ module.exports = function routes (app, addon) {
     logger.info(req.body)
     const { clientKey } = req.context
     addon.settings.get('clientInfo', clientKey)
-    .then((settings) => {
-      const workspaceName = settings.principal.username
-      const workspaceId = settings.principal.uuid
-      const bbUserId = req.body.user.uuid
-              addon.settings.del('token', clientKey)
-                .then(() => {
-                  addon.settings.get('snykSettings', clientKey)
-                  .then((settings) => {
-                    sendToAnalytics(settings, clientKey)
-                    .then(() => {
-                      addon.settings.del('clientInfo', clientKey)
-                      .then(() => {                    
+      .then((settings) => {
+        addon.settings.del('token', clientKey)
+          .then(() => {
+            addon.settings.get('snykSettings', clientKey)
+              .then((settings) => {
+                sendToAnalytics(settings, clientKey)
+                  .then(() => {
+                    addon.settings.del('clientInfo', clientKey)
+                      .then(() => {
                         addon.settings.del('snykSettings', clientKey)
-                        .then(() => {
-                          res.status(status.OK).send()
-                        })
-                    })
+                          .then(() => {
+                            res.status(status.OK).send()
+                          })
+                      })
                   })
-                })
-            
-        })
-    }).catch((err) => {
-      logger.info({clientkey: clientKey, message: err.toString()})
-      res.status(status.BAD_REQUEST).send(err)
-    })
+              })
+          })
+      }).catch((err) => {
+        logger.info({ clientkey: clientKey, message: err.toString() })
+        res.status(status.BAD_REQUEST).send(err)
+      })
   })
 
   app.post('/app/org', addon.checkValidToken(), appAPIHandler.saveOrg.bind(appAPIHandler))
@@ -72,7 +68,6 @@ module.exports = function routes (app, addon) {
   app.post('/app/analytics', addon.checkValidToken(), appAPIHandler.sendToAnalytics.bind(appAPIHandler))
   app.get('/pages*', addon.authenticate(), webhookHander.pages.bind(webhookHander))
 
-
   // This route will handle webhooks from repositories this add-on is installed for.
   // Webhook subscriptions are managed in the `modules.webhooks` section of
   // `atlassian-connect.json`
@@ -81,38 +76,35 @@ module.exports = function routes (app, addon) {
   app.all('/snyk/*', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 
-
-  async function sendToAnalytics(settings, clientKey) {
+  async function sendToAnalytics (settings, clientKey) {
     if (settings && (settings.snykuserid || settings.anonymousid)) {
       if (settings.snykuserid) {
         const eventMessage = {
           userId: '{snykuserid}',
           event: 'connect_app_app_uninstalled',
-              properties: {
-                  client_key: clientKey,
-                  workspace_name: '{workspacename}',
-                  workspace_id: '{workspaceid}',
-                  bb_user_id: '{bbuserid}'
-              }
+          properties: {
+            client_key: clientKey,
+            workspace_name: '{workspacename}',
+            workspace_id: '{workspaceid}',
+            bb_user_id: '{bbuserid}'
           }
+        }
         await AnalyticsClient.sendEvent(clientKey, eventMessage)
       } else {
         const eventMessage = {
-            anonymousId: '{anonymousid}',
-            event: 'connect_app_app_uninstalled',
-                properties: {
-                  client_key: clientKey,
-                  workspace_name: '{workspacename}',
-                  workspace_id: '{workspaceid}',
-                  bb_user_id: '{bbuserid}'
-                }
-            }
+          anonymousId: '{anonymousid}',
+          event: 'connect_app_app_uninstalled',
+          properties: {
+            client_key: clientKey,
+            workspace_name: '{workspacename}',
+            workspace_id: '{workspaceid}',
+            bb_user_id: '{bbuserid}'
+          }
+        }
         await AnalyticsClient.sendEvent(clientKey, eventMessage)
       }
-     }
-     else {
-        logger.error({clientkey: clientKey, message: "anonymousid and snykuserid not found in db on uninstall"})
-     }
+    } else {
+      logger.error({ clientkey: clientKey, message: 'anonymousid and snykuserid not found in db on uninstall' })
     }
   }
-
+}

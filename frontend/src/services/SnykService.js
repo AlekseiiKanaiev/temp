@@ -148,7 +148,17 @@ export async function getNewState(jwtToken) {
 
 export async function restartIntegration(jwtToken, currentuserid) {
   const url = '/app/integration';
-  const res = await executePost(jwtToken, url, {currentuserid : currentuserid});
+  const res = await executePost(jwtToken, url, { currentuserid });
+
+  if (!res.ok) {
+    throw new Error(`Could not fetch POST ${url}, received ${res}`);
+  }
+  return res.json();
+}
+
+export async function sendToAnalytics(jwtToken, eventMessage) {
+  const url = '/app/analytics';
+  const res = await executePost(jwtToken, url, eventMessage);
 
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);

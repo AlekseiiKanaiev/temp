@@ -54,36 +54,35 @@ const head = {
   ],
 };
 
-const rows = (projects, callback) =>
-  projects.map((project) => ({
-    key: `row-${project.id}`,
-    cells: [
-      {
-        key: project.name,
-        content: (
-          <NameWrapper>
-            <ProjectName
-              name={project.name}
-              type={project.type}
-              id={project.id}
-              callback={callback}
-              repoSlug={undefined}
-            />
-          </NameWrapper>
-        ),
-      },
-      {
-        key: project.name,
-        content: <VulnarabilityBadges issueCounts={project.issueCounts} />,
-      },
-      {
-        key: project.name,
-        content: (
-          <TextWrapper>{getTestedMessage(project.testedAt)}</TextWrapper>
-        ),
-      },
-    ],
-  }));
+const rows = (projects, callback) => projects.map((project) => ({
+  key: `row-${project.id}`,
+  cells: [
+    {
+      key: project.name,
+      content: (
+        <NameWrapper>
+          <ProjectName
+            name={project.name}
+            type={project.type}
+            id={project.id}
+            callback={callback}
+            repoSlug={undefined}
+          />
+        </NameWrapper>
+      ),
+    },
+    {
+      key: project.name,
+      content: <VulnarabilityBadges issueCounts={project.issueCounts} />,
+    },
+    {
+      key: project.name,
+      content: (
+        <TextWrapper>{getTestedMessage(project.testedAt)}</TextWrapper>
+      ),
+    },
+  ],
+}));
 
 const getTestedMessage = (testedAt) => {
   const hours = moment().diff(moment(testedAt), 'hours');
@@ -103,7 +102,7 @@ export default function ProjectTable({ projects, callback }) {
         head={head}
         rows={rows(projects, callback)}
         isLoading={!projects}
-        loadingSpinnerSize='large'
+        loadingSpinnerSize="large"
       />
     </TableWrapper>
   );

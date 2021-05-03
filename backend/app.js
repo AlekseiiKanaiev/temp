@@ -25,7 +25,6 @@ const { logger } = require('./logger')
 const { httpLogger } = require('./logger')
 const ConfigParameters = require('./modules/ConfigParameters')
 
-
 // Bootstrap Express and atlassian-connect-express
 const app = express()
 const addon = ace(app, {

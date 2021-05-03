@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import ProjectImportPage from './ProjectImportPage';
 import ImportRepositorySpinner from './ImportRepositorySpinner';
-import { getImportJobDetails } from '../../services/SnykService';
+import {
+  getImportJobDetails,
+  sendToAnalytics,
+} from '../../services/SnykService';
 
 let intervalObj = 0;
 
@@ -14,14 +17,33 @@ export default function ProjectImport({
   setErrorsOnImport,
   skipImportProjectPage,
 }) {
-  const [isImporting, setIsImporting] = useState(false);
+  const eventMessage = {
+    type: 'track',
+    eventMessage: {
+      userId: '{snykorgid}',
+      event: 'connect_app_repo_imported',
+      properties: {
+        client_key: '{clientkey}',
+        workspace_name: '{workspacename}',
+        workspace_id: '{workspaceid}',
+        bb_user_id: '{bbuserid}',
+        snyk_user_id: '{snykuserid}',
+        snyk_org_id: '{snykorgid}',
+        repo_slug: repoSlug,
+        import_result: 'error',
+      },
+    },
+  };
 
+  const [isImporting, setIsImporting] = useState(false);
   const afterRepoImportedAction = (result, errorOnImport) => {
     if (errorOnImport) {
+      sendToAnalytics(jwtToken, eventMessage);
       setErrorsOnImport(errorOnImport);
     } else {
       const jobUrl = getJobUrl(result);
       if (jobUrl === '') {
+        sendToAnalytics(jwtToken, eventMessage);
         setErrorsOnImport('Job url not found in the location header');
       } else {
         const interval = setInterval(() => {
@@ -35,6 +57,7 @@ export default function ProjectImport({
   const checkJob = (jobId) => {
     getImportJobDetails(jwtToken, jobId).then((result) => {
       if (result.error) {
+        sendToAnalytics(jwtToken, eventMessage);
         setErrorsOnImport(result.message);
       } else if (result.status) {
         if ((result.status === 'complete') || (result.status === 'pending' && result.logs && result.logs.length > 0 && result.logs[0].status === 'complete')) {
@@ -43,9 +66,11 @@ export default function ProjectImport({
         }
         if (result.status === 'failed' || result.status === 'aborted') {
           clearInterval(intervalObj);
+          sendToAnalytics(jwtToken, eventMessage);
           setErrorsOnImport(`job status ${result.status}`);
         }
       } else {
+        sendToAnalytics(jwtToken, eventMessage);
         setErrorsOnImport(`job status ${result.status}`);
       }
     });

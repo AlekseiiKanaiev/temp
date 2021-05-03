@@ -56,7 +56,7 @@ class WebhookHandler {
       } catch (e) {
         logger.warn({ message: e.toString(), clientkey: clientKey })
       }
-            
+
       res.render('snyk-repo-page', {
         title: 'SNYK',
         displayName: data.display_name,

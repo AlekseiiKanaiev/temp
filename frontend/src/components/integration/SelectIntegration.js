@@ -124,8 +124,7 @@ export default function SelectIntegration({
     callback(true);
   };
 
-  const getOrgByValue = (value) =>
-    organizations.filter((org) => org.value === value);
+  const getOrgByValue = (value) => organizations.filter((org) => org.value === value);
 
   const view = () => {
     if (loading) {
@@ -143,7 +142,7 @@ export default function SelectIntegration({
           </ContentWrapper>
           <ContentWrapper>
             <Select
-              placeholder='Select the organization in Snyk'
+              placeholder="Select the organization in Snyk"
               options={organizations}
               onChange={(item) => setSelected(item.value)}
             />
@@ -152,7 +151,7 @@ export default function SelectIntegration({
             <Button
               onClick={() => saveOrg({ id: selected })}
               isDisabled={!selected}
-              appearance='primary'
+              appearance="primary"
             >
               <ButtonTextWrapper>Done</ButtonTextWrapper>
             </Button>

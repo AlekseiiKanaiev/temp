@@ -79,29 +79,27 @@ class TokenService {
     return snykApiTokenBody
   }
 
-  async sendEventToAnalytics(snykUserId, clientKey) {
+  async sendEventToAnalytics (snykUserId, clientKey) {
     const eventMessage = {
       userId: snykUserId,
       event: 'connect_app_user_authenticated',
-          properties: {
-              client_key: clientKey,
-              workspace_name: '{workspacename}',
-              workspace_id: '{workspaceid}',
-              bb_user_id: '{bbuserid}',
-              snyk_user_id: snykUserId,
-          }
+      properties: {
+        client_key: clientKey,
+        workspace_name: '{workspacename}',
+        workspace_id: '{workspaceid}',
+        bb_user_id: '{bbuserid}',
+        snyk_user_id: snykUserId
       }
-      await AnalyticsClient.sendEvent(clientKey, eventMessage)
-
+    }
+    await AnalyticsClient.sendEvent(clientKey, eventMessage)
   }
 
-  async sendIdentifyToAnalytics(snykUserId, clientKey) {
+  async sendIdentifyToAnalytics (snykUserId, clientKey) {
     const identMessage = {
       anonymousId: '{anonymousid}',
       userId: snykUserId
-    }  
-    await AnalyticsClient.sendIdentify(clientKey,identMessage)
-    
+    }
+    await AnalyticsClient.sendIdentify(clientKey, identMessage)
   }
 
   async getSnykApiToken (clientId, clientSecret, redirectUri, code, snykOauthUrl) {
@@ -128,18 +126,17 @@ class TokenService {
     })
   }
 
-  async getSnykUserName(access_token) {
+  async getSnykUserName (accessToken) {
     return await new Promise((resolve, reject) => {
-      const {baseUrl} = this.addon.config.snyk()
+      const { baseUrl } = this.addon.config.snyk()
       request.get(
         `${baseUrl}user/me`,
         {
           headers: {
-            Authorization: `Bearer ${access_token}`
+            Authorization: `Bearer ${accessToken}`
           }
         },
         (error, res, body) => {
-          console.warn("alexey")
           if (error) {
             logger.error({ message: error.toString(), clientkey: this.clientKey })
             resolve({ error: 'error receiving snyk user id' })
@@ -157,7 +154,7 @@ class TokenService {
           settings = {}
         }
         settings.apitoken = snykApiTokenBody.access_token
-        settings.snykuserid =snykApiTokenBody.snykUserId
+        settings.snykuserid = snykApiTokenBody.snykUserId
         if (snykApiTokenBody.refresh_token) {
           settings.refresh_token = snykApiTokenBody.refresh_token
         }

@@ -33,10 +33,19 @@
                     "auiIcon": "aui-iconfont-doc"
                 },
                 "icon": {
-                    "url": "/ico/SnykApi.svg",
+                    "url": "/ico/SnykLogoBW.svg",
                     "width": 24,
                     "height": 24
-                }
+                },
+                "conditions": [
+                    {
+                        "condition": "has_permission",
+                        "invert": false,
+                        "params": {
+                            "permission": "write"
+                        }
+                    }
+                ]
             }
         ],
         "adminPages": [
@@ -51,7 +60,7 @@
                 "auiIcon": "aui-iconfont-doc"
                 },
             "icon": {
-                "url": "/ico/SnykApi.svg",
+                "url": "/ico/SnykLogoBW.svg",
                 "width": 24,
                 "height": 24
             }

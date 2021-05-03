@@ -67,7 +67,7 @@ export default function LogIn({ setProcessingOauth, jwtToken }) {
             <MainTextWrapper>It's quick and easy.</MainTextWrapper>
           </p>
           <ButtonWrapper>
-            <Button onClick={() => logIn()} appearance='primary'>
+            <Button onClick={() => logIn()} appearance="primary">
               <MainTextWrapper>Log in or sign up to Snyk</MainTextWrapper>
             </Button>
           </ButtonWrapper>

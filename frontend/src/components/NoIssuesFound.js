@@ -26,7 +26,7 @@ export default function NoIssuesFound() {
     <GridColumn medium={12}>
       <ContentWrapper>
         <ImageWrapper>
-          <img src='/ico/noIssues.svg' alt='No issues found' />
+          <img src="/ico/noIssues.svg" alt="No issues found" />
         </ImageWrapper>
         <H1TextWrapper>All good, no issues found</H1TextWrapper>
       </ContentWrapper>

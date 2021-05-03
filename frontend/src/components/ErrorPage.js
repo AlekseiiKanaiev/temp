@@ -31,19 +31,20 @@ const H1TextWrapper = styled.h1`
 
 export default function ErrorPage({ error }) {
   return (
-    <Grid layout='fluid'>
+    <Grid layout="fluid">
       <GridColumn medium={12}>
         <ContentWrapper>
           <ImageWrapper>
-            <img src='/ico/errorImporting.svg' alt='error importing' />
+            <img src="/ico/errorImporting.svg" alt="error importing" />
           </ImageWrapper>
           <H1TextWrapper>{error}</H1TextWrapper>
           <TextWrapper>
-            Please try again later or{' '}
+            Please try again later or
+            {' '}
             <a
-              href='https://snyk.io/contact-us/'
-              target='_blank'
-              rel='noreferrer'
+              href="https://snyk.io/contact-us/"
+              target="_blank"
+              rel="noreferrer"
             >
               contact our support
             </a>

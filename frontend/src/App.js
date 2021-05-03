@@ -5,7 +5,9 @@ import { getIntegrationTokenOrg } from './services/SnykService';
 import Spinner from './components/Spinner';
 import ErrorPage from './components/ErrorPage';
 
-function App({ jwtToken, username, repoOwner, repoSlug, repoMainBranch }) {
+function App({
+  jwtToken, username, repoOwner, repoSlug, repoMainBranch,
+}) {
   const [loading, setLoading] = useState(true);
   const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);
   const [integrationParams, setIntegrationParams] = useState({
@@ -45,9 +47,9 @@ function App({ jwtToken, username, repoOwner, repoSlug, repoMainBranch }) {
       return <ErrorPage error={error} />;
     }
     if (
-      integrationParams.integrated &&
-      integrationParams.token &&
-      integrationParams.org
+      integrationParams.integrated
+      && integrationParams.token
+      && integrationParams.org
     ) {
       return (
         <SnykProjects

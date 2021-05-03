@@ -19,7 +19,9 @@ const H2TextWrapper = styled.h2`
   line-height: 28px;
 `;
 
-export default function ProjectList({ projects, jwtToken, orgname, repoSlug }) {
+export default function ProjectList({
+  projects, jwtToken, orgname, repoSlug,
+}) {
   const [projectId, setProjectId] = useState();
 
   const totalIssueCounts = (projects) => {
@@ -63,7 +65,9 @@ export default function ProjectList({ projects, jwtToken, orgname, repoSlug }) {
       <GridColumn medium={12}>
         <ContainerWrapper>
           <H2TextWrapper>
-            Security insights {projectId && 'for '}
+            Security insights
+            {' '}
+            {projectId && 'for '}
             {projectId && (
               <ProjectName
                 name={project.name}

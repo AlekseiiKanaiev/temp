@@ -8,6 +8,7 @@ import {
   addIntegration,
   deleteOrg,
   getIntegrationId,
+  sendToAnalytics,
 } from '../../services/SnykService';
 import Spinner from '../Spinner';
 
@@ -116,6 +117,21 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
         } else if (result.code) {
           setException(result.message);
         } else {
+          sendToAnalytics(jwtToken, {
+            type: 'track',
+            eventMessage: {
+              userId: '{snykorgid}',
+              event: 'connect_app_integration_created',
+              properties: {
+                client_key: '{clientkey}',
+                workspace_name: '{workspacename}',
+                workspace_id: '{workspaceid}',
+                bb_user_id: '{bbuserid}',
+                snyk_user_id: '{snykuserid}',
+                snyk_org_id: '{snykorgid}',
+              },
+            },
+          });
           callback(true);
         }
         setLoading(false);
@@ -142,7 +158,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
         {' '}
         <GridColumn medium={12}>
           <ContainerWrapper>
-            <Grid layout='fluid'>
+            <Grid layout="fluid">
               <GridColumn medium={6}>
                 <TextWrapper>
                   <H1TextWrapper>Integrate with Snyk</H1TextWrapper>
@@ -157,13 +173,15 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
                     <li>
                       <p>
                         <a
-                          href='https://bitbucket.org/account/settings/app-passwords/new'
-                          target='_blank'
-                          rel='noreferrer'
+                          href="https://bitbucket.org/account/settings/app-passwords/new"
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           Create an App Password
-                        </a>{' '}
-                        within your personal Bitbucket account{' '}
+                        </a>
+                        {' '}
+                        within your personal Bitbucket account
+                        {' '}
                       </p>
                     </li>
                     <li>
@@ -174,9 +192,13 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
                     </li>
                     <li>
                       <p>
-                        Click on{' '}
-                        <span style={{ fontWeight: 'bold' }}>Create</span> and
-                        paste the generated app Password{' '}
+                        Click on
+                        {' '}
+                        <span style={{ fontWeight: 'bold' }}>Create</span>
+                        {' '}
+                        and
+                        paste the generated app Password
+                        {' '}
                       </p>
                     </li>
                   </ul>
@@ -184,11 +206,12 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
                 {!username && (
                   <TextWrapper>
                     <BoldTextWrapper>
-                      Username (can be found in{' '}
+                      Username (can be found in
+                      {' '}
                       <a
-                        href='https://bitbucket.org/account/settings/'
-                        target='_blank'
-                        rel='noreferrer'
+                        href="https://bitbucket.org/account/settings/"
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         Personal Settings
                       </a>
@@ -196,7 +219,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
                     </BoldTextWrapper>
                     <Textfield
                       value={usernamel}
-                      placeholder='e.g. JoeBlogs'
+                      placeholder="e.g. JoeBlogs"
                       onChange={(event) => {
                         setException('');
                         setUsername(event.target.value);
@@ -208,7 +231,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
                   <BoldTextWrapper>App Password</BoldTextWrapper>
                   <Textfield
                     value={password}
-                    placeholder='e.g. AXd0shyPTjjZnuMoD7C1'
+                    placeholder="e.g. AXd0shyPTjjZnuMoD7C1"
                     onChange={(event) => {
                       setException('');
                       setPassword(event.target.value);
@@ -219,14 +242,14 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
               </GridColumn>
               <GridColumn medium={6}>
                 <ImageWrapper>
-                  <img src='/addAppPassword.png' alt='Add app password' />
+                  <img src="/addAppPassword.png" alt="Add app password" />
                 </ImageWrapper>
               </GridColumn>
               <GridColumn medium={12}>
                 <ButtonWrapper>
                   <LoadingButton
                     isDisabled={!(password && usernamel)}
-                    appearance='primary'
+                    appearance="primary"
                     onClick={() => requestIntegration()}
                     isLoading={loading}
                   >
@@ -248,11 +271,12 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
         </GridColumn>
         <GridColumn medium={12}>
           <AdditionalTextWrapper>
-            To learn more about our permissions requirements, visit the{' '}
+            To learn more about our permissions requirements, visit the
+            {' '}
             <a
-              href='https://support.snyk.io/hc/en-us/articles/360004032097-Bitbucket-Cloud-integration'
-              target='_blank'
-              rel='noreferrer'
+              href="https://support.snyk.io/hc/en-us/articles/360004032097-Bitbucket-Cloud-integration"
+              target="_blank"
+              rel="noreferrer"
             >
               Knowledge Center
             </a>

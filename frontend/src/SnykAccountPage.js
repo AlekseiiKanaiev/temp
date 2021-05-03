@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import AppAccount from './AppAccount';
 
 export default function SnykAccountPage({
-  jwtToken, username, currentuserid
+  jwtToken, username, currentuserid,
 }) {
   return (
     <div>

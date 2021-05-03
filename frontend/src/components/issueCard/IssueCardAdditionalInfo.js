@@ -20,8 +20,8 @@ export default function IssueCardAdditionalInfo({ projectLink }) {
           }
           <a
             href={projectLink}
-            target='_blank'
-            rel='noreferrer'
+            target="_blank"
+            rel="noreferrer"
             style={{ fontWeight: 'bold' }}
           >
             visit Snyk
