@@ -35,7 +35,7 @@ class AnalyticsClient {
     const clientSettings = await this.addon.settings.get('clientInfo', clientKey)
     const snykSettings = await this.addon.settings.get('snykSettings', clientKey)
     const workspaceName = snykSettings.workspacename
-    const workspaceId = clientSettings.principal.uuid
+    const workspaceId = clientSettings.principal.uuid.replace('{', '').replace('}', '')
     const bbUserId = clientSettings.actor.uuid
     const snykUserId = snykSettings.snykuserid
     const snykOrgId = snykSettings.orgid
