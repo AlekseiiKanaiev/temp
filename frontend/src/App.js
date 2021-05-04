@@ -11,7 +11,8 @@ function App({
   repoOwner, 
   repoSlug, 
   repoMainBranch,
-  currentuserid
+  currentuserid,
+  workspaceSlug
 }) {
   const [loading, setLoading] = useState(true);
   const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);
@@ -74,6 +75,8 @@ function App({
         username={username}
         integrationParams={integrationParams}
         currentuserid={currentuserid}
+        workspaceSlug={workspaceSlug}
+        repoSlug={repoSlug}
       />
     );
   };

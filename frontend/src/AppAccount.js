@@ -58,6 +58,8 @@ function AppAccount({ jwtToken, username, currentuserid }) {
         username={username}
         integrationParams={integrationParams}
         currentuserid={currentuserid}
+        workspaceSlug={''}
+        repoSlug={''}
       />
     );
   };

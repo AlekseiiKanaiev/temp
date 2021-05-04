@@ -56,7 +56,8 @@ class WebhookHandler {
         currentuserid: useruuid,
         repoOwner: owner,
         repoSlug: repoSlug,
-        repoMainBranch: repoMainBranch
+        repoMainBranch: repoMainBranch,
+        workspaceSlug: workspaceSlug
       })
     }).catch((err) => {
       logger.error({ message: err.toString(), clientkey: clientKey })

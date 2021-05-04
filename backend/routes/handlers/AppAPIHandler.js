@@ -134,7 +134,7 @@ class AppAPIHandler {
 
   checkAppPassword(req,res) {
     const body = req.body
-    AppPassword.checkAppPassword(body.username, body.password)
+    AppPassword.checkAppPassword(body.username, body.password, body.workspaceSlug, body.repoSlug)
     .then((result) => res.status(200).send(result))
     .catch((err) => {
       logger.error({clientkey: req.context.clientKey, message: err})

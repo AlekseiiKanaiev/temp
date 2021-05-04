@@ -156,9 +156,9 @@ export async function restartIntegration(jwtToken, currentuserid) {
   return res.json();
 }
 
-export async function checkAppPassword(jwtToken, username, appPassword) {
+export async function checkAppPassword(jwtToken, username, appPassword, workspaceSlug, repoSlug) {
   const url = '/app/checkapppassword'
-  const res = await executePost(jwtToken, url, {username: username, password : appPassword});
+  const res = await executePost(jwtToken, url, {username: username, password : appPassword, workspaceSlug, repoSlug});
 
   return getJsonFromRequestResult(res, true);
 }

@@ -20,6 +20,8 @@ export default function SnykIntegration({
   username,
   integrationParams,
   currentuserid,
+  workspaceSlug,
+  repoSlug
 }) {
   const [stage, setStage] = useState(0);
   const [organization, setOrganization] = useState();
@@ -72,6 +74,8 @@ export default function SnykIntegration({
             callback={callback}
             username={username}
             currentuserid={currentuserid}
+            repoSlug={repoSlug}
+            workspaceSlug={workspaceSlug}
           />
         )}
       </Grid>

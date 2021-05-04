@@ -92,7 +92,9 @@ export default function IntegrateWithSnyk({
   jwtToken, 
   callback, 
   username,
-  currentuserid
+  currentuserid,
+  workspaceSlug,
+  repoSlug,
  }) {
   const [password, setPassword] = useState('');
   const [usernamel, setUsername] = useState(username);
@@ -116,7 +118,7 @@ export default function IntegrateWithSnyk({
 
   const requestIntegration = () => {
     setLoading(true);
-    checkAppPassword(jwtToken, usernamel, password)
+    checkAppPassword(jwtToken, usernamel, password, workspaceSlug, repoSlug)
     .then((result) => {
       if (result.error) {
         setException(result.message);

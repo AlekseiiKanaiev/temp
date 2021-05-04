@@ -8,7 +8,8 @@ export default function SnykRepoPage({
   repoOwner, 
   repoSlug, 
   repoMainBranch,
-  currentuserid
+  currentuserid,
+  workspaceSlug
 }) {
   return (
     <div>
@@ -19,6 +20,7 @@ export default function SnykRepoPage({
         repoSlug={repoSlug}
         repoMainBranch={repoMainBranch}
         currentuserid={currentuserid}
+        workspaceSlug={workspaceSlug}
       />
     </div>
   );
@@ -32,6 +34,7 @@ window.addEventListener('load', () => {
   const repoSlug = document.getElementById('repoSlug').value;
   const repoMainBranch = document.getElementById('repoMainBranch').value;
   const currentuserid = document.getElementById('currentuserid').value;
+  const workspaceSlug = document.getElementById('workspaceSlug').value;
   wrapper ? ReactDOM.render(
     <SnykRepoPage
       jwtToken={jwtToken}
@@ -40,6 +43,7 @@ window.addEventListener('load', () => {
       repoSlug={repoSlug}
       repoMainBranch={repoMainBranch}
       currentuserid={currentuserid}
+      workspaceSlug={workspaceSlug}
     />,
     wrapper,
   ) : false;

@@ -53,7 +53,7 @@ class AnalyticsClient {
 
   async replaceTemplateVariables (clientKey, eventMessage) {
     const eventProperties = await this.getEventProperties(clientKey)
-    let eventMessageString = JSON.stringify(await this.addAttributesToEventMessage(eventProperties, eventMessage))
+    let eventMessageString = JSON.stringify(await this.addAttributesToEventMessage(eventProperties, eventMessage, clientKey))
     eventMessageString = eventMessageString.replace(/{clientkey}/g, clientKey)
     if (eventProperties.workspaceName) {
       eventMessageString = eventMessageString.replace(/{workspacename}/g, eventProperties.workspaceName)
@@ -76,7 +76,7 @@ class AnalyticsClient {
     return JSON.parse(eventMessageString)
   }
 
-  async addAttributesToEventMessage (eventProperties, eventMessage) {
+  async addAttributesToEventMessage (eventProperties, eventMessage, clientKey) {
     const eventMessageCopy = eventMessage
     if (eventProperties.anonymousId) {
       eventMessageCopy.anonymousId = eventProperties.anonymousId
@@ -95,6 +95,8 @@ class AnalyticsClient {
     if (eventProperties.snykUserId) { eventMessageCopy.userId = eventProperties.snykUserId }
     if (eventMessageCopy.properties.bb_user_id) {
       eventMessageCopy.properties.bb_user_id = eventMessageCopy.properties.bb_user_id.replace('{','').replace('}', '')
+      const bb_user_role = await this.getUserRoleInWorkspace(eventProperties.workspaceId, eventMessageCopy.properties.bb_user_id, clientKey)
+      eventMessageCopy.properties.bb_user_role = bb_user_role
     }
     //if (eventProperties.bbUserId) {
     //  eventMessageCopy.properties.bb_user_id = eventProperties.bbUserId
@@ -103,6 +105,23 @@ class AnalyticsClient {
       eventMessageCopy.properties.snyk_org_id = eventProperties.snykOrgId
     }
     return eventMessageCopy
+  }
+
+  async getUserRoleInWorkspace(workspaceId, userUuid, clientKey) {
+    const httpClient = this.addon.httpClient({clientKey})
+    return new Promise((resolve, reject) => {
+    //  httpClient.get(`/2.0/workspaces/{${workspaceId}}/members/{${userUuid}}`, function (err, resp, data) {
+      httpClient.get({ url: `/2.0/workspaces/{${workspaceId}}/permissions`, qs: {q : encodeURIComponent(`user.uuid=${userUuid}`)}}, function (err, resp, data) {
+        
+          if (err) {
+            logger.warn({ message: err, clientkey: clientKey })
+            resolve('')
+          } else {
+            const body = JSON.parse(data)
+            resolve('')
+          }
+      })
+  })
   }
 }
 module.exports = new AnalyticsClient()
