@@ -3,7 +3,12 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 export default function SnykRepoPage({
-  jwtToken, username, repoOwner, repoSlug, repoMainBranch,
+  jwtToken, 
+  username, 
+  repoOwner, 
+  repoSlug, 
+  repoMainBranch,
+  currentuserid
 }) {
   return (
     <div>
@@ -13,6 +18,7 @@ export default function SnykRepoPage({
         repoOwner={repoOwner}
         repoSlug={repoSlug}
         repoMainBranch={repoMainBranch}
+        currentuserid={currentuserid}
       />
     </div>
   );
@@ -25,6 +31,7 @@ window.addEventListener('load', () => {
   const repoOwner = document.getElementById('repoOwner').value;
   const repoSlug = document.getElementById('repoSlug').value;
   const repoMainBranch = document.getElementById('repoMainBranch').value;
+  const currentuserid = document.getElementById('currentuserid').value;
   wrapper ? ReactDOM.render(
     <SnykRepoPage
       jwtToken={jwtToken}
@@ -32,6 +39,7 @@ window.addEventListener('load', () => {
       repoOwner={repoOwner}
       repoSlug={repoSlug}
       repoMainBranch={repoMainBranch}
+      currentuserid={currentuserid}
     />,
     wrapper,
   ) : false;

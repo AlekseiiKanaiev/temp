@@ -86,16 +86,19 @@ class AnalyticsClient {
     } else {
       eventMessageCopy.properties = { connect_app_client_key: eventProperties.clientKey }
     }
-    if (eventProperties.worspaceName) {
+    if (eventProperties.workspaceName) {
       eventMessageCopy.properties.workspace_name = eventProperties.workspaceName
     }
-    if (eventProperties.worspaceId) {
-      eventMessageCopy.properties.workspace_name = eventProperties.workspaceId
+    if (eventProperties.workspaceId) {
+      eventMessageCopy.properties.workspace_id = eventProperties.workspaceId
     }
     if (eventProperties.snykUserId) { eventMessageCopy.userId = eventProperties.snykUserId }
-    if (eventProperties.bbUserId) {
-      eventMessageCopy.properties.bb_user_id = eventProperties.bbUserId
+    if (eventMessageCopy.properties.bb_user_id) {
+      eventMessageCopy.properties.bb_user_id = eventMessageCopy.properties.bb_user_id.replace('{','').replace('}', '')
     }
+    //if (eventProperties.bbUserId) {
+    //  eventMessageCopy.properties.bb_user_id = eventProperties.bbUserId
+    // }
     if (eventProperties.snykOrgId) {
       eventMessageCopy.properties.snyk_org_id = eventProperties.snykOrgId
     }

@@ -6,7 +6,12 @@ import Spinner from './components/Spinner';
 import ErrorPage from './components/ErrorPage';
 
 function App({
-  jwtToken, username, repoOwner, repoSlug, repoMainBranch,
+  jwtToken, 
+  username, 
+  repoOwner, 
+  repoSlug, 
+  repoMainBranch,
+  currentuserid
 }) {
   const [loading, setLoading] = useState(true);
   const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);
@@ -58,6 +63,7 @@ function App({
           repoSlug={repoSlug}
           repoMainBranch={repoMainBranch}
           skipImportProjectPage={skipImportProjectPage}
+          currentuserid={currentuserid}
         />
       );
     }
@@ -67,6 +73,7 @@ function App({
         callback={checkIntegration}
         username={username}
         integrationParams={integrationParams}
+        currentuserid={currentuserid}
       />
     );
   };

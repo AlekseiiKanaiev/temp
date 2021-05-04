@@ -1,8 +1,10 @@
+import * as jwt from 'atlassian-jwt';
 const request = require('request')
 const jwtDecode = require('jwt-decode')
 const { logger } = require('../logger')
 const BitbucketUser = require('./BitbucketUser')
 const AnalyticsClient = require('../modules/AnalyticsClient')
+const DbClient = require('../modules/DbClient')
 
 class TokenService {
   constructor (addon, clientKey) {
@@ -10,8 +12,16 @@ class TokenService {
     this.clientKey = clientKey
   }
 
-  async generateNewToken () {
-    const token = await this.generateUniqueToken()
+  async generateNewToken (currentUserId) {
+    const uniqueToken = await this.generateUniqueToken()
+    const clientInfo = await DbClient.getClientInfo(this.addon, this.clientKey)
+    const tokenData = {
+      "currentUserId": currentUserId,
+      "uniquetoken": uniqueToken
+    };
+   
+    const secret = clientInfo.sharedSecret;
+    const token = jwt.encode(tokenData, secret);
     await this.updateCurrentTokenForClient(token)
     return token
   }
@@ -59,9 +69,9 @@ class TokenService {
     if (clientKey === '') {
       return { error: `client key for ${state} not found` }
     }
-
+    const clientInfo = await DbClient.getClientInfo(this.addon, clientKey)
     // const bitbucketUsername = await BitbucketUser.getUsernameByToken(code)
-
+    const decodedToken = jwt.decode(state, clientInfo.sharedSecret);
     const snykApiTokenBody = await this.getSnykApiToken(clientId, clientSecret, redirectUri, code, snykOauthUrl)
     if (!(snykApiTokenBody.access_token && snykApiTokenBody.refresh_token) && !snykApiTokenBody.error) {
       snykApiTokenBody.error = 'access_token or refresh_token not found'
@@ -74,18 +84,18 @@ class TokenService {
     const snykUserId = await this.getSnykUserName(snykApiTokenBody.access_token)
     snykApiTokenBody.snykUserId = snykUserId
     await this.saveSnykApiTokenToDb(snykApiTokenBody, clientKey)
-    await this.sendEventToAnalytics(snykUserId, clientKey)
+    await this.sendEventToAnalytics(snykUserId, clientKey, decodedToken.currentUserId)
     return snykApiTokenBody
   }
 
-  async sendEventToAnalytics (snykUserId, clientKey) {
+  async sendEventToAnalytics (snykUserId, clientKey, bbUserId) {
     const eventMessage = {
       userId: snykUserId,
       event: 'connect_app_user_authenticated',
       properties: {
         workspace_name: '{workspacename}',
         workspace_id: '{workspaceid}',
-        bb_user_id: '{bbuserid}'
+        bb_user_id: bbUserId
       }
     }
     await AnalyticsClient.sendEvent(clientKey, eventMessage)

@@ -136,9 +136,9 @@ export async function getImportJobDetails(jwtToken, jobUrl) {
   return getJsonFromRequestResult(res, false);
 }
 
-export async function getNewState(jwtToken) {
+export async function getNewState(jwtToken, currentuserid) {
   const url = '/app/state';
-  const res = await executePost(jwtToken, url, {});
+  const res = await executePost(jwtToken, url, {currentuserid:currentuserid});
 
   if (!res.ok) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);

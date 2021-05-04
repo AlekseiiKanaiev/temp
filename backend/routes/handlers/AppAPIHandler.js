@@ -144,8 +144,12 @@ class AppAPIHandler {
 
   restartIntegration (req, res) {
     const { clientKey } = req.context
+    const body = req.body
     const eventMessage = {
       event: 'connect_app_reset_settings',
+      properties : {
+        bb_user_id: body.currentuserid
+      }
     }
     AnalyticsClient.sendEvent(clientKey, eventMessage)
       .then(() => {
@@ -166,10 +170,11 @@ class AppAPIHandler {
   }
 
   setState (req, res) {
+    const body = req.body
     const clientKey = req.context.clientKey
     const tokenService = new TokenService(this.addon, clientKey)
     const redirectUri = tokenService.getRedirectUri(this.addon.config.localBaseUrl())
-    tokenService.generateNewToken()
+    tokenService.generateNewToken(body.currentuserid)
       .then((state) => {
         if (state === '') {
           return res.status(status.BAD_REQUEST).send('')

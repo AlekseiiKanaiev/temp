@@ -57,6 +57,7 @@ function AppAccount({ jwtToken, username, currentuserid }) {
         callback={checkIntegration}
         username={username}
         integrationParams={integrationParams}
+        currentuserid={currentuserid}
       />
     );
   };

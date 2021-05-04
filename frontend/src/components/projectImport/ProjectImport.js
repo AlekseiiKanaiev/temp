@@ -16,17 +16,14 @@ export default function ProjectImport({
   refreshProjects,
   setErrorsOnImport,
   skipImportProjectPage,
+  currentuserid
 }) {
   const eventMessage = {
     type: 'track',
     eventMessage: {
-      userId: '{snykuserid}',
       event: 'connect_app_repo_imported',
       properties: {
-        workspace_name: '{workspacename}',
-        workspace_id: '{workspaceid}',
-        bb_user_id: '{bbuserid}',
-        snyk_org_id: '{snykorgid}',
+        bb_user_id: currentuserid,
         repo_slug: `${repoOwner}/${repoSlug}`,
         import_result: 'error',
       },

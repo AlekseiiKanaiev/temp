@@ -88,7 +88,12 @@ const BoldTextWrapper = styled.label`
   line-height: 16px;
 `;
 
-export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
+export default function IntegrateWithSnyk({ 
+  jwtToken, 
+  callback, 
+  username,
+  currentuserid
+ }) {
   const [password, setPassword] = useState('');
   const [usernamel, setUsername] = useState(username);
   const [exception, setException] = useState('');
@@ -119,13 +124,9 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
         sendToAnalytics(jwtToken, {
           type: 'track',
           eventMessage: {
-            userId: '{snykorgid}',
             event: 'connect_app_integration_created',
             properties: {
-              workspace_name: '{workspacename}',
-              workspace_id: '{workspaceid}',
-              bb_user_id: '{bbuserid}',
-              snyk_org_id: '{snykorgid}',
+              bb_user_id: currentuserid,
               result: 'error',
               error_message: result.message
             },
@@ -139,13 +140,9 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
               sendToAnalytics(jwtToken, {
                 type: 'track',
                 eventMessage: {
-                  userId: '{snykorgid}',
                   event: 'connect_app_integration_created',
                   properties: {
-                    workspace_name: '{workspacename}',
-                    workspace_id: '{workspaceid}',
-                    bb_user_id: '{bbuserid}',
-                    snyk_org_id: '{snykorgid}',
+                    bb_user_id: currentuserid,
                     result: 'error',
                     error_message: result.message
                   },
@@ -156,13 +153,9 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
               sendToAnalytics(jwtToken, {
                 type: 'track',
                 eventMessage: {
-                  userId: '{snykorgid}',
                   event: 'connect_app_integration_created',
                   properties: {
-                    workspace_name: '{workspacename}',
-                    workspace_id: '{workspaceid}',
-                    bb_user_id: '{bbuserid}',
-                    snyk_org_id: '{snykorgid}',
+                    bb_user_id: currentuserid,
                     result: 'success'
                   },
                 },
