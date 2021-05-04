@@ -85,7 +85,7 @@ class TokenService {
       properties: {
         workspace_name: '{workspacename}',
         workspace_id: '{workspaceid}',
-        bb_user_id: '{bbuserid}',
+        bb_user_id: '{bbuserid}'
       }
     }
     await AnalyticsClient.sendEvent(clientKey, eventMessage)

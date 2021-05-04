@@ -2,6 +2,7 @@ const status = require('http-status')
 const { logger } = require('../../logger')
 const TokenService = require('../../modules/TokenService')
 const AnalyticsClient = require('../../modules/AnalyticsClient')
+const AppPassword = require('../../modules/AppPassword')
 
 class AppAPIHandler {
   constructor (addon, app) {
@@ -131,17 +132,20 @@ class AppAPIHandler {
     }
   }
 
+  checkAppPassword(req,res) {
+    const body = req.body
+    AppPassword.checkAppPassword(body.username, body.password)
+    .then((result) => res.status(200).send(result))
+    .catch((err) => {
+      logger.error({clientkey: req.context.clientKey, message: err})
+      res.status(400).send(err)
+    })
+  }
+
   restartIntegration (req, res) {
     const { clientKey } = req.context
     const eventMessage = {
-      userId: '{snykuserid}',
       event: 'connect_app_reset_settings',
-      properties: {
-        workspace_name: '{workspacename}',
-        workspace_id: '{workspaceid}',
-        bb_user_id: '{bbuserid}',
-        snyk_org_id: '{snykorgid}'
-      }
     }
     AnalyticsClient.sendEvent(clientKey, eventMessage)
       .then(() => {

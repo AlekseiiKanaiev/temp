@@ -96,10 +96,10 @@ export async function getIntegrationId(jwtToken) {
   };
 }
 
-export async function addIntegration(jwtToken, integrationToken, workspace) {
+export async function addIntegration(jwtToken, integrationToken, username) {
   const url = '/snyk/org/orgid/integrations';
   const body = defaultIntegrationBody;
-  body.credentials = { username: workspace, password: integrationToken };
+  body.credentials = { username: username, password: integrationToken };
   const res = await executePost(jwtToken, url, body);
   return getJsonFromRequestResult(res, false);
 }
@@ -154,6 +154,13 @@ export async function restartIntegration(jwtToken, currentuserid) {
     throw new Error(`Could not fetch POST ${url}, received ${res}`);
   }
   return res.json();
+}
+
+export async function checkAppPassword(jwtToken, username, appPassword) {
+  const url = '/app/checkapppassword'
+  const res = await executePost(jwtToken, url, {username: username, password : appPassword});
+
+  return getJsonFromRequestResult(res, true);
 }
 
 export async function sendToAnalytics(jwtToken, eventMessage) {
@@ -268,21 +275,18 @@ async function executeDelete(jwtToken, uri) {
   return res;
 }
 
-async function getJsonFromRequestResult(res, isArray) {
+async function getJsonFromRequestResult(res, shortError) {
   let ret = {};
   if (!res.ok) {
     console.error(`Could not fetch GET ${res.url}, received ${res}`);
     ret.error = true;
-    ret.message = `Could not fetch GET ${res.url}, received ${res.status} ${await res.text()}`;
-    if (isArray) {
-      ret.json = [];
+    if (shortError) {
+      ret.message = (await res.json()).message
+    } else {
+      ret.message = `Could not fetch GET ${res.url}, received ${res.status} ${await res.text()}`;
     }
   } else {
-    if (isArray) {
-      ret = { json: await res.json() };
-    } else {
       ret = await res.json();
-    }
     if (!ret.error) {
       ret.error = false;
     }

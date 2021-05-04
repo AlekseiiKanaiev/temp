@@ -9,6 +9,7 @@ import {
   deleteOrg,
   getIntegrationId,
   sendToAnalytics,
+  checkAppPassword,
 } from '../../services/SnykService';
 import Spinner from '../Spinner';
 
@@ -110,30 +111,38 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
 
   const requestIntegration = () => {
     setLoading(true);
-    addIntegration(jwtToken, password, usernamel)
-      .then((result) => {
-        if (result.error) {
-          setException(result.message);
-        } else if (result.code) {
-          setException(result.message);
-        } else {
-          sendToAnalytics(jwtToken, {
-            type: 'track',
-            eventMessage: {
-              userId: '{snykorgid}',
-              event: 'connect_app_integration_created',
-              properties: {
-                workspace_name: '{workspacename}',
-                workspace_id: '{workspaceid}',
-                bb_user_id: '{bbuserid}',
-                snyk_org_id: '{snykorgid}',
-              },
-            },
-          });
-          callback(true);
-        }
+    checkAppPassword(jwtToken, usernamel, password)
+    .then((result) => {
+      if (result.error) {
+        setException(result.message);
         setLoading(false);
-      })
+      } else {   
+        addIntegration(jwtToken, password, usernamel)
+          .then((result) => {
+            if (result.error) {
+              setException(result.message);
+            } else if (result.code) {
+              setException(result.message);
+            } else {
+              sendToAnalytics(jwtToken, {
+                type: 'track',
+                eventMessage: {
+                  userId: '{snykorgid}',
+                  event: 'connect_app_integration_created',
+                  properties: {
+                    workspace_name: '{workspacename}',
+                    workspace_id: '{workspaceid}',
+                    bb_user_id: '{bbuserid}',
+                    snyk_org_id: '{snykorgid}',
+                  },
+                },
+              });
+              callback(true);
+            }
+            setLoading(false);
+          })
+    }
+    })
       .catch((err) => {
         throw new Error(err);
       });

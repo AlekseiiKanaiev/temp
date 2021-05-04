@@ -76,15 +76,15 @@ class AnalyticsClient {
     return JSON.parse(eventMessageString)
   }
 
-  async addAttributesToEventMessage(eventProperties, eventMessage) {
-    let eventMessageCopy = eventMessage
+  async addAttributesToEventMessage (eventProperties, eventMessage) {
+    const eventMessageCopy = eventMessage
     if (eventProperties.anonymousId) {
       eventMessageCopy.anonymousId = eventProperties.anonymousId
     }
     if (eventMessage.properties) {
       eventMessageCopy.properties.connect_app_client_key = eventProperties.clientKey
     } else {
-      eventMessageCopy.properties = {connect_app_client_key : eventProperties.clientKey}
+      eventMessageCopy.properties = { connect_app_client_key: eventProperties.clientKey }
     }
     if (eventProperties.worspaceName) {
       eventMessageCopy.properties.workspace_name = eventProperties.workspaceName
@@ -92,8 +92,7 @@ class AnalyticsClient {
     if (eventProperties.worspaceId) {
       eventMessageCopy.properties.workspace_name = eventProperties.workspaceId
     }
-    if (eventProperties.snykUserId) 
-    eventMessageCopy.userId = eventProperties.snykUserId
+    if (eventProperties.snykUserId) { eventMessageCopy.userId = eventProperties.snykUserId }
     if (eventProperties.bbUserId) {
       eventMessageCopy.properties.bb_user_id = eventProperties.bbUserId
     }

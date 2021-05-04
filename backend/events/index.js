@@ -1,4 +1,3 @@
-import request from 'request';
 import { v4 as uuidv4 } from 'uuid';
 const { logger } = require('../logger')
 const AnalyticsClient = require('../modules/AnalyticsClient')

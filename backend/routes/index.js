@@ -66,6 +66,7 @@ module.exports = function routes (app, addon) {
   app.post('/app/state', addon.checkValidToken(), appAPIHandler.setState.bind(appAPIHandler))
   app.post('/app/integration', addon.checkValidToken(), appAPIHandler.restartIntegration.bind(appAPIHandler))
   app.post('/app/analytics', addon.checkValidToken(), appAPIHandler.sendToAnalytics.bind(appAPIHandler))
+  app.post('/app/checkapppassword', addon.checkValidToken(), appAPIHandler.checkAppPassword.bind(appAPIHandler))
   app.get('/pages*', addon.authenticate(), webhookHander.pages.bind(webhookHander))
 
   // This route will handle webhooks from repositories this add-on is installed for.
