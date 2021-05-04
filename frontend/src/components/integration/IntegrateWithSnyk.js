@@ -116,14 +116,26 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
       if (result.error) {
         setException(result.message);
         setLoading(false);
+        sendToAnalytics(jwtToken, {
+          type: 'track',
+          eventMessage: {
+            userId: '{snykorgid}',
+            event: 'connect_app_integration_created',
+            properties: {
+              workspace_name: '{workspacename}',
+              workspace_id: '{workspaceid}',
+              bb_user_id: '{bbuserid}',
+              snyk_org_id: '{snykorgid}',
+              result: 'error',
+              error_message: result.message
+            },
+          },
+        });
       } else {   
         addIntegration(jwtToken, password, usernamel)
           .then((result) => {
-            if (result.error) {
+            if (result.error || result.code) {
               setException(result.message);
-            } else if (result.code) {
-              setException(result.message);
-            } else {
               sendToAnalytics(jwtToken, {
                 type: 'track',
                 eventMessage: {
@@ -134,6 +146,24 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
                     workspace_id: '{workspaceid}',
                     bb_user_id: '{bbuserid}',
                     snyk_org_id: '{snykorgid}',
+                    result: 'error',
+                    error_message: result.message
+                  },
+                },
+              });
+            }
+            else {
+              sendToAnalytics(jwtToken, {
+                type: 'track',
+                eventMessage: {
+                  userId: '{snykorgid}',
+                  event: 'connect_app_integration_created',
+                  properties: {
+                    workspace_name: '{workspacename}',
+                    workspace_id: '{workspaceid}',
+                    bb_user_id: '{bbuserid}',
+                    snyk_org_id: '{snykorgid}',
+                    result: 'success'
                   },
                 },
               });
@@ -141,6 +171,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username }) {
             }
             setLoading(false);
           })
+        
     }
     })
       .catch((err) => {
