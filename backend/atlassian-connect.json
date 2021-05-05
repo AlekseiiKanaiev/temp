@@ -38,12 +38,64 @@
                     "height": 24
                 },
                 "conditions": [
-                    {
-                        "condition": "has_permission",
-                        "invert": false,
-                        "params": {
-                            "permission": "write"
-                        }
+                    {"type": "or",
+                     "conditions": [
+                        {    "conditions": [
+                                {
+                                    "type": "or", 
+                                    "conditions" :[
+                                        {
+                                            "condition": "has_account_permission",
+                                            "invert": false,
+                                            "params": {
+                                                "permission": "collaborator"
+                                            }
+                                        },
+                                        {
+                                            "condition": "has_permission",
+                                            "invert": false,
+                                            "params": {
+                                                "permission": "read"
+                                            }
+                                        }
+                                    ]   
+                                    
+                                },
+                                {
+                                    "condition": "is_repo_private",
+                                    "target": "repository"
+                                }
+                            ]
+                        },
+                        {    "conditions": [
+                            {
+                                "type": "or", 
+                                "conditions" :[
+                                    {
+                                        "condition": "has_account_permission",
+                                        "invert": false,
+                                        "params": {
+                                            "permission": "collaborator"
+                                        }
+                                    },
+                                    {
+                                        "condition": "has_permission",
+                                        "invert": false,
+                                        "params": {
+                                            "permission": "write"
+                                        }
+                                    }
+                                ]   
+                                
+                            },
+                            {
+                                "condition": "is_repo_private",
+                                "invert": true,
+                                "target": "repository"
+                            }
+                        ]
+                    }
+                    ]
                     }
                 ]
             }

@@ -95,8 +95,8 @@ class AnalyticsClient {
     if (eventProperties.snykUserId) { eventMessageCopy.userId = eventProperties.snykUserId }
     if (eventMessageCopy.properties.bb_user_id) {
       eventMessageCopy.properties.bb_user_id = eventMessageCopy.properties.bb_user_id.replace('{', '').replace('}', '')
-      const bbUserRole = await this.getUserRoleInWorkspace(eventProperties.workspaceId, eventMessageCopy.properties.bb_user_id, clientKey)
-      eventMessageCopy.properties.bb_user_role = bbUserRole
+      //const bbUserRole = await this.getUserRoleInWorkspace(eventProperties.workspaceId, eventMessageCopy.properties.bb_user_id, clientKey)
+      //eventMessageCopy.properties.bb_user_role = bbUserRole
     }
     // if (eventProperties.bbUserId) {
     //  eventMessageCopy.properties.bb_user_id = eventProperties.bbUserId
