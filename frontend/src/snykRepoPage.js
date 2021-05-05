@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 export default function SnykRepoPage({
-  jwtToken, 
-  username, 
-  repoOwner, 
-  repoSlug, 
+  jwtToken,
+  username,
+  repoOwner,
+  repoSlug,
   repoMainBranch,
   currentuserid,
-  workspaceSlug
+  workspaceSlug,
 }) {
   return (
     <div>

@@ -1,4 +1,4 @@
-import * as jwt from 'atlassian-jwt';
+import * as jwt from 'atlassian-jwt'
 const request = require('request')
 const jwtDecode = require('jwt-decode')
 const { logger } = require('../logger')
@@ -16,12 +16,12 @@ class TokenService {
     const uniqueToken = await this.generateUniqueToken()
     const clientInfo = await DbClient.getClientInfo(this.addon, this.clientKey)
     const tokenData = {
-      "currentUserId": currentUserId,
-      "uniquetoken": uniqueToken
-    };
-   
-    const secret = clientInfo.sharedSecret;
-    const token = jwt.encode(tokenData, secret);
+      currentUserId: currentUserId,
+      uniquetoken: uniqueToken
+    }
+
+    const secret = clientInfo.sharedSecret
+    const token = jwt.encode(tokenData, secret)
     await this.updateCurrentTokenForClient(token)
     return token
   }
@@ -71,7 +71,7 @@ class TokenService {
     }
     const clientInfo = await DbClient.getClientInfo(this.addon, clientKey)
     // const bitbucketUsername = await BitbucketUser.getUsernameByToken(code)
-    const decodedToken = jwt.decode(state, clientInfo.sharedSecret);
+    const decodedToken = jwt.decode(state, clientInfo.sharedSecret)
     const snykApiTokenBody = await this.getSnykApiToken(clientId, clientSecret, redirectUri, code, snykOauthUrl)
     if (!(snykApiTokenBody.access_token && snykApiTokenBody.refresh_token) && !snykApiTokenBody.error) {
       snykApiTokenBody.error = 'access_token or refresh_token not found'

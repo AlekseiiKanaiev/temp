@@ -16,7 +16,7 @@ export default function ProjectImport({
   refreshProjects,
   setErrorsOnImport,
   skipImportProjectPage,
-  currentuserid
+  currentuserid,
 }) {
   const eventMessage = {
     type: 'track',

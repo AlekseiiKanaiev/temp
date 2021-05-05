@@ -6,13 +6,13 @@ import Spinner from './components/Spinner';
 import ErrorPage from './components/ErrorPage';
 
 function App({
-  jwtToken, 
-  username, 
-  repoOwner, 
-  repoSlug, 
+  jwtToken,
+  username,
+  repoOwner,
+  repoSlug,
   repoMainBranch,
   currentuserid,
-  workspaceSlug
+  workspaceSlug,
 }) {
   const [loading, setLoading] = useState(true);
   const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);

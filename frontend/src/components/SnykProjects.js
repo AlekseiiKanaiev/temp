@@ -26,7 +26,7 @@ export default function SnykProjects({
   repoSlug,
   repoMainBranch,
   skipImportProjectPage,
-  currentuserid
+  currentuserid,
 }) {
   const [projects, setProjects] = useState();
   const [loading, setLoading] = useState(true);

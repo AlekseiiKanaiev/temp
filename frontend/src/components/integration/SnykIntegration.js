@@ -21,7 +21,7 @@ export default function SnykIntegration({
   integrationParams,
   currentuserid,
   workspaceSlug,
-  repoSlug
+  repoSlug,
 }) {
   const [stage, setStage] = useState(0);
   const [organization, setOrganization] = useState();
@@ -50,9 +50,11 @@ export default function SnykIntegration({
           </EventTrackerWrapper>
         </GridColumn>
         {stage === 0 && !processingOauth && !integrationParams.token && (
-          <LogIn  setProcessingOauth={setProcessingOauth} 
-                  jwtToken={jwtToken}
-                  currentuserid={currentuserid} />
+          <LogIn
+            setProcessingOauth={setProcessingOauth}
+            jwtToken={jwtToken}
+            currentuserid={currentuserid}
+          />
         )}
         {stage === 0 && processingOauth && !integrationParams.token && (
           <LogInSpinner

@@ -132,14 +132,14 @@ class AppAPIHandler {
     }
   }
 
-  checkAppPassword(req,res) {
+  checkAppPassword (req, res) {
     const body = req.body
     AppPassword.checkAppPassword(body.username, body.password, body.workspaceSlug, body.repoSlug)
-    .then((result) => res.status(200).send(result))
-    .catch((err) => {
-      logger.error({clientkey: req.context.clientKey, message: err})
-      res.status(400).send(err)
-    })
+      .then((result) => res.status(200).send(result))
+      .catch((err) => {
+        logger.error({ clientkey: req.context.clientKey, message: err })
+        res.status(400).send(err)
+      })
   }
 
   restartIntegration (req, res) {
@@ -147,7 +147,7 @@ class AppAPIHandler {
     const body = req.body
     const eventMessage = {
       event: 'connect_app_reset_settings',
-      properties : {
+      properties: {
         bb_user_id: body.currentuserid
       }
     }

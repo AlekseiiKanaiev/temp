@@ -88,14 +88,14 @@ const BoldTextWrapper = styled.label`
   line-height: 16px;
 `;
 
-export default function IntegrateWithSnyk({ 
-  jwtToken, 
-  callback, 
+export default function IntegrateWithSnyk({
+  jwtToken,
+  callback,
   username,
   currentuserid,
   workspaceSlug,
   repoSlug,
- }) {
+}) {
   const [password, setPassword] = useState('');
   const [usernamel, setUsername] = useState(username);
   const [exception, setException] = useState('');
@@ -119,56 +119,54 @@ export default function IntegrateWithSnyk({
   const requestIntegration = () => {
     setLoading(true);
     checkAppPassword(jwtToken, usernamel, password, workspaceSlug, repoSlug)
-    .then((result) => {
-      if (result.error) {
-        setException(result.message);
-        setLoading(false);
-        sendToAnalytics(jwtToken, {
-          type: 'track',
-          eventMessage: {
-            event: 'connect_app_integration_created',
-            properties: {
-              bb_user_id: currentuserid,
-              result: 'error',
-              error_message: result.message
+      .then((result) => {
+        if (result.error) {
+          setException(result.message);
+          setLoading(false);
+          sendToAnalytics(jwtToken, {
+            type: 'track',
+            eventMessage: {
+              event: 'connect_app_integration_created',
+              properties: {
+                bb_user_id: currentuserid,
+                result: 'error',
+                error_message: result.message,
+              },
             },
-          },
-        });
-      } else {   
-        addIntegration(jwtToken, password, usernamel)
-          .then((result) => {
-            if (result.error || result.code) {
-              setException(result.message);
-              sendToAnalytics(jwtToken, {
-                type: 'track',
-                eventMessage: {
-                  event: 'connect_app_integration_created',
-                  properties: {
-                    bb_user_id: currentuserid,
-                    result: 'error',
-                    error_message: result.message
+          });
+        } else {
+          addIntegration(jwtToken, password, usernamel)
+            .then((result) => {
+              if (result.error || result.code) {
+                setException(result.message);
+                sendToAnalytics(jwtToken, {
+                  type: 'track',
+                  eventMessage: {
+                    event: 'connect_app_integration_created',
+                    properties: {
+                      bb_user_id: currentuserid,
+                      result: 'error',
+                      error_message: result.message,
+                    },
                   },
-                },
-              });
-            }
-            else {
-              sendToAnalytics(jwtToken, {
-                type: 'track',
-                eventMessage: {
-                  event: 'connect_app_integration_created',
-                  properties: {
-                    bb_user_id: currentuserid,
-                    result: 'success'
+                });
+              } else {
+                sendToAnalytics(jwtToken, {
+                  type: 'track',
+                  eventMessage: {
+                    event: 'connect_app_integration_created',
+                    properties: {
+                      bb_user_id: currentuserid,
+                      result: 'success',
+                    },
                   },
-                },
-              });
-              callback(true);
-            }
-            setLoading(false);
-          })
-        
-    }
-    })
+                });
+                callback(true);
+              }
+              setLoading(false);
+            });
+        }
+      })
       .catch((err) => {
         throw new Error(err);
       });
