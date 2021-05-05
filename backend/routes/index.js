@@ -78,32 +78,9 @@ module.exports = function routes (app, addon) {
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 
   async function sendToAnalytics (settings, clientKey) {
-    if (settings && (settings.snykuserid || settings.anonymousid)) {
-      if (settings.snykuserid) {
-        const eventMessage = {
-          userId: '{snykuserid}',
+      const eventMessage = {
           event: 'connect_app_app_uninstalled',
-          properties: {
-            workspace_name: '{workspacename}',
-            workspace_id: '{workspaceid}',
-            bb_user_id: '{bbuserid}'
-          }
         }
         await AnalyticsClient.sendEvent(clientKey, eventMessage)
-      } else {
-        const eventMessage = {
-          anonymousId: '{anonymousid}',
-          event: 'connect_app_app_uninstalled',
-          properties: {
-            workspace_name: '{workspacename}',
-            workspace_id: '{workspaceid}',
-            bb_user_id: '{bbuserid}'
-          }
-        }
-        await AnalyticsClient.sendEvent(clientKey, eventMessage)
-      }
-    } else {
-      logger.error({ clientkey: clientKey, message: 'anonymousid and snykuserid not found in db on uninstall' })
-    }
   }
 }
