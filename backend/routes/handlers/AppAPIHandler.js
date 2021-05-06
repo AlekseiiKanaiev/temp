@@ -195,10 +195,15 @@ class AppAPIHandler {
         settings.orgname = req.body.name
         settings.orgslug = req.body.slug
         this.addon.settings.set('snykSettings', settings, clientKey)
-          .then(() => res.status(201).send({ id: settings.orgid, name: settings.orgname }))
-          .catch((err) => {
-            logger.error({ message: err.toString(), clientkey: clientKey })
-            return res.status(status.BAD_REQUEST).send('')
+          .then(() => {
+            const eventMessage = {
+              event: 'connect_app_organization_selected',
+              properties: {
+                bb_user_id: req.body.currentuserid
+              }
+            }
+            AnalyticsClient.sendEvent(clientKey, eventMessage)
+            .then(() => res.status(201).send({ id: settings.orgid, name: settings.orgname }))
           })
       }).catch((err) => {
         logger.error({ message: err.toString(), clientkey: clientKey })

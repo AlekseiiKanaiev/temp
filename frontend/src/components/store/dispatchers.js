@@ -31,6 +31,25 @@ import {
   };
   
   export const dispatchProjects = (dispatch, configuration, imported) => {
+    const projectTypes = ['rubygems',
+    'npm',
+    'yarn',
+    'yarn-workspace',
+    'maven',
+    'pip',
+    'sbt',
+    'gradle',
+    'golangdep',
+    'govendor',
+    'gomodules',
+    'nuget',
+    'paket',
+    'composer',
+    'golang',
+    'cocoapods',
+    'rpm',
+    'dockerfile' ]
+  
     const { jwtToken, repoOwner, repoSlug, currentUserId } = configuration;
     getSavedOrg(jwtToken)
       .then((result) => {
@@ -38,7 +57,7 @@ import {
         getProjects(jwtToken, `${repoOwner}/${repoSlug}:`)
           .then((result) => {
             const projects = result.projects
-              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`))
+              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`) && projectTypes.includes(project.type))
               .map((project) => ({
                 id: project.id,
                 name: project.name,

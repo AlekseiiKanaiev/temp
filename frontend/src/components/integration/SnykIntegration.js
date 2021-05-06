@@ -68,6 +68,7 @@ export default function SnykIntegration() {
             setOrganization={setOrganization}
             jwtToken={jwtToken}
             callback={callback}
+            currentUserId={currentUserId}
           />
         )}
         {stage === 2 && organization && (

@@ -68,6 +68,7 @@ export default function SelectIntegration({
   setOrganization,
   jwtToken,
   callback,
+  currentUserId,
 }) {
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
@@ -119,6 +120,7 @@ export default function SelectIntegration({
       id: orgJson.value,
       name: orgJson.label,
       slug: orgJson.orgslug,
+      currentuserid: currentUserId
     });
     setOrganization(orgJson.value);
     callback(true);
