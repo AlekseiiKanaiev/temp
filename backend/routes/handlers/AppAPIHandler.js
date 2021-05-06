@@ -108,10 +108,10 @@ class AppAPIHandler {
           return res.status(status.BAD_REQUEST).send(snykApiTokenBody.error)
         }
         // res.redirect(307, 'https://bitbucket.org/alex1mmmcprime/workspace/settings/addon/admin/snyk-bb-app-test/snyk-account-page');
-        // res.render('snyk-redirect-page', {})
-        return this.app.get('env') === 'development'
-          ? res.status(200).send({ code: code, snykApiTokenBody: snykApiTokenBody })
-          : res.status(200).send({ message: 'you can close the tab' })
+        res.render('snyk-redirect-page', {})
+        //return this.app.get('env') === 'development'
+        //  ? res.status(200).send({ code: code, snykApiTokenBody: snykApiTokenBody })
+        //  : res.status(200).send({ message: 'you can close the tab' })
       })
   }
 

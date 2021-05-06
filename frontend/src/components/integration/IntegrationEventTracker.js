@@ -11,7 +11,11 @@ const TextWrapper = styled.label`
 `;
 
 export default function IntegrationEventTracker({ stage }) {
-  const stagesList = ['Log in or sign up to Snyk', 'Integrate with Snyk'];
+  const stagesList = [
+    'Log in or sign up to Snyk',
+    'Select Organization',
+    'Integrate with Snyk',
+  ];
 
   const items = stagesList.map((item, idx) => {
     const wrapped = <TextWrapper>{item}</TextWrapper>;

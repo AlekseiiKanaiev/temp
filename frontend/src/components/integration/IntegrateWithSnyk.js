@@ -8,8 +8,8 @@ import {
   addIntegration,
   deleteOrg,
   getIntegrationId,
-  sendToAnalytics,
   checkAppPassword,
+  sendToAnalytics,
 } from '../../services/SnykService';
 import Spinner from '../Spinner';
 
@@ -88,14 +88,7 @@ const BoldTextWrapper = styled.label`
   line-height: 16px;
 `;
 
-export default function IntegrateWithSnyk({
-  jwtToken,
-  callback,
-  username,
-  currentuserid,
-  workspaceSlug,
-  repoSlug,
-}) {
+export default function IntegrateWithSnyk({ jwtToken, callback, username, workspaceSlug, repoSlug, currentUserId }) {
   const [password, setPassword] = useState('');
   const [usernamel, setUsername] = useState(username);
   const [exception, setException] = useState('');
@@ -128,7 +121,7 @@ export default function IntegrateWithSnyk({
             eventMessage: {
               event: 'connect_app_integration_created',
               properties: {
-                bb_user_id: currentuserid,
+                bb_user_id: currentUserId,
                 result: 'error',
                 error_message: result.message,
               },
@@ -144,7 +137,7 @@ export default function IntegrateWithSnyk({
                   eventMessage: {
                     event: 'connect_app_integration_created',
                     properties: {
-                      bb_user_id: currentuserid,
+                      bb_user_id: currentUserId,
                       result: 'error',
                       error_message: result.message,
                     },
@@ -156,7 +149,7 @@ export default function IntegrateWithSnyk({
                   eventMessage: {
                     event: 'connect_app_integration_created',
                     properties: {
-                      bb_user_id: currentuserid,
+                      bb_user_id: currentUserId,
                       result: 'success',
                     },
                   },
@@ -182,14 +175,18 @@ export default function IntegrateWithSnyk({
 
   const view = () => {
     if (formLoading) {
-      return <Spinner />;
+      return (
+        <GridColumn medium={12}>
+          <Spinner />
+        </GridColumn>
+      );
     }
     return (
       <>
         {' '}
         <GridColumn medium={12}>
           <ContainerWrapper>
-            <Grid layout="fluid">
+            <Grid layout='fluid'>
               <GridColumn medium={6}>
                 <TextWrapper>
                   <H1TextWrapper>Integrate with Snyk</H1TextWrapper>
@@ -204,15 +201,13 @@ export default function IntegrateWithSnyk({
                     <li>
                       <p>
                         <a
-                          href="https://bitbucket.org/account/settings/app-passwords/new"
-                          target="_blank"
-                          rel="noreferrer"
+                          href='https://bitbucket.org/account/settings/app-passwords/new'
+                          target='_blank'
+                          rel='noreferrer'
                         >
                           Create an App Password
-                        </a>
-                        {' '}
-                        within your personal Bitbucket account
-                        {' '}
+                        </a>{' '}
+                        within your personal Bitbucket account{' '}
                       </p>
                     </li>
                     <li>
@@ -223,13 +218,9 @@ export default function IntegrateWithSnyk({
                     </li>
                     <li>
                       <p>
-                        Click on
-                        {' '}
-                        <span style={{ fontWeight: 'bold' }}>Create</span>
-                        {' '}
-                        and
-                        paste the generated app Password
-                        {' '}
+                        Click on{' '}
+                        <span style={{ fontWeight: 'bold' }}>Create</span> and
+                        paste the generated app Password{' '}
                       </p>
                     </li>
                   </ul>
@@ -237,12 +228,11 @@ export default function IntegrateWithSnyk({
                 {!username && (
                   <TextWrapper>
                     <BoldTextWrapper>
-                      Username (can be found in
-                      {' '}
+                      Username (can be found in{' '}
                       <a
-                        href="https://bitbucket.org/account/settings/"
-                        target="_blank"
-                        rel="noreferrer"
+                        href='https://bitbucket.org/account/settings/'
+                        target='_blank'
+                        rel='noreferrer'
                       >
                         Personal Settings
                       </a>
@@ -250,7 +240,7 @@ export default function IntegrateWithSnyk({
                     </BoldTextWrapper>
                     <Textfield
                       value={usernamel}
-                      placeholder="e.g. JoeBlogs"
+                      placeholder='e.g. JoeBlogs'
                       onChange={(event) => {
                         setException('');
                         setUsername(event.target.value);
@@ -262,7 +252,7 @@ export default function IntegrateWithSnyk({
                   <BoldTextWrapper>App Password</BoldTextWrapper>
                   <Textfield
                     value={password}
-                    placeholder="e.g. AXd0shyPTjjZnuMoD7C1"
+                    placeholder='e.g. AXd0shyPTjjZnuMoD7C1'
                     onChange={(event) => {
                       setException('');
                       setPassword(event.target.value);
@@ -273,14 +263,14 @@ export default function IntegrateWithSnyk({
               </GridColumn>
               <GridColumn medium={6}>
                 <ImageWrapper>
-                  <img src="/addAppPassword.png" alt="Add app password" />
+                  <img src='/addAppPassword.png' alt='Add app password' />
                 </ImageWrapper>
               </GridColumn>
               <GridColumn medium={12}>
                 <ButtonWrapper>
                   <LoadingButton
                     isDisabled={!(password && usernamel)}
-                    appearance="primary"
+                    appearance='primary'
                     onClick={() => requestIntegration()}
                     isLoading={loading}
                   >
@@ -302,12 +292,11 @@ export default function IntegrateWithSnyk({
         </GridColumn>
         <GridColumn medium={12}>
           <AdditionalTextWrapper>
-            To learn more about our permissions requirements, visit the
-            {' '}
+            To learn more about our permissions requirements, visit the{' '}
             <a
-              href="https://support.snyk.io/hc/en-us/articles/360004032097-Bitbucket-Cloud-integration"
-              target="_blank"
-              rel="noreferrer"
+              href='https://support.snyk.io/hc/en-us/articles/360004032097-Bitbucket-Cloud-integration'
+              target='_blank'
+              rel='noreferrer'
             >
               Knowledge Center
             </a>

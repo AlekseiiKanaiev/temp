@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getIssues } from '../services/SnykService';
 import Spinner from './Spinner';
 import IssueCard from './issueCard/IssueCard';
-import ErrorPage from './ErrorPage';
+import ErrorPage from './routing/ErrorPage';
 
 export default function ProjectIssues({ jwtToken, projectId, projectLink }) {
   const [issues, setIssues] = useState([]);
@@ -10,15 +10,17 @@ export default function ProjectIssues({ jwtToken, projectId, projectLink }) {
 
   useEffect(() => {
     if (projectId) {
-      getIssues(jwtToken, projectId).then((result) => {
-        if (result.error) {
-          setError(result.message);
-        } else {
-          setIssues(result.issues);
-        }
-      }).catch((err) => {
-        throw new Error(err);
-      });
+      getIssues(jwtToken, projectId)
+        .then((result) => {
+          if (result.error) {
+            setError(result.message);
+          } else {
+            setIssues(result.issues);
+          }
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
     }
   }, [projectId, jwtToken]);
 
@@ -29,7 +31,9 @@ export default function ProjectIssues({ jwtToken, projectId, projectLink }) {
     return issues.length === 0 ? (
       <Spinner />
     ) : (
-      issues.map((issue) => <IssueCard issue={issue} projectLink={projectLink} />)
+      issues.map((issue) => (
+        <IssueCard issue={issue} projectLink={projectLink} />
+      ))
     );
   };
   return view();

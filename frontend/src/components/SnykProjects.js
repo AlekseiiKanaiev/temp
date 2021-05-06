@@ -1,16 +1,12 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Redirect } from 'react-resource-router';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import styled from 'styled-components';
+import { dispatchProjects } from './store/dispatchers';
 import ProjectList from './ProjectList';
 import ProjectImport from './projectImport/ProjectImport';
-import {
-  getProjects,
-  getSavedOrg,
-  sendToAnalytics,
-} from '../services/SnykService';
 import Spinner from './Spinner';
-import NoFilesDetected from './NoFilesDetected';
-import ErrorPage from './ErrorPage';
+import styled from 'styled-components';
 
 const H1TextWrapper = styled.h1`
   font-family: 'Open Sans';
@@ -20,106 +16,43 @@ const H1TextWrapper = styled.h1`
   line-height: 28px;
 `;
 
-export default function SnykProjects({
-  jwtToken,
-  repoOwner,
-  repoSlug,
-  repoMainBranch,
-  skipImportProjectPage,
-  currentuserid,
-}) {
-  const [projects, setProjects] = useState();
-  const [loading, setLoading] = useState(true);
-  const [imported, setImported] = useState(false);
-  const [orgName, setOrgName] = useState('');
-  const [errorsOnImport, setErrorsOnImport] = useState('');
+export default function SnykProjects() {
+  const configuration = useSelector((state) => state.configuration);
+  const { jwtToken } = configuration;
+  const { error } = useSelector((state) => state.error);
+  const { projects, imported } = useSelector((state) => state.projectsInfo);
+  const orgName = useSelector((state) => state.orgName);
+  const dispatch = useDispatch();
+
   useLayoutEffect(() => {
-    refreshProjects(false);
+    if (jwtToken) {
+      dispatchProjects(dispatch, configuration, false);
+    }
   }, [jwtToken]);
 
-  const refreshProjects = (imported) => {
-    getSavedOrg(jwtToken)
-      .then((result) => {
-        setOrgName(result.orgslug);
-        getProjects(jwtToken, `${repoOwner}/${repoSlug}:`)
-          .then((result) => {
-            const projects = result.projects
-              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`))
-              .map((project) => ({
-                id: project.id,
-                name: project.name,
-                type: project.type,
-                issueCounts: project.issueCountsBySeverity,
-                testedAt: project.lastTestedDate,
-              }));
-            setProjects(projects);
-            setLoading(false);
-            setImported(imported);
-            if (imported) {
-              sendToAnalytics(jwtToken, {
-                type: 'track',
-                eventMessage: {
-                  event: 'connect_app_repo_imported',
-                  properties: {
-                    bb_user_id: currentuserid,
-                    repo_slug: `${repoOwner}/${repoSlug}`,
-                    import_result: 'success',
-                    number_of_imported_projects: projects.length,
-                  },
-                },
-              });
-            }
-          })
-          .catch((err) => {
-            throw new Error(err);
-          });
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
-  };
-
   const show = () => {
-    if (loading) {
-      return <Spinner />;
+    if (error) {
+      return <Redirect to='/error' push={true} />;
     }
-    if (errorsOnImport) {
+    if (!orgName || projects === undefined) {
       return (
-        <ErrorPage
-          error={`Error importing this repository. ${errorsOnImport}`}
-        />
+        <GridColumn medium={12}>
+          <Spinner />
+        </GridColumn>
       );
     }
     if (projects.length === 0 && !imported) {
-      return (
-        <ProjectImport
-          jwtToken={jwtToken}
-          repoOwner={repoOwner}
-          repoSlug={repoSlug}
-          repoMainBranch={repoMainBranch}
-          refreshProjects={refreshProjects}
-          setErrorsOnImport={setErrorsOnImport}
-          skipImportProjectPage={skipImportProjectPage}
-          currentuserid={currentuserid}
-        />
-      );
+      return <ProjectImport />;
     }
     if (projects.length === 0 && imported) {
-      return <NoFilesDetected />;
+      return <Redirect to='/noFilesDetected' push={true} />;
     }
-    return (
-      <ProjectList
-        projects={projects}
-        jwtToken={jwtToken}
-        orgname={orgName}
-        repoSlug={repoSlug}
-      />
-    );
+    return <ProjectList projects={projects} orgname={orgName} />;
   };
 
   return (
     <Page>
-      <Grid layout="fluid">
+      <Grid layout='fluid'>
         <GridColumn medium={12}>
           <H1TextWrapper>Snyk</H1TextWrapper>
         </GridColumn>

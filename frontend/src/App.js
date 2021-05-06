@@ -1,87 +1,16 @@
-import React, { useState, useLayoutEffect } from 'react';
-import SnykProjects from './components/SnykProjects';
-import SnykIntegration from './components/integration/SnykIntegration';
-import { getIntegrationTokenOrg } from './services/SnykService';
-import Spinner from './components/Spinner';
-import ErrorPage from './components/ErrorPage';
+import React from 'react';
+import {
+  Router,
+  RouteComponent,
+  createBrowserHistory,
+} from 'react-resource-router';
 
-function App({
-  jwtToken,
-  username,
-  repoOwner,
-  repoSlug,
-  repoMainBranch,
-  currentuserid,
-  workspaceSlug,
-}) {
-  const [loading, setLoading] = useState(true);
-  const [skipImportProjectPage, setSkipImportProjectPage] = useState(false);
-  const [integrationParams, setIntegrationParams] = useState({
-    integrated: false,
-    token: false,
-    org: false,
-  });
-  const [error, setError] = useState('');
-
-  useLayoutEffect(() => {
-    checkIntegration(false);
-  }, [jwtToken]);
-  const checkIntegration = (skipImportProjectPage) => {
-    setSkipImportProjectPage(skipImportProjectPage);
-    getIntegrationTokenOrg(jwtToken)
-      .then((result) => {
-        if (result.error) {
-          setError(result.message);
-        }
-        setIntegrationParams({
-          integrated: result.integrated,
-          token: result.token,
-          org: result.org,
-        });
-        setLoading(false);
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
-  };
-
-  const view = () => {
-    if (loading) {
-      return <Spinner />;
-    }
-    if (error) {
-      return <ErrorPage error={error} />;
-    }
-    if (
-      integrationParams.integrated
-      && integrationParams.token
-      && integrationParams.org
-    ) {
-      return (
-        <SnykProjects
-          jwtToken={jwtToken}
-          repoOwner={repoOwner}
-          repoSlug={repoSlug}
-          repoMainBranch={repoMainBranch}
-          skipImportProjectPage={skipImportProjectPage}
-          currentuserid={currentuserid}
-        />
-      );
-    }
-    return (
-      <SnykIntegration
-        jwtToken={jwtToken}
-        callback={checkIntegration}
-        username={username}
-        integrationParams={integrationParams}
-        currentuserid={currentuserid}
-        workspaceSlug={workspaceSlug}
-        repoSlug={repoSlug}
-      />
-    );
-  };
-
-  return view();
+function App({ routes }) {
+  return (
+    <Router routes={routes} history={createBrowserHistory()}>
+      <RouteComponent />
+    </Router>
+  );
 }
 
 export default App;

@@ -1,19 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function ProjectName({
-  name, type, id, callback, repoSlug,
-}) {
+export default function ProjectName({ name, type, id, baseUrl, repoSlug }) {
   const ImageWrapper = styled.span`
     margin-right: 10px;
     vertical-align: middle;
-  `;
-
-  const LinkWrapper = styled.span`
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
   `;
 
   let icon = `${type}.svg`;
@@ -30,15 +21,16 @@ export default function ProjectName({
       </ImageWrapper>
       {repoSlug && (
         <>
-          <LinkWrapper onClick={() => callback(id)}>{repoSlug}</LinkWrapper>
-          /
-          {name.substring(name.indexOf(':') + 1)}
+          <a href={`${baseUrl}`} target='_parent'>
+            {repoSlug}
+          </a>
+          /{name.substring(name.indexOf(':') + 1)}
         </>
       )}
       {!repoSlug && (
-        <LinkWrapper onClick={() => callback(id)}>
+        <a href={`${baseUrl}?projectId=${id}`} target='_parent'>
           {name.substring(name.indexOf(':') + 1)}
-        </LinkWrapper>
+        </a>
       )}
     </>
   );

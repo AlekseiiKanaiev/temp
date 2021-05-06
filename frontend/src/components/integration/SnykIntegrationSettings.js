@@ -1,10 +1,13 @@
 import React, { useState, useLayoutEffect } from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Textfield from '@atlaskit/textfield';
 import { getSnykUser, getSavedOrg } from '../../services/SnykService';
 import Spinner from '../Spinner';
+import { restartIntegration } from '../../services/SnykService';
+import { dispatchIntegration } from '../store/dispatchers';
 
 const ContainerWrapper = styled.div`
   margin-left: 30px;
@@ -68,32 +71,41 @@ const ButtonTextWrapper = styled.label`
   font-size: 14px;
 `;
 
-export default function SnykIntegrationsSettings({ jwtToken, callback }) {
+export default function SnykIntegrationsSettings() {
   const [user, setUser] = useState('');
   const [organization, setOrganization] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { jwtToken, currentUserId } = useSelector((state) => state.configuration);
+  const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
-    getUserAndOrg();
-  }, [jwtToken]);
-  const getUserAndOrg = () => {
-    getSnykUser(jwtToken)
-      .then((result) => {
-        setUser(result.username);
-        getSavedOrg(jwtToken)
-          .then((result) => {
-            setOrganization(result.orgname);
-            setLoading(false);
-          })
-          .catch((err) => {
-            throw new Error(err);
-          });
-      })
+  const snykSettings = () => {
+    restartIntegration(jwtToken, currentUserId)
+      .then(() => dispatchIntegration(dispatch, false, jwtToken))
       .catch((err) => {
         throw new Error(err);
       });
   };
+
+  useLayoutEffect(() => {
+    if (jwtToken) {
+      getSnykUser(jwtToken)
+        .then((result) => {
+          setUser(result.username);
+          getSavedOrg(jwtToken)
+            .then((result) => {
+              setOrganization(result.orgname);
+              setLoading(false);
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+    }
+  }, [jwtToken]);
 
   const view = () => {
     if (loading) {
@@ -101,7 +113,7 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
     }
     return (
       <Page>
-        <Grid layout="fluid">
+        <Grid layout='fluid'>
           <GridColumn medium={6}>
             <ContainerWrapper>
               <ContentWrapper>
@@ -131,7 +143,7 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
                       text: <ButtonTextWrapper>Confirm</ButtonTextWrapper>,
                       onClick: () => {
                         setIsOpen(false);
-                        callback({ user, organization });
+                        snykSettings();
                       },
                     },
                     {
@@ -142,11 +154,11 @@ export default function SnykIntegrationsSettings({ jwtToken, callback }) {
                     },
                   ]}
                   onClose={() => setIsOpen(false)}
-                  heading={(
+                  heading={
                     <ModalH1TextWrapper>
                       This restarts the whole integration settings process
                     </ModalH1TextWrapper>
-                  )}
+                  }
                 >
                   <ModalGeneralTextWrapper>
                     Are you sure you want to continue?

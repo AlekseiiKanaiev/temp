@@ -17,7 +17,23 @@
     "modules": {
         "webhooks": [
             {
-                "event": "*",
+                "event": "pullrequest:created",
+                "url": "/webhook"
+            },
+            {
+                "event": "pullrequest:updated",
+                "url": "/webhook"
+            },
+            {
+                "event": "pullrequest:fulfilled",
+                "url": "/webhook"
+            },
+            {
+                "event": "pullrequest:rejected",
+                "url": "/webhook"
+            },
+            {
+                "event": "repo:push",
                 "url": "/webhook"
             }
         ],
@@ -120,6 +136,6 @@
             
           ]
     },
-    "scopes": ["account", "repository"],
+    "scopes": ["account", "repository", "pullrequest:write"],
     "contexts": ["account"]
 }

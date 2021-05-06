@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import VulnerabilityBanner from './VulnerabilityBanner';
@@ -19,20 +20,34 @@ const H2TextWrapper = styled.h2`
   line-height: 28px;
 `;
 
-export default function ProjectList({
-  projects, jwtToken, orgname, repoSlug,
-}) {
+export default function ProjectList({ projects, orgname }) {
   const [projectId, setProjectId] = useState();
+  const [baseUrl, setBaseUrl] = useState();
+
+  const { jwtToken, repoSlug } = useSelector((state) => state.configuration);
+
+  useEffect(() => {
+    AP.getLocation(function (location) {
+      const url = new URL(location);
+      setBaseUrl(url.href.replace(url.search, ''));
+      const id = url.searchParams.get('projectId');
+      if (id) {
+        setProjectId(id);
+      }
+    });
+  });
 
   const totalIssueCounts = (projects) => {
     let high = 0;
     let medium = 0;
     let low = 0;
-    projects.forEach((project) => {
-      high += project.issueCounts.high;
-      medium += project.issueCounts.medium;
-      low += project.issueCounts.low;
-    });
+    if (projects) {
+      projects.forEach((project) => {
+        high += project.issueCounts.high;
+        medium += project.issueCounts.medium;
+        low += project.issueCounts.low;
+      });
+    }
     return { high, medium, low };
   };
 
@@ -57,7 +72,7 @@ export default function ProjectList({
       />
     )
   ) : (
-    <ProjectTable projects={projects} callback={setProjectId} />
+    <ProjectTable projects={projects} baseUrl={baseUrl} />
   );
 
   return (
@@ -65,14 +80,12 @@ export default function ProjectList({
       <GridColumn medium={12}>
         <ContainerWrapper>
           <H2TextWrapper>
-            Security insights
-            {' '}
-            {projectId && 'for '}
+            Security insights {projectId && 'for '}
             {projectId && (
               <ProjectName
                 name={project.name}
                 type={project.type}
-                callback={setProjectId}
+                baseUrl={baseUrl}
                 repoSlug={repoSlug}
               />
             )}

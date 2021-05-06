@@ -1,10 +1,12 @@
 import React, { useState, useLayoutEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import IntegrationEventTracker from './IntegrationEventTracker';
 import IntegrateWithSnyk from './IntegrateWithSnyk';
 import LogIn from './LogIn';
 import SelectIntegration from './SelectIntegration';
+import { dispatchIntegration } from '../store/dispatchers';
 
 import LogInSpinner from './LogInSpinner';
 
@@ -14,49 +16,47 @@ const EventTrackerWrapper = styled.div`
   justify-content: center;
 `;
 
-export default function SnykIntegration({
-  jwtToken,
-  callback,
-  username,
-  integrationParams,
-  currentuserid,
-  workspaceSlug,
-  repoSlug,
-}) {
+export default function SnykIntegration() {
   const [stage, setStage] = useState(0);
   const [organization, setOrganization] = useState();
   const [processingOauth, setProcessingOauth] = useState(false);
+
+  const { jwtToken, username, currentUserId, workspaceSlug, repoSlug } = useSelector((state) => state.configuration);
+  const { token, org } = useSelector((state) => state.integration);
+  const dispatch = useDispatch();
+
+  const callback = (data) => {
+    dispatchIntegration(dispatch, data, jwtToken);
+  };
+
   useLayoutEffect(() => {
-    if (!integrationParams.token) {
+    if (!token) {
       setStage(0);
     }
-    if (integrationParams.token) {
+    if (token) {
       setStage(1);
     }
-    if (!integrationParams.org) {
+    if (!org) {
       setOrganization(undefined);
     }
-    if (integrationParams.org) {
+    if (org) {
+      setStage(2);
       setOrganization({ label: 'set', value: 'set' });
     }
-  }, [integrationParams]);
+  }, [token, org]);
 
   const view = () => (
     <Page>
-      <Grid layout="fluid">
+      <Grid layout='fluid'>
         <GridColumn medium={12}>
           <EventTrackerWrapper>
             <IntegrationEventTracker stage={stage} />
           </EventTrackerWrapper>
         </GridColumn>
-        {stage === 0 && !processingOauth && !integrationParams.token && (
-          <LogIn
-            setProcessingOauth={setProcessingOauth}
-            jwtToken={jwtToken}
-            currentuserid={currentuserid}
-          />
+        {stage === 0 && !processingOauth && !token && (
+          <LogIn setProcessingOauth={setProcessingOauth} jwtToken={jwtToken} currentUserId={currentUserId} />
         )}
-        {stage === 0 && processingOauth && !integrationParams.token && (
+        {stage === 0 && processingOauth && !token && (
           <LogInSpinner
             jwtToken={jwtToken}
             setStage={setStage}
@@ -70,14 +70,14 @@ export default function SnykIntegration({
             callback={callback}
           />
         )}
-        {stage === 1 && organization && (
+        {stage === 2 && organization && (
           <IntegrateWithSnyk
             jwtToken={jwtToken}
             callback={callback}
             username={username}
-            currentuserid={currentuserid}
-            repoSlug={repoSlug}
             workspaceSlug={workspaceSlug}
+            repoSlug={repoSlug}
+            currentUserId={currentUserId}
           />
         )}
       </Grid>
