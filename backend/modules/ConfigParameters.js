@@ -5,7 +5,7 @@ class ConfigParameters {
   allParametersExist (addon) {
     const { snykAnalyticsKey } = addon.config.snyk()
     let errorMessage = ''
-    if (snykAnalyticsKey === '$SNYKANALYTICSKEY') {
+    if (snykAnalyticsKey === '$ANALYTICS') {
       errorMessage += 'snykAnaliticsKey '
     }
     if (addon.config.clientId() === '$CLIENTID') {
