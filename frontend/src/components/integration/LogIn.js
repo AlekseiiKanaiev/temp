@@ -1,9 +1,11 @@
-import React, {useLayoutEffect} from 'react';
+import React, { useLayoutEffect } from 'react';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
-import {getNewState,
-        sendToAnalytics, } from '../../services/SnykService';
+import {
+  getNewState,
+  sendToAnalytics,
+} from '../../services/SnykService';
 
 const ContainerWrapper = styled.div`
   min-width: 650px;
@@ -57,7 +59,7 @@ export default function LogIn({
     setProcessingOauth(true);
   };
   useLayoutEffect(() => {
-    sendToAnalytics(jwtToken,{
+    sendToAnalytics(jwtToken, {
       type: 'track',
       eventMessage: {
         event: 'connect_app_page_view',
@@ -65,9 +67,9 @@ export default function LogIn({
           bb_user_id: currentUserId,
           viewed_page: 'sign_up',
         },
-      }  
-      })
-  })
+      },
+    });
+  });
 
   return (
     <GridColumn medium={12}>

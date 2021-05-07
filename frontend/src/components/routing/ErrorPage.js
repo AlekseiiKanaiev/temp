@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Page,{ Grid,  GridColumn } from '@atlaskit/page';
+import Page, { Grid, GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import { setError } from '../store/actions';
-import {sendToAnalytics} from '../../services/SnykService'
+import { sendToAnalytics } from '../../services/SnykService';
 
 const ImageWrapper = styled.div`
   margin-top: 50px;
@@ -57,7 +57,7 @@ const H1TextWrapper = styled.h1`
 
 export default function ErrorPage() {
   const exception = useSelector((state) => state.error);
-  const {jwtToken, currentUserId} = useSelector((state) => state.configuration);
+  const { jwtToken, currentUserId } = useSelector((state) => state.configuration);
   const [error] = useState(exception.error);
   const [message] = useState(exception.message);
   const [info] = useState(exception.info);
@@ -65,52 +65,53 @@ export default function ErrorPage() {
 
   useLayoutEffect(() => {
     dispatch(setError({}));
-    sendToAnalytics(jwtToken,{
+    sendToAnalytics(jwtToken, {
       type: 'track',
       eventMessage: {
         event: 'connect_app_page_view',
         properties: {
           bb_user_id: currentUserId,
           viewed_page: 'error',
-          error: error,
+          error,
           error_message: message,
-          error_info: info
+          error_info: info,
         },
-      }  
-      })
+      },
+    });
   }, []);
 
   return (
     <Page>
-    <Grid layout='fluid'>
-      <GridColumn medium={12}>
-        <ContentWrapper>
-          <ImageWrapper>
-            <img src='/ico/error.svg' alt='error importing' />
-          </ImageWrapper>
-          <H1TextWrapper>{error}</H1TextWrapper>
-          <TextWrapper>{message}</TextWrapper>
-          {info && (
+      <Grid layout="fluid">
+        <GridColumn medium={12}>
+          <ContentWrapper>
+            <ImageWrapper>
+              <img src="/ico/error.svg" alt="error importing" />
+            </ImageWrapper>
+            <H1TextWrapper>{error}</H1TextWrapper>
+            <TextWrapper>{message}</TextWrapper>
+            {info && (
             <InfoBlockWrapper>
               Additional info for support enquires:
               <InfoWrapper>
                 <p>{info}</p>
               </InfoWrapper>
             </InfoBlockWrapper>
-          )}
-          <TextWrapper>
-            Please try again later or{' '}
-            <a
-              href='https://snyk.io/contact-us/'
-              target='_blank'
-              rel='noreferrer'
-            >
-              contact our support
-            </a>
-          </TextWrapper>
-        </ContentWrapper>
-      </GridColumn>
-    </Grid>
+            )}
+            <TextWrapper>
+              Please try again later or
+              {' '}
+              <a
+                href="https://snyk.io/contact-us/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                contact our support
+              </a>
+            </TextWrapper>
+          </ContentWrapper>
+        </GridColumn>
+      </Grid>
     </Page>
   );
 }

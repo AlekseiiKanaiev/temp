@@ -21,7 +21,9 @@ export default function SnykIntegration() {
   const [organization, setOrganization] = useState();
   const [processingOauth, setProcessingOauth] = useState(false);
 
-  const { jwtToken, username, currentUserId, workspaceSlug, repoSlug } = useSelector((state) => state.configuration);
+  const {
+    jwtToken, username, currentUserId, workspaceSlug, repoSlug,
+  } = useSelector((state) => state.configuration);
   const { token, org } = useSelector((state) => state.integration);
   const dispatch = useDispatch();
 
@@ -46,14 +48,18 @@ export default function SnykIntegration() {
 
   const view = () => (
     <Page>
-      <Grid layout='fluid'>
+      <Grid layout="fluid">
         <GridColumn medium={12}>
           <EventTrackerWrapper>
             <IntegrationEventTracker stage={stage} />
           </EventTrackerWrapper>
         </GridColumn>
         {stage === 0 && !processingOauth && !token && (
-          <LogIn setProcessingOauth={setProcessingOauth} jwtToken={jwtToken} currentUserId={currentUserId} />
+          <LogIn
+            setProcessingOauth={setProcessingOauth}
+            jwtToken={jwtToken}
+            currentUserId={currentUserId}
+          />
         )}
         {stage === 0 && processingOauth && !token && (
           <LogInSpinner

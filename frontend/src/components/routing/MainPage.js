@@ -1,9 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { dispatchIntegration } from '../store/dispatchers';
 import { Redirect } from 'react-resource-router';
-import SnykIntegration from '../../components/integration/SnykIntegration';
-import Spinner from '../../components/Spinner';
+import { dispatchIntegration } from '../store/dispatchers';
+import SnykIntegration from '../integration/SnykIntegration';
+import Spinner from '../Spinner';
 
 function MainPage({ context }) {
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ function MainPage({ context }) {
 
   const view = () => {
     if (error) {
-      return <Redirect to='/error' push={true} />;
+      return <Redirect to="/error" push />;
     }
     if (loading) {
       return <Spinner />;

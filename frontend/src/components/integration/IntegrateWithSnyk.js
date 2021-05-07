@@ -5,7 +5,6 @@ import ErrorIcon from '@atlaskit/icon/glyph/error';
 import styled from 'styled-components';
 import Button, { LoadingButton } from '@atlaskit/button';
 import Textfield from '@atlaskit/textfield';
-import { ErrorMessage } from '@atlaskit/form';
 import {
   addIntegration,
   deleteOrg,
@@ -94,7 +93,9 @@ const BoldTextWrapper = styled.label`
 
 const Icon = <ErrorIcon label="" secondaryColor="inherit" />;
 
-export default function IntegrateWithSnyk({ jwtToken, callback, username, workspaceSlug, repoSlug, currentUserId }) {
+export default function IntegrateWithSnyk({
+  jwtToken, callback, username, workspaceSlug, repoSlug, currentUserId,
+}) {
   const [password, setPassword] = useState('');
   const [usernamel, setUsername] = useState(username);
   const [exception, setException] = useState('');
@@ -174,18 +175,16 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
   const backButton = () => {
     getOrganizations(jwtToken).then((result) => {
       deleteOrg(jwtToken).then(() => {
-      if (result.orgs.length === 1 ) {
-        deleteToken(jwtToken)
-        .then(() => callback(true))
-      } else {
-        callback(true)
-      }
-      
-    })
-      
+        if (result.orgs.length === 1) {
+          deleteToken(jwtToken)
+            .then(() => callback(true));
+        } else {
+          callback(true);
+        }
+      });
     }).catch((err) => {
-      throw new Error(err)
-    })
+      throw new Error(err);
+    });
   };
 
   const view = () => {
@@ -199,16 +198,17 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
     return (
       <>
         {' '}
-        
-          <GridColumn medium={12}>
-          {exception &&(<ContainerWrapper>
-          <Banner icon={Icon} isOpen={exception} appearance="error">
-              {exception}
+
+        <GridColumn medium={12}>
+          {exception && (
+            <ContainerWrapper>
+              <Banner icon={Icon} isOpen={exception} appearance="error">
+                {exception}
               </Banner>
-          </ContainerWrapper>
+            </ContainerWrapper>
           )}
           <ContainerWrapper>
-            <Grid layout='fluid'>
+            <Grid layout="fluid">
               <GridColumn medium={6}>
                 <TextWrapper>
                   <H1TextWrapper>Integrate with Snyk</H1TextWrapper>
@@ -223,13 +223,15 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                     <li>
                       <p>
                         <a
-                          href='https://bitbucket.org/account/settings/app-passwords/new'
-                          target='_blank'
-                          rel='noreferrer'
+                          href="https://bitbucket.org/account/settings/app-passwords/new"
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           Create an App Password
-                        </a>{' '}
-                        within your personal Bitbucket account{' '}
+                        </a>
+                        {' '}
+                        within your personal Bitbucket account
+                        {' '}
                       </p>
                     </li>
                     <li>
@@ -240,9 +242,13 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                     </li>
                     <li>
                       <p>
-                        Click on{' '}
-                        <span style={{ fontWeight: 'bold' }}>Create</span> and
-                        paste the generated app Password{' '}
+                        Click on
+                        {' '}
+                        <span style={{ fontWeight: 'bold' }}>Create</span>
+                        {' '}
+                        and
+                        paste the generated app Password
+                        {' '}
                       </p>
                     </li>
                   </ul>
@@ -250,11 +256,12 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                 {!username && (
                   <TextWrapper>
                     <BoldTextWrapper>
-                      Username (can be found in{' '}
+                      Username (can be found in
+                      {' '}
                       <a
-                        href='https://bitbucket.org/account/settings/'
-                        target='_blank'
-                        rel='noreferrer'
+                        href="https://bitbucket.org/account/settings/"
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         Personal Settings
                       </a>
@@ -262,7 +269,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                     </BoldTextWrapper>
                     <Textfield
                       value={usernamel}
-                      placeholder='e.g. JoeBlogs'
+                      placeholder="e.g. JoeBlogs"
                       onChange={(event) => {
                         setException('');
                         setUsername(event.target.value);
@@ -275,7 +282,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                   <Textfield
                     type="password"
                     value={password}
-                    placeholder='e.g. AXd0shyPTjjZnuMoD7C1'
+                    placeholder="e.g. AXd0shyPTjjZnuMoD7C1"
                     onChange={(event) => {
                       setException('');
                       setPassword(event.target.value);
@@ -285,14 +292,14 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
               </GridColumn>
               <GridColumn medium={6}>
                 <ImageWrapper>
-                  <img src='/addAppPassword.png' alt='Add app password' />
+                  <img src="/addAppPassword.png" alt="Add app password" />
                 </ImageWrapper>
               </GridColumn>
               <GridColumn medium={12}>
                 <ButtonWrapper>
                   <LoadingButton
                     isDisabled={!(password && usernamel)}
-                    appearance='primary'
+                    appearance="primary"
                     onClick={() => requestIntegration()}
                     isLoading={loading}
                   >
@@ -314,11 +321,12 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
         </GridColumn>
         <GridColumn medium={12}>
           <AdditionalTextWrapper>
-            To learn more about our permissions requirements, visit the{' '}
+            To learn more about our permissions requirements, visit the
+            {' '}
             <a
-              href='https://support.snyk.io/hc/en-us/articles/360004032097-Bitbucket-Cloud-integration'
-              target='_blank'
-              rel='noreferrer'
+              href="https://support.snyk.io/hc/en-us/articles/360004032097-Bitbucket-Cloud-integration"
+              target="_blank"
+              rel="noreferrer"
             >
               Knowledge Center
             </a>

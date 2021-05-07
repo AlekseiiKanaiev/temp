@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { consolidateStreamedStyles } from 'styled-components';
+import styled from 'styled-components';
 
 export default function IssueCardOverview({ issue }) {
   const OverviewTextWrapper = styled.p`
@@ -28,9 +28,9 @@ export default function IssueCardOverview({ issue }) {
       unformatedOverview = overviewMatches && overviewMatches[1];
       unformatedOverview = unformatedOverview || issue.issueData.description;
     }
-    unformatedOverview = unformatedOverview.replace(/(\n)/gm, "")
+    unformatedOverview = unformatedOverview.replace(/(\n)/gm, '');
     const links = unformatedOverview.match(linkRegExp);
-    let linksInDescription = undefined;
+    let linksInDescription;
     if (links) {
       linksInDescription = unformatedOverview
         .split(linkRegExp)
@@ -39,10 +39,10 @@ export default function IssueCardOverview({ issue }) {
             {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
           </a>
         ) : (
-          part.replace(/(\n)/gm, "")
+          part.replace(/(\n)/gm, '')
         )));
-        linksInDescription = linksInDescription.filter((part) => part && part != "\n")
-        return linksInDescription
+      linksInDescription = linksInDescription.filter((part) => part && part !== '\n');
+      return linksInDescription;
     }
     return [unformatedOverview];
   };

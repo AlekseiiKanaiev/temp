@@ -12,13 +12,13 @@ export default function configureStore(
 ) {
   const state = {
     configuration: {
-      jwtToken: jwtToken,
-      username: username,
-      currentUserId: currentUserId,
-      repoOwner: repoOwner,
-      repoSlug: repoSlug,
-      repoMainBranch: repoMainBranch,
-      workspaceSlug :workspaceSlug,
+      jwtToken,
+      username,
+      currentUserId,
+      repoOwner,
+      repoSlug,
+      repoMainBranch,
+      workspaceSlug,
     },
     error: {},
     integration: {},

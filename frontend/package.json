@@ -4,29 +4,30 @@
   "private": true,
   "dependencies": {
     "@atlaskit/badge": "^14.1.0",
+    "@atlaskit/banner": "^11.1.1",
     "@atlaskit/button": "^15.1.5",
     "@atlaskit/dynamic-table": "^14.2.1",
     "@atlaskit/form": "^8.2.2",
+    "@atlaskit/icon": "21.5.0",
     "@atlaskit/inline-message": "^11.0.8",
     "@atlaskit/lozenge": "^10.1.2",
+    "@atlaskit/modal-dialog": "^11.2.9",
     "@atlaskit/page": "^12.0.6",
     "@atlaskit/progress-tracker": "^7.0.6",
     "@atlaskit/select": "^13.3.0",
     "@atlaskit/spinner": "^15.0.7",
     "@atlaskit/textfield": "^5.0.1",
     "@atlaskit/theme": "^11.0.3",
-    "@atlaskit/modal-dialog": "^11.2.9",
-    "@atlaskit/banner": "^11.1.1",
-    "@atlaskit/icon": "21.5.0",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.8",
     "react-dom": "^16.8.8",
-    "react-scripts": "4.0.3",
-    "styled-components": "^3.2.6",
     "react-redux": "^7.2.4",
-    "react-resource-router": "^0.17.0"
+    "react-resource-router": "^0.17.0",
+    "react-scripts": "4.0.3",
+    "redux": "^4.1.0",
+    "styled-components": "^3.2.6"
   },
   "scripts": {
     "build": "webpack --mode production",
@@ -72,7 +73,8 @@
     "node-sass": "^5.0.0",
     "sass": "^1.32.8",
     "webpack": "^5.28.0",
-    "webpack-cli": "^4.6.0"
+    "webpack-cli": "^4.6.0",
+    "typescript": "4.2.4"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

@@ -78,9 +78,9 @@ module.exports = function routes (app, addon) {
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 
   async function sendToAnalytics (settings, clientKey) {
-      const eventMessage = {
-          event: 'connect_app_app_uninstalled',
-        }
-        await AnalyticsClient.sendEvent(clientKey, eventMessage)
+    const eventMessage = {
+      event: 'connect_app_app_uninstalled'
+    }
+    await AnalyticsClient.sendEvent(clientKey, eventMessage)
   }
 }

@@ -109,7 +109,7 @@ class AppAPIHandler {
         }
         // res.redirect(307, 'https://bitbucket.org/alex1mmmcprime/workspace/settings/addon/admin/snyk-bb-app-test/snyk-account-page');
         res.render('snyk-redirect-page', {})
-        //return this.app.get('env') === 'development'
+        // return this.app.get('env') === 'development'
         //  ? res.status(200).send({ code: code, snykApiTokenBody: snykApiTokenBody })
         //  : res.status(200).send({ message: 'you can close the tab' })
       })
@@ -203,7 +203,7 @@ class AppAPIHandler {
               }
             }
             AnalyticsClient.sendEvent(clientKey, eventMessage)
-            .then(() => res.status(201).send({ id: settings.orgid, name: settings.orgname }))
+              .then(() => res.status(201).send({ id: settings.orgid, name: settings.orgname }))
           })
       }).catch((err) => {
         logger.error({ message: err.toString(), clientkey: clientKey })

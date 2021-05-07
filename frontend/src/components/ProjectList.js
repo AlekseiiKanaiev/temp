@@ -24,10 +24,12 @@ export default function ProjectList({ projects, orgname }) {
   const [projectId, setProjectId] = useState();
   const [baseUrl, setBaseUrl] = useState();
 
-  const { jwtToken, repoSlug, repoOwner, currentUserId } = useSelector((state) => state.configuration);
+  const {
+    jwtToken, repoSlug, repoOwner, currentUserId,
+  } = useSelector((state) => state.configuration);
 
   useEffect(() => {
-    AP.getLocation(function (location) {
+    AP.getLocation((location) => {
       const url = new URL(location);
       setBaseUrl(url.href.replace(url.search, ''));
       const id = url.searchParams.get('projectId');
@@ -72,6 +74,7 @@ export default function ProjectList({ projects, orgname }) {
         repoSlug={repoSlug}
         currentUserId={currentUserId}
         projectLink={`https://app.snyk.io/org/${orgname}/project/${projectId}`}
+        projectName={project.name.substring(project.name.indexOf(':') + 1)}
       />
     )
   ) : (
@@ -83,7 +86,9 @@ export default function ProjectList({ projects, orgname }) {
       <GridColumn medium={12}>
         <ContainerWrapper>
           <H2TextWrapper>
-            Security insights {projectId && 'for '}
+            Security insights
+            {' '}
+            {projectId && 'for '}
             {projectId && (
               <ProjectName
                 name={project.name}

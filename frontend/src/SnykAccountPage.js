@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { Provider } from 'react-redux';
+import App from './App';
 import createStore from './components/store/createStore';
 import { accountRoutes } from './components/routing/Routes';
 
-export default function SnykAccountPage({ 
-  jwtToken, 
-  username, 
-  currentUserId, }) {
+export default function SnykAccountPage({
+  jwtToken,
+  username,
+  currentUserId,
+}) {
   const store = createStore(jwtToken, username, currentUserId);
   return (
     <Provider store={store}>
@@ -29,5 +30,5 @@ window.addEventListener('load', () => {
       currentUserId={currentUserId}
     />,
     wrapper,
-  )
+  );
 });

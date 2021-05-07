@@ -1,13 +1,15 @@
-import React, { useState,useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import ImportRepositorySpinner from './ImportRepositorySpinner';
-import { importProject } from '../../services/SnykService';
+import {
+  importProject, getImportJobDetails,
+  sendToAnalytics,
+} from '../../services/SnykService';
 import { setError } from '../store/actions';
-import { getImportJobDetails,
-         sendToAnalytics } from '../../services/SnykService';
+
 import { dispatchProjects } from '../store/dispatchers';
 
 let intervalObj = 0;
@@ -52,7 +54,9 @@ const TextWrapper = styled.p`
 export default function ProjectImport() {
   const [isImporting, setIsImporting] = useState(false);
   const configuration = useSelector((state) => state.configuration);
-  const { jwtToken, repoOwner, repoSlug, repoMainBranch, currentUserId } = configuration;
+  const {
+    jwtToken, repoOwner, repoSlug, repoMainBranch, currentUserId,
+  } = configuration;
   const { skipImportPage } = useSelector((state) => state.integration);
   const dispatch = useDispatch();
   const eventMessage = {
@@ -68,7 +72,7 @@ export default function ProjectImport() {
   };
 
   useLayoutEffect(() => {
-    sendToAnalytics(jwtToken,{
+    sendToAnalytics(jwtToken, {
       type: 'track',
       eventMessage: {
         event: 'connect_app_page_view',
@@ -77,9 +81,9 @@ export default function ProjectImport() {
           viewed_page: 'add_repo',
           repo_slug: `${repoOwner}/${repoSlug}`,
         },
-      }  
-      })
-  })
+      },
+    });
+  });
 
   const importProjectToSnyk = () => {
     setIsImporting(true);
@@ -90,12 +94,12 @@ export default function ProjectImport() {
         } else if (!result.location) {
           afterRepoImportedAction(
             result,
-            'Location not found in the response header'
+            'Location not found in the response header',
           );
         } else {
           afterRepoImportedAction(result, '');
         }
-      }
+      },
     );
   };
 
@@ -106,7 +110,7 @@ export default function ProjectImport() {
         setError({
           error: 'Error importing this repository.',
           message: errorOnImport,
-        })
+        }),
       );
     } else {
       const jobUrl = getJobUrl(result);
@@ -116,7 +120,7 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: 'Job url not found in the location header',
-          })
+          }),
         );
       } else {
         const interval = setInterval(() => {
@@ -135,15 +139,15 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: result.message,
-          })
+          }),
         );
       } else if (result.status) {
         if (
-          result.status === 'complete' ||
-          (result.status === 'pending' &&
-            result.logs &&
-            result.logs.length > 0 &&
-            result.logs[0].status === 'complete')
+          result.status === 'complete'
+          || (result.status === 'pending'
+            && result.logs
+            && result.logs.length > 0
+            && result.logs[0].status === 'complete')
         ) {
           clearInterval(intervalObj);
           dispatchProjects(dispatch, configuration, true);
@@ -155,7 +159,7 @@ export default function ProjectImport() {
             setError({
               error: 'Error importing this repository.',
               message: `job status ${result.status}`,
-            })
+            }),
           );
         }
       } else {
@@ -164,7 +168,7 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: `job status ${result.status}`,
-          })
+          }),
         );
       }
     });
@@ -189,7 +193,7 @@ export default function ProjectImport() {
     <GridColumn medium={12}>
       <ContentWrapper>
         <ImageWrapper>
-          <img src='/ico/addRepository.svg' alt='Add Repository' />
+          <img src="/ico/addRepository.svg" alt="Add Repository" />
         </ImageWrapper>
         <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
         <TextWrapper>
@@ -197,14 +201,16 @@ export default function ProjectImport() {
           continuously monitor your repo for vulnerabilities
         </TextWrapper>
         <ButtonWrapper>
-          <Button appearance='primary' onClick={importProjectToSnyk}>
+          <Button appearance="primary" onClick={importProjectToSnyk}>
             Import this repository
           </Button>
         </ButtonWrapper>
 
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href='#'>Add project dialog</a> in Snyk app
+          <a href="#">Add project dialog</a>
+          {' '}
+          in Snyk app
         </TextWrapper>
       </ContentWrapper>
     </GridColumn>

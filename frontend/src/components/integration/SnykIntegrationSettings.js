@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Textfield from '@atlaskit/textfield';
-import { getSnykUser, getSavedOrg } from '../../services/SnykService';
+import {
+  getSnykUser, getSavedOrg, restartIntegration,
+  sendToAnalytics,
+} from '../../services/SnykService';
 import Spinner from '../Spinner';
-import {restartIntegration,
-        sendToAnalytics } from '../../services/SnykService';
+
 import { dispatchIntegration } from '../store/dispatchers';
 
 const ContainerWrapper = styled.div`
@@ -90,7 +92,7 @@ export default function SnykIntegrationsSettings() {
 
   useLayoutEffect(() => {
     if (jwtToken) {
-      sendToAnalytics(jwtToken,{
+      sendToAnalytics(jwtToken, {
         type: 'track',
         eventMessage: {
           event: 'connect_app_page_view',
@@ -98,8 +100,8 @@ export default function SnykIntegrationsSettings() {
             bb_user_id: currentUserId,
             viewed_page: 'settings',
           },
-        }  
-        })
+        },
+      });
       getSnykUser(jwtToken)
         .then((result) => {
           setUser(result.username);
@@ -124,7 +126,7 @@ export default function SnykIntegrationsSettings() {
     }
     return (
       <Page>
-        <Grid layout='fluid'>
+        <Grid layout="fluid">
           <GridColumn medium={6}>
             <ContainerWrapper>
               <ContentWrapper>
@@ -165,11 +167,11 @@ export default function SnykIntegrationsSettings() {
                     },
                   ]}
                   onClose={() => setIsOpen(false)}
-                  heading={
+                  heading={(
                     <ModalH1TextWrapper>
                       This restarts the whole integration settings process
                     </ModalH1TextWrapper>
-                  }
+                  )}
                 >
                   <ModalGeneralTextWrapper>
                     Are you sure you want to continue?

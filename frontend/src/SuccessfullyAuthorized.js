@@ -41,7 +41,7 @@ const TextWrapper = styled.p`
 export default function SuccessfullyAuthorized() {
   return (
     <Page>
-      <Grid layout='fluid'>
+      <Grid layout="fluid">
         <GridColumn medium={12}>
           <ContainerWrapper>
             <ContentWrapper>
@@ -62,7 +62,7 @@ export default function SuccessfullyAuthorized() {
 window.addEventListener('load', () => {
   const wrapper = document.getElementById('container');
   ReactDOM.render(
-        <SuccessfullyAuthorized/>,
-        wrapper
-      )
+    <SuccessfullyAuthorized />,
+    wrapper,
+  );
 });

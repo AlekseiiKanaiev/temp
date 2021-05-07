@@ -45,7 +45,7 @@ export default function LogInSpinner({
 
   return (
     <SpinnerWrapper>
-      <Spinner size='xlarge' />
+      <Spinner size="xlarge" />
     </SpinnerWrapper>
   );
 }

@@ -63,7 +63,7 @@ export async function getIssues(jwtToken, id) {
   const url = `/snyk/org/orgid/project/${id}/aggregated-issues`;
   const res = await executePost(jwtToken, url, defaultIssuesBody);
 
-  return getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res);
 }
 
 export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranch) {
@@ -82,7 +82,7 @@ export async function importProject(jwtToken, repoOwner, repoSlug, repoMainBranc
   const url = `/snyk/org/orgid/integrations/${integrationId}/import`;
   const res = await executePost(jwtToken, url, importProjectBody);
 
-  const result = await getJsonFromRequestResult(res, false);
+  const result = await getJsonFromRequestResult(res);
   result.location = res.headers.get('location');
   return result;
 }
@@ -94,7 +94,7 @@ export async function getIntegrationId(jwtToken) {
     error: resJson.error ? resJson.error : false,
     message: resJson.message ? resJson.message : '',
     error_short_message: resJson.error_short_message ? resJson.error_short_message : '',
-    error_info: resJson.error_info ? resJson.error_info : ''
+    error_info: resJson.error_info ? resJson.error_info : '',
 
   };
 }
@@ -104,7 +104,7 @@ export async function addIntegration(jwtToken, integrationToken, username) {
   const body = defaultIntegrationBody;
   body.credentials = { username, password: integrationToken };
   const res = await executePost(jwtToken, url, body);
-  return getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res);
 }
 
 export async function getIntegration(jwtToken) {
@@ -119,7 +119,7 @@ export async function getOrganizations(jwtToken) {
 
   const url = '/snyk/orgs';
   const res = await executeGet(jwtToken, url);
-  return getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res);
 }
 
 export async function saveOrganization(jwtToken, org) {
@@ -136,7 +136,7 @@ export async function getImportJobDetails(jwtToken, jobUrl) {
   const url = `/snyk/${jobUrl}`;
   const res = await executeGet(jwtToken, url);
 
-  return getJsonFromRequestResult(res, false);
+  return getJsonFromRequestResult(res);
 }
 
 export async function getNewState(jwtToken, currentuserid) {
@@ -165,7 +165,7 @@ export async function checkAppPassword(jwtToken, username, appPassword, workspac
     username, password: appPassword, workspaceSlug, repoSlug,
   });
 
-  return getJsonFromRequestResult(res, true);
+  return getJsonFromRequestResult(res);
 }
 
 export async function sendToAnalytics(jwtToken, eventMessage) {
@@ -210,7 +210,7 @@ export async function getIntegrationTokenOrg(jwtToken) {
     error: integration.error,
     message: integration.message,
     error_short_message: integration.error_short_message ? integration.error_short_message : '',
-    error_info: integration.error_info ? integration.error_info: ''
+    error_info: integration.error_info ? integration.error_info : '',
   };
 }
 
@@ -282,35 +282,35 @@ async function executeDelete(jwtToken, uri) {
   return res;
 }
 
-async function getJsonFromRequestResult(res, shortError) {
+async function getJsonFromRequestResult(res) {
   let ret = {};
   if (!res.ok) {
     console.error(`Could not fetch  ${res.url}, received ${res}`);
     ret.error = true;
-    ret.error_short_message = 'Internal Server Error'
-    ret.message = ''
-    const resBody = await res.text()
+    ret.error_short_message = 'Internal Server Error';
+    ret.message = '';
+    const resBody = await res.text();
     try {
-      const resJson = JSON.parse(resBody)
+      const resJson = JSON.parse(resBody);
       if (resJson.message) {
-        ret.message = resJson.message
+        ret.message = resJson.message;
       }
     } catch (err) {
-      ret.message = `status: ${res.status} for ${res.method} ${res.url}`
+      ret.message = `status: ${res.status} for ${res.method} ${res.url}`;
     }
     ret.error_info = `Could not fetch ${res.url}, received ${res.status} ${resBody}`;
     if (res.status >= 500) {
-      ret.message = 'Sorry, there were some technical issues while processing your request'
+      ret.message = 'Sorry, there were some technical issues while processing your request';
       if (res.headers.get('snyk-request-id')) {
-        ret.error_info = `snyk-request-id: ${res.headers.get('snyk-request-id')}`
+        ret.error_info = `snyk-request-id: ${res.headers.get('snyk-request-id')}`;
       } else {
-        ret.error_info = ''
+        ret.error_info = '';
       }
     }
   } else {
     ret = await res.json();
-    ret.error_info = ''
-    ret.error_short_message =''
+    ret.error_info = '';
+    ret.error_short_message = '';
     if (!ret.error) {
       ret.error = false;
     }

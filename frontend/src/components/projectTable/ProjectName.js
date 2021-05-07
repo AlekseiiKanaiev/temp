@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function ProjectName({ name, type, id, baseUrl, repoSlug }) {
+export default function ProjectName({
+  name, type, id, baseUrl, repoSlug,
+}) {
   const ImageWrapper = styled.span`
     margin-right: 10px;
     vertical-align: middle;
@@ -21,14 +23,15 @@ export default function ProjectName({ name, type, id, baseUrl, repoSlug }) {
       </ImageWrapper>
       {repoSlug && (
         <>
-          <a href={`${baseUrl}`} target='_parent'>
+          <a href={`${baseUrl}`} target="_parent">
             {repoSlug}
           </a>
-          /{name.substring(name.indexOf(':') + 1)}
+          /
+          {name.substring(name.indexOf(':') + 1)}
         </>
       )}
       {!repoSlug && (
-        <a href={`${baseUrl}?projectId=${id}`} target='_parent'>
+        <a href={`${baseUrl}?projectId=${id}`} target="_parent">
           {name.substring(name.indexOf(':') + 1)}
         </a>
       )}

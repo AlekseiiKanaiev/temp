@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { getIssues,
-  sendToAnalytics } from '../services/SnykService';
+import {
+  getIssues,
+  sendToAnalytics,
+} from '../services/SnykService';
 import Spinner from './Spinner';
 import IssueCard from './issueCard/IssueCard';
 import ErrorPage from './routing/ErrorPage';
 
-export default function ProjectIssues({ jwtToken, projectId, projectLink, repoOwner, repoSlug, currentUserId }) {
+export default function ProjectIssues({
+  jwtToken,
+  projectId,
+  projectLink,
+  repoOwner,
+  repoSlug,
+  currentUserId,
+  projectName,
+}) {
   const [issues, setIssues] = useState([]);
   const [error, setError] = useState(false);
 
@@ -17,7 +27,7 @@ export default function ProjectIssues({ jwtToken, projectId, projectLink, repoOw
             setError(result.message);
           } else {
             setIssues(result.issues);
-            sendToAnalytics(jwtToken,{
+            sendToAnalytics(jwtToken, {
               type: 'track',
               eventMessage: {
                 event: 'connect_app_page_view',
@@ -26,9 +36,11 @@ export default function ProjectIssues({ jwtToken, projectId, projectLink, repoOw
                   viewed_page: 'list_of_issues',
                   repo_slug: `${repoOwner}/${repoSlug}`,
                   number_of_issues: result.issues.length,
+                  project_id: projectId,
+                  project_path: `${repoSlug}/${projectName}`,
                 },
-              }  
-              })
+              },
+            });
           }
         })
         .catch((err) => {

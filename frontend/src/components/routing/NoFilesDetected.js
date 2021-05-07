@@ -40,21 +40,23 @@ export default function NoFilesDetected() {
 
   return (
     <Page>
-      <Grid layout='fluid'>
+      <Grid layout="fluid">
         <GridColumn medium={12}>
           <GridColumn medium={12}>
             <H1TextWrapper>Snyk</H1TextWrapper>
           </GridColumn>
           <ContentWrapper>
             <ImageWrapper>
-              <img src='/ico/notDetected.svg' alt='No files detected' />
+              <img src="/ico/notDetected.svg" alt="No files detected" />
             </ImageWrapper>
             <H1TextWrapper>No supported target files detected</H1TextWrapper>
             <TextWrapper>
-              Please visit our{' '}
-              <a href='https://support.snyk.io/hc/en-us/articles/360016973477-Snyk-Code-language-and-framework-support'>
+              Please visit our
+              {' '}
+              <a href="https://support.snyk.io/hc/en-us/articles/360016973477-Snyk-Code-language-and-framework-support">
                 Knowledge Center
-              </a>{' '}
+              </a>
+              {' '}
               for supported languages and target files.
             </TextWrapper>
           </ContentWrapper>

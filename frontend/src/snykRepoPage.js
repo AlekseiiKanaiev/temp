@@ -22,7 +22,7 @@ export default function SnykRepoPage({
     repoOwner,
     repoSlug,
     repoMainBranch,
-    workspaceSlug
+    workspaceSlug,
   );
 
   return (
@@ -42,15 +42,15 @@ window.addEventListener('load', () => {
   const repoMainBranch = document.getElementById('repoMainBranch').value;
   const workspaceSlug = document.getElementById('workspaceSlug').value;
   ReactDOM.render(
-        <SnykRepoPage
-          jwtToken={jwtToken}
-          username={username}
-          repoOwner={repoOwner}
-          repoSlug={repoSlug}
-          repoMainBranch={repoMainBranch}
-          currentUserId={currentUserId}
-          workspaceSlug={workspaceSlug}
-        />,
-        wrapper
-      )
+    <SnykRepoPage
+      jwtToken={jwtToken}
+      username={username}
+      repoOwner={repoOwner}
+      repoSlug={repoSlug}
+      repoMainBranch={repoMainBranch}
+      currentUserId={currentUserId}
+      workspaceSlug={workspaceSlug}
+    />,
+    wrapper,
+  );
 });
