@@ -1,5 +1,7 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { Grid, GridColumn } from '@atlaskit/page';
+import Banner from '@atlaskit/banner';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import styled from 'styled-components';
 import Button, { LoadingButton } from '@atlaskit/button';
 import Textfield from '@atlaskit/textfield';
@@ -89,6 +91,8 @@ const BoldTextWrapper = styled.label`
   font-size: 12px;
   line-height: 16px;
 `;
+
+const Icon = <ErrorIcon label="" secondaryColor="inherit" />;
 
 export default function IntegrateWithSnyk({ jwtToken, callback, username, workspaceSlug, repoSlug, currentUserId }) {
   const [password, setPassword] = useState('');
@@ -195,7 +199,14 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
     return (
       <>
         {' '}
-        <GridColumn medium={12}>
+        
+          <GridColumn medium={12}>
+          {exception &&(<ContainerWrapper>
+          <Banner icon={Icon} isOpen={exception} appearance="error">
+              {exception}
+              </Banner>
+          </ContainerWrapper>
+          )}
           <ContainerWrapper>
             <Grid layout='fluid'>
               <GridColumn medium={6}>
@@ -262,6 +273,7 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                 <TextWrapper>
                   <BoldTextWrapper>App Password</BoldTextWrapper>
                   <Textfield
+                    type="password"
                     value={password}
                     placeholder='e.g. AXd0shyPTjjZnuMoD7C1'
                     onChange={(event) => {
@@ -269,7 +281,6 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
                       setPassword(event.target.value);
                     }}
                   />
-                  {exception && <ErrorMessage>{exception}</ErrorMessage>}
                 </TextWrapper>
               </GridColumn>
               <GridColumn medium={6}>

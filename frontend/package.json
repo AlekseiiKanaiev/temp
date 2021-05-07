@@ -16,6 +16,8 @@
     "@atlaskit/textfield": "^5.0.1",
     "@atlaskit/theme": "^11.0.3",
     "@atlaskit/modal-dialog": "^11.2.9",
+    "@atlaskit/banner": "^11.1.1",
+    "@atlaskit/icon": "21.5.0",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
