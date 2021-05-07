@@ -10,6 +10,8 @@ import {
   getIntegrationId,
   checkAppPassword,
   sendToAnalytics,
+  getOrganizations,
+  deleteToken,
 } from '../../services/SnykService';
 import Spinner from '../Spinner';
 
@@ -166,11 +168,20 @@ export default function IntegrateWithSnyk({ jwtToken, callback, username, worksp
   };
 
   const backButton = () => {
-    deleteOrg(jwtToken)
-      .then(() => callback(true))
-      .catch((err) => {
-        throw new Error(err);
-      });
+    getOrganizations(jwtToken).then((result) => {
+      deleteOrg(jwtToken).then(() => {
+      if (result.orgs.length === 1 ) {
+        deleteToken(jwtToken)
+        .then(() => callback(true))
+      } else {
+        callback(true)
+      }
+      
+    })
+      
+    }).catch((err) => {
+      throw new Error(err)
+    })
   };
 
   const view = () => {

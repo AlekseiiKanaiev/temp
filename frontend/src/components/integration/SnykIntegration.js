@@ -28,7 +28,6 @@ export default function SnykIntegration() {
   const callback = (data) => {
     dispatchIntegration(dispatch, data, jwtToken);
   };
-
   useLayoutEffect(() => {
     if (!token) {
       setStage(0);

@@ -110,7 +110,6 @@ class AnalyticsClient {
   async getUserRoleInWorkspace (workspaceId, userUuid, clientKey) {
     const httpClient = this.addon.httpClient({ clientKey })
     return new Promise((resolve, reject) => {
-    //  httpClient.get(`/2.0/workspaces/{${workspaceId}}/members/{${userUuid}}`, function (err, resp, data) {
       httpClient.get({ url: `/2.0/workspaces/{${workspaceId}}/permissions`, qs: { q: `user.uuid="{${userUuid}}"` } }, function (err, resp, data) {
         if (err) {
           logger.warn({ message: err, clientkey: clientKey })

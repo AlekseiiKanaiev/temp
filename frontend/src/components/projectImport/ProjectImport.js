@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
@@ -66,6 +66,20 @@ export default function ProjectImport() {
       },
     },
   };
+
+  useLayoutEffect(() => {
+    sendToAnalytics(jwtToken,{
+      type: 'track',
+      eventMessage: {
+        event: 'connect_app_page_view',
+        properties: {
+          bb_user_id: currentUserId,
+          viewed_page: 'add_repo',
+          repo_slug: `${repoOwner}/${repoSlug}`,
+        },
+      }  
+      })
+  })
 
   const importProjectToSnyk = () => {
     setIsImporting(true);
@@ -169,7 +183,6 @@ export default function ProjectImport() {
     importProjectToSnyk();
   }
   if (isImporting) {
-    console.log("iportrepo")
     return <ImportRepositorySpinner />;
   }
   return (

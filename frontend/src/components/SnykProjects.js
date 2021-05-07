@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-resource-router';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { dispatchProjects } from './store/dispatchers';
+import {dispatchProjects } from './store/dispatchers';
 import ProjectList from './ProjectList';
 import ProjectImport from './projectImport/ProjectImport';
 import Spinner from './Spinner';
@@ -18,7 +18,7 @@ const H1TextWrapper = styled.h1`
 
 export default function SnykProjects() {
   const configuration = useSelector((state) => state.configuration);
-  const { jwtToken } = configuration;
+  const { jwtToken, repoOwner, repoSlug, currentUserId } = configuration;
   const { error } = useSelector((state) => state.error);
   const { projects, imported } = useSelector((state) => state.projectsInfo);
   const orgName = useSelector((state) => state.orgName);

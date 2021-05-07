@@ -24,7 +24,7 @@ export default function ProjectList({ projects, orgname }) {
   const [projectId, setProjectId] = useState();
   const [baseUrl, setBaseUrl] = useState();
 
-  const { jwtToken, repoSlug } = useSelector((state) => state.configuration);
+  const { jwtToken, repoSlug, repoOwner, currentUserId } = useSelector((state) => state.configuration);
 
   useEffect(() => {
     AP.getLocation(function (location) {
@@ -68,6 +68,9 @@ export default function ProjectList({ projects, orgname }) {
       <ProjectIssues
         projectId={projectId}
         jwtToken={jwtToken}
+        repoOwner={repoOwner}
+        repoSlug={repoSlug}
+        currentUserId={currentUserId}
         projectLink={`https://app.snyk.io/org/${orgname}/project/${projectId}`}
       />
     )

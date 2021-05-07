@@ -14,8 +14,8 @@ import {
     getIntegrationTokenOrg(jwtToken)
       .then((result) => {
         if (result.error) {
-          dispatch(setError({ error: result.error }));
-        }
+          dispatch(setError({ error: result.error_short_message, message: result.message, info: result.error_info }));
+        } else {
         dispatch(
           setIntegration({
             integrated: result.integrated,
@@ -24,6 +24,7 @@ import {
             skipImportPage: skipImportProjectPage,
           })
         );
+        }
       })
       .catch((err) => {
         throw new Error(err);
@@ -71,6 +72,18 @@ import {
                 imported: imported,
               })
             );
+            sendToAnalytics(jwtToken,{
+              type: 'track',
+              eventMessage: {
+                event: 'connect_app_page_view',
+                properties: {
+                  bb_user_id: currentUserId,
+                  viewed_page: 'list_of_projects',
+                  repo_slug: `${repoOwner}/${repoSlug}`,
+                  number_of_projects: projects.length,
+                },
+              }  
+              })
             if (imported) {
               sendToAnalytics(jwtToken, {
                 type: 'track',
@@ -80,7 +93,7 @@ import {
                     bb_user_id: currentUserId,
                     repo_slug: `${repoOwner}/${repoSlug}`,
                     import_result: 'success',
-                    number_of_imported_projects: projects.length,
+                    number_of_projects: projects.length,
                   },
                 },
               });

@@ -6,7 +6,8 @@ import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Textfield from '@atlaskit/textfield';
 import { getSnykUser, getSavedOrg } from '../../services/SnykService';
 import Spinner from '../Spinner';
-import { restartIntegration } from '../../services/SnykService';
+import {restartIntegration,
+        sendToAnalytics } from '../../services/SnykService';
 import { dispatchIntegration } from '../store/dispatchers';
 
 const ContainerWrapper = styled.div`
@@ -89,6 +90,16 @@ export default function SnykIntegrationsSettings() {
 
   useLayoutEffect(() => {
     if (jwtToken) {
+      sendToAnalytics(jwtToken,{
+        type: 'track',
+        eventMessage: {
+          event: 'connect_app_page_view',
+          properties: {
+            bb_user_id: currentUserId,
+            viewed_page: 'settings',
+          },
+        }  
+        })
       getSnykUser(jwtToken)
         .then((result) => {
           setUser(result.username);

@@ -80,7 +80,7 @@ export default function SelectIntegration({
   }, [jwtToken]);
 
   const fetchOrganizations = () => {
-    getOrganizations(jwtToken).then((result) => {
+    getOrganizations(jwtToken).then((result) => {getOrganizations
       const orgs = [];
       if (result.error) {
         setError(result.message);

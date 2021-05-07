@@ -93,6 +93,9 @@ export async function getIntegrationId(jwtToken) {
     id: !('bitbucket-cloud' in resJson) ? '' : resJson['bitbucket-cloud'],
     error: resJson.error ? resJson.error : false,
     message: resJson.message ? resJson.message : '',
+    error_short_message: resJson.error_short_message ? resJson.error_short_message : '',
+    error_info: resJson.error_info ? resJson.error_info : ''
+
   };
 }
 
@@ -206,6 +209,8 @@ export async function getIntegrationTokenOrg(jwtToken) {
     org: org.org,
     error: integration.error,
     message: integration.message,
+    error_short_message: integration.error_short_message ? integration.error_short_message : '',
+    error_info: integration.error_info ? integration.error_info: ''
   };
 }
 
@@ -280,15 +285,32 @@ async function executeDelete(jwtToken, uri) {
 async function getJsonFromRequestResult(res, shortError) {
   let ret = {};
   if (!res.ok) {
-    console.error(`Could not fetch GET ${res.url}, received ${res}`);
+    console.error(`Could not fetch  ${res.url}, received ${res}`);
     ret.error = true;
-    if (shortError) {
-      ret.message = (await res.json()).message;
-    } else {
-      ret.message = `Could not fetch GET ${res.url}, received ${res.status} ${await res.text()}`;
+    ret.error_short_message = 'Internal Server Error'
+    ret.message = ''
+    const resBody = await res.text()
+    try {
+      const resJson = JSON.parse(resBody)
+      if (resJson.message) {
+        ret.message = resJson.message
+      }
+    } catch (err) {
+      ret.message = `status: ${res.status} for ${res.method} ${res.url}`
+    }
+    ret.error_info = `Could not fetch ${res.url}, received ${res.status} ${resBody}`;
+    if (res.status >= 500) {
+      ret.message = 'Sorry, there were some technical issues while processing your request'
+      if (res.headers.get('snyk-request-id')) {
+        ret.error_info = `snyk-request-id: ${res.headers.get('snyk-request-id')}`
+      } else {
+        ret.error_info = ''
+      }
     }
   } else {
     ret = await res.json();
+    ret.error_info = ''
+    ret.error_short_message =''
     if (!ret.error) {
       ret.error = false;
     }
