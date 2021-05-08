@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
@@ -9,6 +10,9 @@ import {
   getOrganizations,
   deleteToken,
 } from '../../services/SnykService';
+import {
+  setError
+} from '../store/actions';
 
 import Spinner from '../Spinner';
 
@@ -73,7 +77,7 @@ export default function SelectIntegration({
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     fetchOrganizations();
@@ -84,7 +88,11 @@ export default function SelectIntegration({
       getOrganizations;
       const orgs = [];
       if (result.error) {
-        setError(result.message);
+        dispatch(setError({
+          error: result.error_short_message,
+          message: result.message,
+          info: result.error_info,
+        }));
       } else {
         if (result.orgs) {
           result.orgs.forEach((org) => {
@@ -94,7 +102,6 @@ export default function SelectIntegration({
         if (orgs.length === 1) {
           saveOrg(orgs[0]);
         }
-        setError('');
       }
       setOrganizations(orgs);
       setLoading(false);
