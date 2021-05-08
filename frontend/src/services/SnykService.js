@@ -299,14 +299,14 @@ async function getJsonFromRequestResult(res) {
     ret.error_info = `Could not fetch ${res.url}, received ${res.status} ${resBody}`;
     if (res.status >= 500) {
       ret.message = 'Sorry, there were some technical issues while processing your request';
-      ret.error_info = res.headers.get('snyk-request-id') ?  `snyk-request-id: ${res.headers.get('snyk-request-id')}` : '';
+      ret.error_info = res.headers.get('snyk-request-id') ? `snyk-request-id: ${res.headers.get('snyk-request-id')}` : '';
     }
   } else {
     ret = await res.json();
     ret.error_info = ret.error ? res.headers.get('snyk-request-id') : '';
     ret.error_short_message = ret.message ? ret.message : '';
-    ret.error = ret.error ? ret.error : false
-    ret.message = ret.message ? ret.message : ''
+    ret.error = ret.error ? ret.error : false;
+    ret.message = ret.message ? ret.message : '';
   }
   return ret;
 }

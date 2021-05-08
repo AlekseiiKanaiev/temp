@@ -4,14 +4,13 @@ import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import { ErrorMessage } from '@atlaskit/form';
 import {
   saveOrganization,
   getOrganizations,
   deleteToken,
 } from '../../services/SnykService';
 import {
-  setError
+  setError,
 } from '../store/actions';
 
 import Spinner from '../Spinner';
@@ -176,7 +175,6 @@ export default function SelectIntegration({
             </Button>
           </ButtonWrapper>
         </ContainerWrapper>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
       </>
     );
   };
