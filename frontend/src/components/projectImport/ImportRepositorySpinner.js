@@ -21,7 +21,7 @@ const ContentWrapper = styled.div`
 `;
 
 const TextWrapper = styled.p`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
@@ -37,6 +37,9 @@ export default function ImportRepositorySpinner() {
           <TextWrapper>
             Importing your repository to Snyk and scanning it for
             vulnerabilities...
+          </TextWrapper>
+          <TextWrapper>
+            You can close the tab
           </TextWrapper>
         </ContentWrapper>
       </ContainerWrapper>

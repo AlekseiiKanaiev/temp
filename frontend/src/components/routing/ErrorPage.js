@@ -13,11 +13,18 @@ const ImageWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  min-width: 650px;
+  max-width: 650px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
   text-align: center;
 `;
 
 const TextWrapper = styled.p`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -25,7 +32,7 @@ const TextWrapper = styled.p`
 `;
 
 const InfoWrapper = styled.div`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 10px;
@@ -36,7 +43,7 @@ const InfoWrapper = styled.div`
 `;
 
 const InfoBlockWrapper = styled.div`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
@@ -48,7 +55,7 @@ const InfoBlockWrapper = styled.div`
 `;
 
 const H1TextWrapper = styled.h1`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;

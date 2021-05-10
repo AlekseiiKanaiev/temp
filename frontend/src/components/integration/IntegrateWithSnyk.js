@@ -49,7 +49,7 @@ const AdditionalTextWrapper = styled.div`
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
@@ -60,7 +60,7 @@ const AdditionalTextWrapper = styled.div`
 const TextWrapper = styled.div`
   margin-left: 20px;
   margin-top: 30px;
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -68,7 +68,7 @@ const TextWrapper = styled.div`
 `;
 
 const H1TextWrapper = styled.h1`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;
@@ -76,7 +76,7 @@ const H1TextWrapper = styled.h1`
 `;
 
 const ButtonTextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -84,7 +84,7 @@ const ButtonTextWrapper = styled.label`
 `;
 
 const BoldTextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 12px;

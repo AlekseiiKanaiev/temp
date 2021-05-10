@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export default function IssueCardOverview({ issue }) {
   const OverviewTextWrapper = styled.p`
     white-space: pre-line;
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 12px;
@@ -12,7 +12,7 @@ export default function IssueCardOverview({ issue }) {
   `;
 
   const H3TextWrapper = styled.h3`
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 600;
     font-style: normal;
     font-size: 14px;
@@ -28,7 +28,7 @@ export default function IssueCardOverview({ issue }) {
       unformatedOverview = overviewMatches && overviewMatches[1];
       unformatedOverview = unformatedOverview || issue.issueData.description;
     }
-    unformatedOverview = unformatedOverview.replace(/(\n)/gm, '');
+    unformatedOverview = unformatedOverview.trim().replace(/(\n+)/gm, '\n');
     const links = unformatedOverview.match(linkRegExp);
     let linksInDescription;
     if (links) {
@@ -39,7 +39,7 @@ export default function IssueCardOverview({ issue }) {
             {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
           </a>
         ) : (
-          part.replace(/(\n)/gm, '')
+          part.trim().replace(/(\n+)/gm, '\n')
         )));
       linksInDescription = linksInDescription.filter((part) => part && part !== '\n');
       return linksInDescription;

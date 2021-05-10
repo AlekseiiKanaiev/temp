@@ -13,7 +13,7 @@ const ContainerWrapper = styled.div`
 `;
 
 const H2TextWrapper = styled.h2`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 18px;

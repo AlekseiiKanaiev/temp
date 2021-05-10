@@ -4,7 +4,7 @@ import Lozenge from '@atlaskit/lozenge';
 
 const PackageNameWrapper = styled.span`
   margin-left: 5px;
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 18px;
@@ -12,7 +12,7 @@ const PackageNameWrapper = styled.span`
 `;
 
 const PackageDescWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 18px;

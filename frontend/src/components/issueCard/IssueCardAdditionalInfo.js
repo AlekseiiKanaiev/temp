@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export default function IssueCardAdditionalInfo({ projectLink }) {
   const AdditionalTextWrapper = styled.p`
     margin: 20px;
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 12px;

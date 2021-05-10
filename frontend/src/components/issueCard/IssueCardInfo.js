@@ -8,7 +8,7 @@ export default function IssueCardInfo({ issue }) {
     margin-bottom: 10px;
     width: 50%;
     display: inline-block;
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 600;
     font-style: normal;
     font-size: 14px;
@@ -18,7 +18,7 @@ export default function IssueCardInfo({ issue }) {
   const AdditionalInfoChildSpan = styled.span`
     margin-right: 30%;
     float: right;
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 14px;

@@ -18,7 +18,7 @@ class AppPassword {
               return resolve({ error: true, message: error })
             }
             if (response.statusCode >= 400) {
-              return resolve({ error: true, message: 'username or app password is invalid' })
+              return resolve({ error: true, message: 'Username or App Password are invalid or lack the required permissions' })
             }
             return resolve({ error: false, message: 'success' })
           })
@@ -38,7 +38,7 @@ class AppPassword {
               return resolve({ error: true, message: error })
             }
             if (response.statusCode >= 400) {
-              return resolve({ error: true, message: 'username or app password is invalid' })
+              return resolve({ error: true, message: 'Username or App Password are invalid or lack the required permissions' })
             }
             return resolve({ error: false, message: 'success' })
           })

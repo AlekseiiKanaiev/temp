@@ -5,8 +5,11 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import ImportRepositorySpinner from './ImportRepositorySpinner';
 import {
-  importProject, getImportJobDetails,
+  importProject,
+  getImportJobDetails,
   sendToAnalytics,
+  getSavedOrg,
+  getIntegrationId,
 } from '../../services/SnykService';
 import { setError } from '../store/actions';
 
@@ -28,7 +31,7 @@ const ContentWrapper = styled.div`
 const ButtonWrapper = styled.div`
   margin-top: 30px;
   margin-bottom: 100px;
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -36,7 +39,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const H1TextWrapper = styled.h1`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;
@@ -44,7 +47,7 @@ const H1TextWrapper = styled.h1`
 `;
 
 const TextWrapper = styled.p`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -53,6 +56,7 @@ const TextWrapper = styled.p`
 
 export default function ProjectImport() {
   const [isImporting, setIsImporting] = useState(false);
+  const [linkToAddProject, setLinkToAddProject] = useState('');
   const configuration = useSelector((state) => state.configuration);
   const {
     jwtToken, repoOwner, repoSlug, repoMainBranch, currentUserId,
@@ -83,6 +87,14 @@ export default function ProjectImport() {
         },
       },
     });
+    getSavedOrg(jwtToken).then((result) => {
+      const orgSlug = result.orgslug;
+      getIntegrationId(jwtToken).then((result) => {
+        setLinkToAddProject(`https://app.snyk.io/org/${orgSlug}/add`);
+      });
+    }).catch((err) => {
+      throw new Error(err);
+    });
   });
 
   const importProjectToSnyk = () => {
@@ -90,26 +102,36 @@ export default function ProjectImport() {
     importProject(jwtToken, repoOwner, repoSlug, repoMainBranch).then(
       (result) => {
         if (result.error) {
-          afterRepoImportedAction(result, result.message);
+          afterRepoImportedAction(result,
+            {
+              error_short_message: result.error_short_message,
+              message: result.message,
+              error_info: result.error_info,
+            });
         } else if (!result.location) {
           afterRepoImportedAction(
             result,
-            'Location not found in the response header',
+            {
+              error_short_message: result.error_short_message,
+              message: 'Location not found in the response header',
+              error_info: result.error_info,
+            },
           );
         } else {
-          afterRepoImportedAction(result, '');
+          afterRepoImportedAction(result, {});
         }
       },
     );
   };
 
   const afterRepoImportedAction = (result, errorOnImport) => {
-    if (errorOnImport) {
+    if (errorOnImport.error_short_message) {
       sendToAnalytics(jwtToken, eventMessage);
       dispatch(
         setError({
           error: 'Error importing this repository.',
-          message: errorOnImport,
+          message: errorOnImport.message,
+          info: errorOnImport.error_info,
         }),
       );
     } else {
@@ -120,6 +142,7 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: 'Job url not found in the location header',
+            info: errorOnImport.error_info,
           }),
         );
       } else {
@@ -139,6 +162,7 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: result.message,
+            info: result.error_info,
           }),
         );
       } else if (result.status) {
@@ -159,6 +183,7 @@ export default function ProjectImport() {
             setError({
               error: 'Error importing this repository.',
               message: `job status ${result.status}`,
+              info: result.error_info,
             }),
           );
         }
@@ -168,6 +193,7 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: `job status ${result.status}`,
+            info: result.error_info,
           }),
         );
       }
@@ -208,7 +234,7 @@ export default function ProjectImport() {
 
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href="#">Add project dialog</a>
+          <a href={linkToAddProject} target="_blank" rel="noreferrer">Add project dialog</a>
           {' '}
           in Snyk app
         </TextWrapper>

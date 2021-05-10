@@ -1,14 +1,17 @@
 import React, { useState, useLayoutEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { GridColumn } from '@atlaskit/page';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import { ErrorMessage } from '@atlaskit/form';
 import {
   saveOrganization,
   getOrganizations,
   deleteToken,
 } from '../../services/SnykService';
+import {
+  setError,
+} from '../store/actions';
 
 import Spinner from '../Spinner';
 
@@ -35,7 +38,7 @@ const ContentWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: 20px;
   margin-right: 40px;
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 18px;
@@ -49,7 +52,7 @@ const ButtonWrapper = styled.span`
 `;
 
 const H1TextWrapper = styled.h1`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;
@@ -57,7 +60,7 @@ const H1TextWrapper = styled.h1`
 `;
 
 const ButtonTextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -73,7 +76,7 @@ export default function SelectIntegration({
   const [organizations, setOrganizations] = useState([]);
   const [selected, setSelected] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     fetchOrganizations();
@@ -84,7 +87,11 @@ export default function SelectIntegration({
       getOrganizations;
       const orgs = [];
       if (result.error) {
-        setError(result.message);
+        dispatch(setError({
+          error: result.error_short_message,
+          message: result.message,
+          info: result.error_info,
+        }));
       } else {
         if (result.orgs) {
           result.orgs.forEach((org) => {
@@ -94,7 +101,6 @@ export default function SelectIntegration({
         if (orgs.length === 1) {
           saveOrg(orgs[0]);
         }
-        setError('');
       }
       setOrganizations(orgs);
       setLoading(false);
@@ -169,7 +175,6 @@ export default function SelectIntegration({
             </Button>
           </ButtonWrapper>
         </ContainerWrapper>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
       </>
     );
   };

@@ -289,34 +289,23 @@ async function getJsonFromRequestResult(res) {
     ret.error = true;
     ret.error_short_message = 'Internal Server Error';
     ret.message = '';
+    ret.error_info = res.headers.get('snyk-request-id') ? `snyk-request-id: ${res.headers.get('snyk-request-id')}` : '';
     const resBody = await res.text();
     try {
       const resJson = JSON.parse(resBody);
-      if (resJson.message) {
-        ret.message = resJson.message;
-      }
+      ret.message = resJson.message ? resJson.message : '';
     } catch (err) {
-      ret.message = `status: ${res.status} for ${res.method} ${res.url}`;
+      ret.message = `status: ${res.status} for ${res.url}`;
     }
-    ret.error_info = `Could not fetch ${res.url}, received ${res.status} ${resBody}`;
     if (res.status >= 500) {
       ret.message = 'Sorry, there were some technical issues while processing your request';
-      if (res.headers.get('snyk-request-id')) {
-        ret.error_info = `snyk-request-id: ${res.headers.get('snyk-request-id')}`;
-      } else {
-        ret.error_info = '';
-      }
     }
   } else {
     ret = await res.json();
-    ret.error_info = '';
-    ret.error_short_message = '';
-    if (!ret.error) {
-      ret.error = false;
-    }
-    if (!ret.message) {
-      ret.message = '';
-    }
+    ret.error_info = ret.error ? res.headers.get('snyk-request-id') : '';
+    ret.error_short_message = ret.message ? ret.message : '';
+    ret.error = ret.error ? ret.error : false;
+    ret.message = ret.message ? ret.message : '';
   }
   return ret;
 }
