@@ -39,7 +39,7 @@ export default function ImportRepositorySpinner() {
             vulnerabilities...
           </TextWrapper>
           <TextWrapper>
-            You can close the browser and come back later
+            You can close the tab
           </TextWrapper>
         </ContentWrapper>
       </ContainerWrapper>
