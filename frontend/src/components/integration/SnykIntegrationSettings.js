@@ -30,7 +30,7 @@ const LinkWrapper = styled.span`
   cursor: pointer;
   color: blue;
   text-decoration: underline;
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -38,7 +38,7 @@ const LinkWrapper = styled.span`
 `;
 
 const BoldTextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 12px;
@@ -46,7 +46,7 @@ const BoldTextWrapper = styled.label`
 `;
 
 const H1TextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 24px;
@@ -54,7 +54,7 @@ const H1TextWrapper = styled.label`
 `;
 
 const ModalH1TextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;
@@ -62,7 +62,7 @@ const ModalH1TextWrapper = styled.label`
 `;
 
 const ModalGeneralTextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;

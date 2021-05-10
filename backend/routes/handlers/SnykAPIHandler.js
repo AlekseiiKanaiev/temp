@@ -20,11 +20,7 @@ class SnykAPIHandler {
         this.tokenService.getToken(clientKey)
           .then((token) => {
             const client = this.factory(req.context, token)
-            return client.pipe(req.path.replace('/snyk', '').replace('orgid', settings.orgid), req, res)
-          })
-          .catch((err) => {
-            logger.error({ message: err.toString(), clientkey: clientKey })
-            return res.status(status.BAD_REQUEST).send('')
+            return client.pipe(req.path.replace('/snyk', '').replace('orgid', settings.orgid).replace('orgslug', settings.orgslug), req, res)
           })
       }).catch((err) => {
         logger.error({ message: err.toString(), clientkey: clientKey })

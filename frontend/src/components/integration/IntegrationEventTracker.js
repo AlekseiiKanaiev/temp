@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ProgressTracker } from '@atlaskit/progress-tracker';
 
 const TextWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 14px;

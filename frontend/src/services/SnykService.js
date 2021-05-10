@@ -289,6 +289,7 @@ async function getJsonFromRequestResult(res) {
     ret.error = true;
     ret.error_short_message = 'Internal Server Error';
     ret.message = '';
+    ret.error_info = res.headers.get('snyk-request-id') ? `snyk-request-id: ${res.headers.get('snyk-request-id')}` : '';
     const resBody = await res.text();
     try {
       const resJson = JSON.parse(resBody);
@@ -296,10 +297,8 @@ async function getJsonFromRequestResult(res) {
     } catch (err) {
       ret.message = `status: ${res.status} for ${res.url}`;
     }
-    ret.error_info = `Could not fetch ${res.url}, received ${res.status} ${resBody}`;
     if (res.status >= 500) {
       ret.message = 'Sorry, there were some technical issues while processing your request';
-      ret.error_info = res.headers.get('snyk-request-id') ? `snyk-request-id: ${res.headers.get('snyk-request-id')}` : '';
     }
   } else {
     ret = await res.json();

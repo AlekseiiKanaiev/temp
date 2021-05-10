@@ -11,7 +11,7 @@ const TableWrapper = styled.div`
 `;
 
 const TextWrapper = styled.span`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
@@ -19,7 +19,7 @@ const TextWrapper = styled.span`
 `;
 
 const NameWrapper = styled.span`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -27,7 +27,7 @@ const NameWrapper = styled.span`
 `;
 
 const TableHeaderWrapper = styled.label`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 12px;

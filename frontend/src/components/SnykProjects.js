@@ -9,7 +9,7 @@ import ProjectImport from './projectImport/ProjectImport';
 import Spinner from './Spinner';
 
 const H1TextWrapper = styled.h1`
-  font-family: 'Open Sans';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 24px;

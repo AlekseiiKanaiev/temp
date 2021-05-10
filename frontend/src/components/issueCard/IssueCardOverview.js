@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export default function IssueCardOverview({ issue }) {
   const OverviewTextWrapper = styled.p`
     white-space: pre-line;
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 12px;
@@ -12,7 +12,7 @@ export default function IssueCardOverview({ issue }) {
   `;
 
   const H3TextWrapper = styled.h3`
-    font-family: 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 600;
     font-style: normal;
     font-size: 14px;
