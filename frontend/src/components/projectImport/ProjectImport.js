@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import ImportRepositorySpinner from './ImportRepositorySpinner';
 import {
-  importProject, 
+  importProject,
   getImportJobDetails,
   sendToAnalytics,
   getSavedOrg,
@@ -56,7 +56,7 @@ const TextWrapper = styled.p`
 
 export default function ProjectImport() {
   const [isImporting, setIsImporting] = useState(false);
-  const [linkToAddProject, setLinkToAddProject] = useState('')
+  const [linkToAddProject, setLinkToAddProject] = useState('');
   const configuration = useSelector((state) => state.configuration);
   const {
     jwtToken, repoOwner, repoSlug, repoMainBranch, currentUserId,
@@ -88,14 +88,13 @@ export default function ProjectImport() {
       },
     });
     getSavedOrg(jwtToken).then((result) => {
-        const orgSlug = result.orgslug
-        getIntegrationId(jwtToken).then((result) => {
-          setLinkToAddProject(`https://app.snyk.io/org/${orgSlug}/sources/${result.id}/add`)
-        })
+      const orgSlug = result.orgslug;
+      getIntegrationId(jwtToken).then((result) => {
+        setLinkToAddProject(`https://app.snyk.io/org/${orgSlug}/sources/${result.id}/add`);
+      });
     }).catch((err) => {
-      throw new Error(err)
-    })
-    
+      throw new Error(err);
+    });
   });
 
   const importProjectToSnyk = () => {
@@ -103,7 +102,7 @@ export default function ProjectImport() {
     importProject(jwtToken, repoOwner, repoSlug, repoMainBranch).then(
       (result) => {
         if (result.error) {
-          afterRepoImportedAction(result, 
+          afterRepoImportedAction(result,
             {
               error_short_message: result.error_short_message,
               message: result.message,
@@ -132,7 +131,7 @@ export default function ProjectImport() {
         setError({
           error: 'Error importing this repository.',
           message: errorOnImport.message,
-          info: errorOnImport.error_info
+          info: errorOnImport.error_info,
         }),
       );
     } else {
@@ -143,7 +142,7 @@ export default function ProjectImport() {
           setError({
             error: 'Error importing this repository.',
             message: 'Job url not found in the location header',
-            info: errorOnImport.error_info
+            info: errorOnImport.error_info,
           }),
         );
       } else {
@@ -235,7 +234,7 @@ export default function ProjectImport() {
 
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href={linkToAddProject} target="_blank">Add project dialog</a>
+          <a href={linkToAddProject} target="_blank" rel="noreferrer">Add project dialog</a>
           {' '}
           in Snyk app
         </TextWrapper>

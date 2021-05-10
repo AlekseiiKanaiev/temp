@@ -28,7 +28,7 @@ export default function IssueCardOverview({ issue }) {
       unformatedOverview = overviewMatches && overviewMatches[1];
       unformatedOverview = unformatedOverview || issue.issueData.description;
     }
-    unformatedOverview = unformatedOverview.replace(/(\n)/gm, '');
+    unformatedOverview = unformatedOverview.trim().replace(/(\n+)/gm, '\n');
     const links = unformatedOverview.match(linkRegExp);
     let linksInDescription;
     if (links) {
@@ -39,7 +39,7 @@ export default function IssueCardOverview({ issue }) {
             {part.substring(part.indexOf('[') + 1, part.indexOf(']'))}
           </a>
         ) : (
-          part.replace(/(\n)/gm, '')
+          part.trim().replace(/(\n+)/gm, '\n')
         )));
       linksInDescription = linksInDescription.filter((part) => part && part !== '\n');
       return linksInDescription;
