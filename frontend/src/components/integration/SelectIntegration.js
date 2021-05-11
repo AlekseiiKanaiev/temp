@@ -167,6 +167,7 @@ export default function SelectIntegration({
           </ButtonWrapper>
           <ButtonWrapper>
             <Button
+              appearance="subtle-link"
               onClick={() => {
                 backButton();
               }}

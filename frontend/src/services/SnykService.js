@@ -53,10 +53,7 @@ export async function getProjects(jwtToken, projectName) {
   };
   const res = await executePost(jwtToken, url, projectBody);
 
-  if (!res.ok) {
-    throw new Error(`Could not fetch POST ${url}, received ${res}`);
-  }
-  return res.json();
+  return getJsonFromRequestResult(res);
 }
 
 export async function getIssues(jwtToken, id) {
@@ -115,8 +112,6 @@ export async function getIntegration(jwtToken) {
 }
 
 export async function getOrganizations(jwtToken) {
-  // return await getSnykUser(jwtToken);
-
   const url = '/snyk/orgs';
   const res = await executeGet(jwtToken, url);
   return getJsonFromRequestResult(res);

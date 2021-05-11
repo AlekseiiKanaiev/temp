@@ -308,6 +308,7 @@ export default function IntegrateWithSnyk({
                 </ButtonWrapper>
                 <ButtonWrapper>
                   <Button
+                    appearance="subtle-link"
                     onClick={() => {
                       backButton();
                     }}

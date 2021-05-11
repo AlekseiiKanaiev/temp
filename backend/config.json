@@ -6,14 +6,8 @@
         "port": 3000,
         "errorTemplate": true,
         "store": {
-            "adapter": "sequelize",
             "type": "postgres",
-            "url": "postgres://postgres:ferwsjy785@localhost:5432/snyk_bitbucket",
-            "database": "snyk_bitbucket",
-            "host": "localhost",
-            "port": 5432,
-            "username": "postgres",
-            "password": "ferwsjy785"
+            "url": "$DATABASE_URL"
         },
         "snyk": {
             "baseUrl": "https://api.snyk.io/v1/",

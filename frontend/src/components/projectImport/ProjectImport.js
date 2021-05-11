@@ -89,7 +89,7 @@ export default function ProjectImport() {
     });
     getSavedOrg(jwtToken).then((result) => {
       const orgSlug = result.orgslug;
-      getIntegrationId(jwtToken).then((result) => {
+      getIntegrationId(jwtToken).then(() => {
         setLinkToAddProject(`https://app.snyk.io/org/${orgSlug}/add`);
       });
     }).catch((err) => {
