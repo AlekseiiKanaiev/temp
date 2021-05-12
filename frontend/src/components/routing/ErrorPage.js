@@ -54,6 +54,10 @@ const InfoBlockWrapper = styled.div`
   margin-right: 5px;
 `;
 
+const LinkWrapper = styled.a`
+color: rgb(107, 119, 140) !important;
+`;
+
 const H1TextWrapper = styled.h1`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
@@ -108,13 +112,10 @@ export default function ErrorPage() {
             <TextWrapper>
               Please try again later or
               {' '}
-              <a
-                href="https://snyk.io/contact-us/"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <LinkWrapper href="https://snyk.io/contact-us/">
                 contact our support
-              </a>
+              </LinkWrapper>
+              contact our support
             </TextWrapper>
           </ContentWrapper>
         </GridColumn>

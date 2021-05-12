@@ -29,6 +29,11 @@ const H1TextWrapper = styled.h1`
   font-style: normal;
   font-size: 20px;
   line-height: 24px;
+  margin-top: 30px !important;
+`;
+
+const LinkWrapper = styled.a`
+  color: rgb(107, 119, 140) !important;
 `;
 
 export default function NoFilesDetected() {
@@ -53,9 +58,10 @@ export default function NoFilesDetected() {
             <TextWrapper>
               Please visit our
               {' '}
-              <a href="https://support.snyk.io/hc/en-us/articles/360016973477-Snyk-Code-language-and-framework-support">
+              <LinkWrapper href="https://support.snyk.io/hc/en-us/articles/360016973477-Snyk-Code-language-and-framework-support">
                 Knowledge Center
-              </a>
+                {' '}
+              </LinkWrapper>
               {' '}
               for supported languages and target files.
             </TextWrapper>

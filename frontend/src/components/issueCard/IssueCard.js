@@ -13,8 +13,8 @@ export default function IssueCard({ issue, projectLink }) {
   `;
 
   const CardWrapper = styled.div`
-    margin: 20px;
     border: 1px solid #ccc;
+    margin-bottom: 10px;  
   `;
 
   const SectionWrapper = styled.div`

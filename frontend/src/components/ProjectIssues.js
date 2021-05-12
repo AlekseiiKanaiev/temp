@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import {
   getIssues,
   sendToAnalytics,
@@ -6,6 +7,11 @@ import {
 import Spinner from './Spinner';
 import IssueCard from './issueCard/IssueCard';
 import ErrorPage from './routing/ErrorPage';
+
+const SizedDiv = styled.div`
+  width: 860px;
+  margin: 20px;
+`;
 
 export default function ProjectIssues({
   jwtToken,
@@ -61,5 +67,5 @@ export default function ProjectIssues({
       ))
     );
   };
-  return view();
+  return <SizedDiv>{view()}</SizedDiv>;
 }

@@ -3,15 +3,15 @@ import Spinner from '@atlaskit/spinner';
 import styled from 'styled-components';
 
 const SpinnerWrapper = styled.div`
-    margin-top: 20%;
-    display: flex;
-    justify-content: center;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
 `;
 
 export default function CustomSpinner() {
   return (
     <SpinnerWrapper>
-      <Spinner size="xlarge" />
+      <Spinner size="large" />
     </SpinnerWrapper>
   );
 }

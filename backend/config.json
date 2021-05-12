@@ -15,8 +15,7 @@
       "snykAnalyticsKey": "$ANALYTICS"
     },
     "localBaseUrl": "$APP_URL",
-    "appKey": "0.0.2",
-    "description": "0.0.2"
+    "appKey": "$APP_KEY"
   },
   "production": {
     "port": "$PORT",
@@ -37,7 +36,6 @@
       "snykOauthUrl": "https://id.snyk.io/oauth/token",
       "snykAnalyticsKey": "$ANALYTICS"
     },
-    "appKey": "0.0.2",
-    "description": "0.0.2"
+    "appKey": "$APP_KEY"
   }
 }

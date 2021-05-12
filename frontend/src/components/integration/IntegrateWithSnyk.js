@@ -32,7 +32,8 @@ const ContainerWrapper = styled.div`
   margin-top: 5%;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, 
+              rgba(9, 30, 66, 0.31) 0px 0px 1px;
   display: block;
 `;
 

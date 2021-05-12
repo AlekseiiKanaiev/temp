@@ -10,13 +10,15 @@ import NoIssuesFound from './NoIssuesFound';
 
 const ContainerWrapper = styled.div`
   margin-top: 5%;
+  margin-left: 20px;
 `;
 
-const H2TextWrapper = styled.h2`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+const H1TextWrapper = styled.h1`
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 28px;
 `;
 
@@ -26,7 +28,9 @@ export default function ProjectList({ projects, orgname }) {
 
   const {
     jwtToken, repoSlug, repoOwner, currentUserId,
-  } = useSelector((state) => state.configuration);
+  } = useSelector(
+    (state) => state.configuration,
+  );
 
   useEffect(() => {
     AP.getLocation((location) => {
@@ -85,10 +89,8 @@ export default function ProjectList({ projects, orgname }) {
     <>
       <GridColumn medium={12}>
         <ContainerWrapper>
-          <H2TextWrapper>
-            Security insights
-            {' '}
-            {projectId && 'for '}
+          <H1TextWrapper>
+            {!projectId && 'Security insights '}
             {projectId && (
               <ProjectName
                 name={project.name}
@@ -97,7 +99,7 @@ export default function ProjectList({ projects, orgname }) {
                 repoSlug={repoSlug}
               />
             )}
-          </H2TextWrapper>
+          </H1TextWrapper>
           <VulnerabilityBanner
             issueCounts={issueCounts}
             projectId={projectId}

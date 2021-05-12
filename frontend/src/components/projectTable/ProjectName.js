@@ -1,14 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const ImageWrapper = styled.span`
+  margin-right: 10px;
+  vertical-align: middle;
+`;
+
+const TextWrapper = styled.span`
+  vertical-align: text-bottom;
+`;
+
+const LinkWrapper = styled.a`
+  color: rgb(107, 119, 140) !important;
+`;
+
 export default function ProjectName({
   name, type, id, baseUrl, repoSlug,
 }) {
-  const ImageWrapper = styled.span`
-    margin-right: 10px;
-    vertical-align: middle;
-  `;
-
   let icon = `${type}.svg`;
   if (type.startsWith('go') && !type.startsWith('google')) {
     icon = 'go.svg';
@@ -22,18 +30,20 @@ export default function ProjectName({
         <img src={`/ico/${icon}`} alt={type} />
       </ImageWrapper>
       {repoSlug && (
-        <>
-          <a href={`${baseUrl}`} target="_parent">
-            {repoSlug}
-          </a>
-          /
-          {name.substring(name.indexOf(':') + 1)}
-        </>
+      <TextWrapper>
+          {'Security insights for '}
+        <LinkWrapper href={`${baseUrl}`} target="_parent">
+          {repoSlug}
+        </LinkWrapper>
+        /
+        {name.substring(name.indexOf(':') + 1)}
+      </TextWrapper>
+
       )}
       {!repoSlug && (
-        <a href={`${baseUrl}?projectId=${id}`} target="_parent">
+        <LinkWrapper href={`${baseUrl}?projectId=${id}`} target="_parent">
           {name.substring(name.indexOf(':') + 1)}
-        </a>
+        </LinkWrapper>
       )}
     </>
   );

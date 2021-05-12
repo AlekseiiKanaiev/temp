@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import MarkdownIt from 'markdown-it';
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+  html: true,  
+});
 
 export default function IssueCardOverview({ issue }) {
   const OverviewTextWrapper = styled.p`
@@ -10,7 +12,7 @@ export default function IssueCardOverview({ issue }) {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 22px;
   `;
 
@@ -35,7 +37,7 @@ export default function IssueCardOverview({ issue }) {
 
   const createMarkup = () => {
     const overviewPart = overview();
-    const htmlOutput = overviewPart ? md.renderInline(overviewPart) : '';
+    const htmlOutput = overviewPart ? md.renderInline(overviewPart): '';
     return {
       __html: htmlOutput.replace(/(<a\s)/gm, '<a target="_blank"')
         .trim()

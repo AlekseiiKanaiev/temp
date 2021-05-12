@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ProgressTracker } from '@atlaskit/progress-tracker';
 
 const TextWrapper = styled.label`
+  white-space: pre;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
@@ -12,7 +13,7 @@ const TextWrapper = styled.label`
 
 export default function IntegrationEventTracker({ stage }) {
   const stagesList = [
-    'Log in or sign up to Snyk',
+    'Log in or sign up \n to Snyk',
     'Select Organization',
     'Integrate with Snyk',
   ];

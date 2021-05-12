@@ -54,6 +54,10 @@ const TextWrapper = styled.p`
   line-height: 20px;
 `;
 
+const LinkWrapper = styled.a`
+  color: rgb(107, 119, 140) !important;
+`;
+
 export default function ProjectImport() {
   const [isImporting, setIsImporting] = useState(false);
   const [linkToAddProject, setLinkToAddProject] = useState('');
@@ -231,10 +235,11 @@ export default function ProjectImport() {
             Import this repository
           </Button>
         </ButtonWrapper>
-
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href={linkToAddProject} target="_blank" rel="noreferrer">Add project dialog</a>
+          <LinkWrapper href={linkToAddProject} target="_blank" rel="noreferrer">
+            Add project dialog
+          </LinkWrapper>
           {' '}
           in Snyk app
         </TextWrapper>
