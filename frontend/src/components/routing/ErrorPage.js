@@ -112,10 +112,9 @@ export default function ErrorPage() {
             <TextWrapper>
               Please try again later or
               {' '}
-              <LinkWrapper href="https://snyk.io/contact-us/">
+              <LinkWrapper href="https://snyk.io/contact-us/" target='_blank'>
                 contact our support
               </LinkWrapper>
-              contact our support
             </TextWrapper>
           </ContentWrapper>
         </GridColumn>

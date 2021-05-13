@@ -1,7 +1,7 @@
 {
   "key": "{{appKey}}",
   "name": "Snyk Security for Bitbucket Cloud",
-  "description": "Snyk Security for Bitbucket Cloud allows developers to easily find and fix security vulnerabilities in open source dependencies and container files, all from within Bitbucket (version 0.0.5)",
+  "description": "Snyk Security for Bitbucket Cloud allows developers to easily find and fix security vulnerabilities in open source dependencies and container files, all from within Bitbucket (version 0.0.6)",
   "vendor": {
     "name": "Snyk",
     "url": "https://snyk.io"
