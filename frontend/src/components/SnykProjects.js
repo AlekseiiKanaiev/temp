@@ -14,6 +14,12 @@ const H1TextWrapper = styled.h1`
   font-style: normal;
   font-size: 24px;
   line-height: 28px;
+  margin-top: 30px !important;
+`;
+
+const SizedDiv = styled.div`
+  width: 860px;
+  margin: 20px;
 `;
 
 export default function SnykProjects() {
@@ -38,9 +44,9 @@ export default function SnykProjects() {
     }
     if (!orgName || projects === undefined) {
       return (
-        <GridColumn medium={12}>
+        <SizedDiv>
           <Spinner />
-        </GridColumn>
+        </SizedDiv>
       );
     }
     if (projects.length === 0 && !imported) {

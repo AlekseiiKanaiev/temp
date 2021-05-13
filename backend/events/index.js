@@ -50,7 +50,7 @@ module.exports = function events(addon) {
         const httpClient = addon.httpClient({
             clientKey: clientKey  
           })
-          return new Promise((resolve, reject) => {
+          return new Promise ((resolve, reject) => {
                  httpClient.get('/2.0/user/', function (err, resp, data) {
                 let username = ''
                 try {

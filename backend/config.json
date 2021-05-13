@@ -1,65 +1,41 @@
 {
-    "product": "bitbucket",
-    "development": {
-        "clientId": "$CLIENTID",
-        "clientSecret": "$CLIENTSECRET",
-        "port": 3000,
-        "errorTemplate": true,
-        "store": {
-            "adapter": "sequelize",
-            "type": "postgres",
-            "url": "postgres://postgres:ferwsjy785@localhost:5432/snyk_bitbucket",
-            "database": "snyk_bitbucket",
-            "host": "localhost",
-            "port": 5432,
-            "username": "postgres",
-            "password": "ferwsjy785"
-        },
-        "snyk": {
-            "baseUrl": "https://api.snyk.io/v1/",
-            "snykOauthUrl": "https://id.snyk.io/oauth/token",
-            "snykAnalyticsKey" : "$ANALYTICS"
-        },
-        "localBaseUrl": "$APP_URL"
+  "product": "bitbucket",
+  "development": {
+    "clientId": "$CLIENTID",
+    "clientSecret": "$CLIENTSECRET",
+    "port": 3000,
+    "errorTemplate": true,
+    "store": {
+      "type": "postgres",
+      "url": "$DATABASE_URL"
     },
-    "stage": {
-        "port": "$PORT",
-        "errorTemplate": true,
-        "localBaseUrl": "$APP_URL",
-        "clientId": "$CLIENTID",
-        "clientSecret": "$CLIENTSECRET",
-        "store": {
-            "type": "postgres",
-            "url": "$DATABASE_URL"
-        },
-        "whitelist": [
-            "bitbucket.org",
-            "api.bitbucket.org"
-        ],
-        "snyk": {
-            "baseUrl": "https://api.snyk.io/v1/",
-            "snykOauthUrl": "https://id.snyk.io/oauth/token",
-            "snykAnalyticsKey" : "$ANALYTICS"
-        }
+    "snyk": {
+      "baseUrl": "https://api.snyk.io/v1/",
+      "snykOauthUrl": "https://id.snyk.io/oauth/token",
+      "snykAnalyticsKey": "$ANALYTICS"
     },
-    "production": {
-        "port": "$PORT",
-        "errorTemplate": true,
-        "clientId": "$CLIENTID",
-        "clientSecret": "$CLIENTSECRET",
-        "localBaseUrl": "$APP_URL",
-        "store": {
-            "type": "postgres",
-            "url": "$DATABASE_URL"
-        },
-        "whitelist": [
-            "bitbucket.org",
-            "api.bitbucket.org"
-        ],
-        "snyk": {
-            "baseUrl": "https://api.snyk.io/v1/",
-            "snykOauthUrl": "https://id.snyk.io/oauth/token",
-            "snykAnalyticsKey" : "$ANALYTICS"
-        }
-    }
+    "localBaseUrl": "$APP_URL",
+    "appKey": "$APP_KEY"
+  },
+  "production": {
+    "port": "$PORT",
+    "errorTemplate": true,
+    "clientId": "$CLIENTID",
+    "clientSecret": "$CLIENTSECRET",
+    "localBaseUrl": "$APP_URL",
+    "store": {
+      "type": "postgres",
+      "url": "$DATABASE_URL"
+    },
+    "whitelist": [
+      "bitbucket.org",
+      "api.bitbucket.org"
+    ],
+    "snyk": {
+      "baseUrl": "https://api.snyk.io/v1/",
+      "snykOauthUrl": "https://id.snyk.io/oauth/token",
+      "snykAnalyticsKey": "$ANALYTICS"
+    },
+    "appKey": "snyk-bbc-app"
+  }
 }

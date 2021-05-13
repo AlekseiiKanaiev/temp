@@ -7,7 +7,7 @@ const PackageNameWrapper = styled.span`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 24px;
 `;
 
@@ -15,8 +15,12 @@ const PackageDescWrapper = styled.label`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 24px;
+`;
+
+const SpanBadge = styled.span`
+  vertical-align: text-bottom;
 `;
 
 export default function IssueCardBadge({ issue }) {
@@ -44,8 +48,7 @@ export default function IssueCardBadge({ issue }) {
 
   return (
     <>
-      {badge()}
-      {' '}
+      <SpanBadge>{badge()}</SpanBadge>
       <PackageNameWrapper>{issue.pkgName}</PackageNameWrapper>
       <PackageDescWrapper>{` - ${issue.issueData.title}`}</PackageDescWrapper>
     </>

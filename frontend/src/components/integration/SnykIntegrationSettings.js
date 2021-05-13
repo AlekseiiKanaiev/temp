@@ -28,7 +28,7 @@ const TextFieldWrapper = styled.div`
 
 const LinkWrapper = styled.span`
   cursor: pointer;
-  color: blue;
+  color: rgb(0, 82, 204) !important;
   text-decoration: underline;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
@@ -49,7 +49,7 @@ const H1TextWrapper = styled.label`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 28px;
 `;
 

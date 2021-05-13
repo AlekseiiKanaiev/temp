@@ -54,6 +54,10 @@ const TextWrapper = styled.p`
   line-height: 20px;
 `;
 
+const LinkWrapper = styled.a`
+color: rgb(0, 82, 204) !important;
+`;
+
 export default function ProjectImport() {
   const [isImporting, setIsImporting] = useState(false);
   const [linkToAddProject, setLinkToAddProject] = useState('');
@@ -89,7 +93,7 @@ export default function ProjectImport() {
     });
     getSavedOrg(jwtToken).then((result) => {
       const orgSlug = result.orgslug;
-      getIntegrationId(jwtToken).then((result) => {
+      getIntegrationId(jwtToken).then(() => {
         setLinkToAddProject(`https://app.snyk.io/org/${orgSlug}/add`);
       });
     }).catch((err) => {
@@ -231,10 +235,11 @@ export default function ProjectImport() {
             Import this repository
           </Button>
         </ButtonWrapper>
-
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <a href={linkToAddProject} target="_blank" rel="noreferrer">Add project dialog</a>
+          <LinkWrapper href={linkToAddProject} target="_blank" rel="noreferrer">
+            Add project dialog
+          </LinkWrapper>
           {' '}
           in Snyk app
         </TextWrapper>

@@ -1,141 +1,147 @@
 {
-    "key": "snyk-bbc-app",
-    "name": "Snyk Security for Bitbucket Cloud",
-    "description": "Snyk Security for Bitbucket Cloud allows developers to easily find and fix security vulnerabilities in open source dependencies and container files, all from within Bitbucket",
-    "vendor": {
-        "name": "Snyk",
-        "url": "https://snyk.io"
-    },
-    "baseUrl": "{{localBaseUrl}}",
-    "authentication": {
-        "type": "jwt"
-    },
-    "lifecycle": {
-        "installed": "/installed",
-        "uninstalled": "/uninstalled"
-    },
-    "modules": {
-        "webhooks": [
-            {
-                "event": "pullrequest:created",
-                "url": "/webhook"
-            },
-            {
-                "event": "pullrequest:updated",
-                "url": "/webhook"
-            },
-            {
-                "event": "pullrequest:fulfilled",
-                "url": "/webhook"
-            },
-            {
-                "event": "pullrequest:rejected",
-                "url": "/webhook"
-            },
-            {
-                "event": "repo:push",
-                "url": "/webhook"
-            }
-        ],
-        "repoPages": [
-            {
-                "url": "/pages/repo?useruuid={user.uuid}&targetuseruuid={target_user.uuid}&workspaceSlug={repository.workspace.slug}&repoSlug={repository.slug}&repoMainBranch={repository.mainbranch.name}&repoOwner={repository.owner.username}",
-                "name": {
-                    "value": "Snyk"
-                },
-                "location": "org.bitbucket.repository.navigation",
-                "key": "snyk-repo-page",
-                "params": {
-                    "auiIcon": "aui-iconfont-doc"
-                },
-                "icon": {
-                    "url": "/ico/SnykLogoBW.svg",
-                    "width": 24,
-                    "height": 24
-                },
+  "key": "{{appKey}}",
+  "name": "Snyk Security for Bitbucket Cloud",
+  "description": "Snyk Security for Bitbucket Cloud allows developers to easily find and fix security vulnerabilities in open source dependencies and container files, all from within Bitbucket (version 0.0.5)",
+  "vendor": {
+    "name": "Snyk",
+    "url": "https://snyk.io"
+  },
+  "baseUrl": "{{localBaseUrl}}",
+  "authentication": {
+    "type": "jwt"
+  },
+  "lifecycle": {
+    "installed": "/installed",
+    "uninstalled": "/uninstalled"
+  },
+  "modules": {
+    "webhooks": [
+      {
+        "event": "pullrequest:created",
+        "url": "/webhook"
+      },
+      {
+        "event": "pullrequest:updated",
+        "url": "/webhook"
+      },
+      {
+        "event": "pullrequest:fulfilled",
+        "url": "/webhook"
+      },
+      {
+        "event": "pullrequest:rejected",
+        "url": "/webhook"
+      },
+      {
+        "event": "repo:push",
+        "url": "/webhook"
+      }
+    ],
+    "repoPages": [
+      {
+        "url": "/pages/repo?useruuid={user.uuid}&targetuseruuid={target_user.uuid}&workspaceSlug={repository.workspace.slug}&repoSlug={repository.slug}&repoMainBranch={repository.mainbranch.name}&repoOwner={repository.owner.username}",
+        "name": {
+          "value": "Snyk"
+        },
+        "location": "org.bitbucket.repository.navigation",
+        "key": "snyk-repo-page",
+        "params": {
+          "auiIcon": "aui-iconfont-doc"
+        },
+        "icon": {
+          "url": "/ico/SnykLogoBW.svg",
+          "width": 24,
+          "height": 24
+        },
+        "conditions": [
+          {
+            "type": "or",
+            "conditions": [
+              {
                 "conditions": [
-                    {"type": "or",
-                     "conditions": [
-                        {    "conditions": [
-                                {
-                                    "type": "or", 
-                                    "conditions" :[
-                                        {
-                                            "condition": "has_account_permission",
-                                            "invert": false,
-                                            "params": {
-                                                "permission": "collaborator"
-                                            }
-                                        },
-                                        {
-                                            "condition": "has_permission",
-                                            "invert": false,
-                                            "params": {
-                                                "permission": "read"
-                                            }
-                                        }
-                                    ]   
-                                    
-                                },
-                                {
-                                    "condition": "is_repo_private",
-                                    "target": "repository"
-                                }
-                            ]
-                        },
-                        {    "conditions": [
-                            {
-                                "type": "or", 
-                                "conditions" :[
-                                    {
-                                        "condition": "has_account_permission",
-                                        "invert": false,
-                                        "params": {
-                                            "permission": "collaborator"
-                                        }
-                                    },
-                                    {
-                                        "condition": "has_permission",
-                                        "invert": false,
-                                        "params": {
-                                            "permission": "write"
-                                        }
-                                    }
-                                ]   
-                                
-                            },
-                            {
-                                "condition": "is_repo_private",
-                                "invert": true,
-                                "target": "repository"
-                            }
-                        ]
-                    }
+                  {
+                    "type": "or",
+                    "conditions": [
+                      {
+                        "condition": "has_account_permission",
+                        "invert": false,
+                        "params": {
+                          "permission": "collaborator"
+                        }
+                      },
+                      {
+                        "condition": "has_permission",
+                        "invert": false,
+                        "params": {
+                          "permission": "read"
+                        }
+                      }
                     ]
-                    }
+                  },
+                  {
+                    "condition": "is_repo_private",
+                    "target": "repository"
+                  }
                 ]
-            }
-        ],
-        "adminPages": [
-            {
-              "url": "/pages/account?useruuid={user.uuid}&targetuseruuid={target_user.uuid}",
-              "location" : "org.bitbucket.account.admin",
-              "name": {
-                "value": "Integration Settings"
               },
-              "key": "snyk-account-page",
-              "params": {
-                "auiIcon": "aui-iconfont-doc"
-                },
-            "icon": {
-                "url": "/ico/SnykLogoBW.svg",
-                "width": 24,
-                "height": 24
-            }
-            }
-            
-          ]
-    },
-    "scopes": ["account", "repository", "pullrequest:write"],
-    "contexts": ["account"]
+              {
+                "conditions": [
+                  {
+                    "type": "or",
+                    "conditions": [
+                      {
+                        "condition": "has_account_permission",
+                        "invert": false,
+                        "params": {
+                          "permission": "collaborator"
+                        }
+                      },
+                      {
+                        "condition": "has_permission",
+                        "invert": false,
+                        "params": {
+                          "permission": "write"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "condition": "is_repo_private",
+                    "invert": true,
+                    "target": "repository"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "adminPages": [
+      {
+        "url": "/pages/account?useruuid={user.uuid}&targetuseruuid={target_user.uuid}",
+        "location": "org.bitbucket.account.admin",
+        "name": {
+          "value": "Integration Settings"
+        },
+        "key": "snyk-account-page",
+        "params": {
+          "auiIcon": "aui-iconfont-doc"
+        },
+        "icon": {
+          "url": "/ico/SnykLogoBW.svg",
+          "width": 24,
+          "height": 24
+        }
+      }
+    ]
+  },
+  "scopes": [
+    "account",
+    "repository",
+    "pullrequest:write"
+  ],
+  "contexts": [
+    "account"
+  ]
 }

@@ -7,9 +7,13 @@ export default function IssueCardAdditionalInfo({ projectLink }) {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 24px;
   `;
+
+  const LinkWrapper = styled.a`
+    color: rgb(0, 82, 204) !important;
+`;
 
   return (
     <>
@@ -18,14 +22,9 @@ export default function IssueCardAdditionalInfo({ projectLink }) {
           {
             'For additional information about this vulnerability and remediation options, '
           }
-          <a
-            href={projectLink}
-            target="_blank"
-            rel="noreferrer"
-            style={{ fontWeight: 'bold' }}
-          >
+          <LinkWrapper href={projectLink} target="_blank" rel="noreferrer">
             visit Snyk
-          </a>
+          </LinkWrapper>
         </AdditionalTextWrapper>
       )}
     </>

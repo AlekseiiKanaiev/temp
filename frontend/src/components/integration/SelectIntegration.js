@@ -9,21 +9,20 @@ import {
   getOrganizations,
   deleteToken,
 } from '../../services/SnykService';
-import {
-  setError,
-} from '../store/actions';
+import { setError } from '../store/actions';
 
 import Spinner from '../Spinner';
 
 const ContainerWrapper = styled.div`
   min-width: 650px;
   max-width: 650px;
-  height: 300px;
+  height: 310px;
   margin-top: 5%;
   margin-bottom: 5%;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.31) 0px 0px 1px;
   display: block;
 `;
 
@@ -38,10 +37,11 @@ const ContentWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: 20px;
   margin-right: 40px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 24px;
 `;
 
@@ -52,15 +52,18 @@ const ButtonWrapper = styled.span`
 `;
 
 const H1TextWrapper = styled.h1`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;
   line-height: 24px;
+  margin-top: 26px !important;
 `;
 
 const ButtonTextWrapper = styled.label`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -87,11 +90,13 @@ export default function SelectIntegration({
       getOrganizations;
       const orgs = [];
       if (result.error) {
-        dispatch(setError({
-          error: result.error_short_message,
-          message: result.message,
-          info: result.error_info,
-        }));
+        dispatch(
+          setError({
+            error: result.error_short_message,
+            message: result.message,
+            info: result.error_info,
+          }),
+        );
       } else {
         if (result.orgs) {
           result.orgs.forEach((org) => {

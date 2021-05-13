@@ -8,6 +8,8 @@ import VulnarabilityBadges from '../VulnarabilityBadges';
 
 const TableWrapper = styled.div`
   margin-top: 30px;
+  margin-left: 20px;
+  width: 860px;
 `;
 
 const TextWrapper = styled.span`
@@ -39,12 +41,12 @@ const head = {
     {
       key: 'project',
       content: <TableHeaderWrapper>Project</TableHeaderWrapper>,
-      width: 60,
+      width: 45,
     },
     {
       key: 'vulnerabilities',
       content: <TableHeaderWrapper>Vulnerabilities</TableHeaderWrapper>,
-      width: 25,
+      width: 40,
     },
     {
       key: 'additional',

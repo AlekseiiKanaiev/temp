@@ -34,6 +34,10 @@ const ButtonWrapper = styled.span`
   margin-right: 20px;
 `;
 
+const LinkWrapper = styled.a`
+color: rgb(0, 82, 204) !important;
+`;
+
 export default function ConfigrmAccess({ setStage, setGranted }) {
   return (
     <GridColumn medium={12}>
@@ -41,10 +45,9 @@ export default function ConfigrmAccess({ setStage, setGranted }) {
         <ContentWrapper>
           <h1>Confirm access to your account</h1>
           <p>
-            <a href="https://snyk.auth0.com">Snyk</a>
+            <LinkWrapper href="https://snyk.auth0.com">Snyk</LinkWrapper>
             {' '}
-            is requesting access to
-            the following:
+            is requesting access to the following:
           </p>
           <h3>Read your account information</h3>
         </ContentWrapper>

@@ -1,1 +1,25 @@
 /* app styles */
+code {
+    font-size: 0.875em;
+    font-family: SFMono-Medium, "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo, Consolas, Courier, monospace;
+    font-weight: normal;
+    line-height: inherit;
+    background-color: var(--ds--code--bg-color,#F4F5F7);
+    color: rgb(23, 43, 77);
+    border-style: none;
+    border-radius: 3px;
+    padding: 0.166em 0.33em;
+    display: inline;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow: auto;
+    -webkit-box-decoration-break: clone;
+}
+
+a {
+    color: rgb(0, 82, 204) !important;
+}
+
+i {
+    font-style: italic;
+  }

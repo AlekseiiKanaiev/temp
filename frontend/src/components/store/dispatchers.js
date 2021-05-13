@@ -65,46 +65,54 @@ export const dispatchProjects = (dispatch, configuration, imported) => {
       dispatch(setOrgName(result.orgslug));
       getProjects(jwtToken, `${repoOwner}/${repoSlug}:`)
         .then((result) => {
-          const projects = result.projects
-            .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`) && projectTypes.includes(project.type))
-            .map((project) => ({
-              id: project.id,
-              name: project.name,
-              type: project.type,
-              issueCounts: project.issueCountsBySeverity,
-              testedAt: project.lastTestedDate,
+          if (result.error) {
+            dispatch(setError({
+              error: result.error_short_message,
+              message: result.message,
+              info: result.error_info,
             }));
-          dispatch(
-            setProjects({
-              projects,
-              imported,
-            }),
-          );
-          sendToAnalytics(jwtToken, {
-            type: 'track',
-            eventMessage: {
-              event: 'connect_app_page_view',
-              properties: {
-                bb_user_id: currentUserId,
-                viewed_page: 'list_of_projects',
-                repo_slug: `${repoOwner}/${repoSlug}`,
-                number_of_projects: projects.length,
-              },
-            },
-          });
-          if (imported) {
+          } else {
+            const projects = result.projects
+              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`) && projectTypes.includes(project.type))
+              .map((project) => ({
+                id: project.id,
+                name: project.name,
+                type: project.type,
+                issueCounts: project.issueCountsBySeverity,
+                testedAt: project.lastTestedDate,
+              }));
+            dispatch(
+              setProjects({
+                projects,
+                imported,
+              }),
+            );
             sendToAnalytics(jwtToken, {
               type: 'track',
               eventMessage: {
-                event: 'connect_app_repo_imported',
+                event: 'connect_app_page_view',
                 properties: {
                   bb_user_id: currentUserId,
+                  viewed_page: 'list_of_projects',
                   repo_slug: `${repoOwner}/${repoSlug}`,
-                  import_result: 'success',
                   number_of_projects: projects.length,
                 },
               },
             });
+            if (imported) {
+              sendToAnalytics(jwtToken, {
+                type: 'track',
+                eventMessage: {
+                  event: 'connect_app_repo_imported',
+                  properties: {
+                    bb_user_id: currentUserId,
+                    repo_slug: `${repoOwner}/${repoSlug}`,
+                    import_result: 'success',
+                    number_of_projects: projects.length,
+                  },
+                },
+              });
+            }
           }
         });
     })
