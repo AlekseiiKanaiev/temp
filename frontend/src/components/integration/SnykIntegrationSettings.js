@@ -28,7 +28,7 @@ const TextFieldWrapper = styled.div`
 
 const LinkWrapper = styled.span`
   cursor: pointer;
-  color: rgb(107, 119, 140) !important;
+  color: rgb(0, 82, 204) !important;
   text-decoration: underline;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;

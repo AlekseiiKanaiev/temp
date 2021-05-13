@@ -55,7 +55,7 @@ const TextWrapper = styled.p`
 `;
 
 const LinkWrapper = styled.a`
-  color: rgb(107, 119, 140) !important;
+color: rgb(0, 82, 204) !important;
 `;
 
 export default function ProjectImport() {

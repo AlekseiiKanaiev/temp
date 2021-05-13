@@ -36,6 +36,6 @@
       "snykOauthUrl": "https://id.snyk.io/oauth/token",
       "snykAnalyticsKey": "$ANALYTICS"
     },
-    "appKey": "$APP_KEY"
+    "appKey": "snyk-bbc-app"
   }
 }

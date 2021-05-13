@@ -16,9 +16,8 @@ code {
     -webkit-box-decoration-break: clone;
 }
 
-link {
-    color: rgb(107, 119, 140) !important;
-    margin-right: 5px;
+a {
+    color: rgb(0, 82, 204) !important;
 }
 
 i {
