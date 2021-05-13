@@ -40,7 +40,6 @@ export default function ImportRepositorySpinner() {
             Importing your repository to Snyk and scanning it for
             vulnerabilities...
           </TextWrapper>
-          <TextWrapper>You can close the tab</TextWrapper>
         </ContentWrapper>
       </ContainerWrapper>
     </GridColumn>
