@@ -1,55 +1,54 @@
 import React from 'react';
 import styled from 'styled-components';
-import Lozenge from '@atlaskit/lozenge';
+import { SimpleTag as Tag } from '@atlaskit/tag';
 
 const PackageNameWrapper = styled.span`
-  margin-left: 5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 14px;
   line-height: 24px;
+  margin-left: -5px;
 `;
 
 const PackageDescWrapper = styled.label`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
   line-height: 24px;
 `;
 
-const SpanBadge = styled.span`
-  vertical-align: text-bottom;
+const LabelWrapper = styled.label`
+  width: 52px;
+  display: block;
+  text-align: center;
+  text-transform: capitalize;
 `;
 
 export default function IssueCardBadge({ issue }) {
   const badge = () => {
-    const data = issue.issueData.severity.toUpperCase();
+    const data = <LabelWrapper>{issue.issueData.severity}</LabelWrapper>;
     switch (issue.issueData.severity) {
       case 'low':
-        return <Lozenge isBold>{data}</Lozenge>;
+        return <Tag color='grey' text={data} />;
       case 'medium':
-        return (
-          <Lozenge appearance="moved" isBold>
-            {data}
-          </Lozenge>
-        );
+        return <Tag color='yellow' text={data} />;
       case 'high':
-        return (
-          <Lozenge appearance="removed" isBold>
-            {data}
-          </Lozenge>
-        );
+        return <Tag color='redLight' text={data} />;
       default:
-        return <Lozenge>{data}</Lozenge>;
+        return <Tag color='grey' text={data} />;
     }
   };
 
   return (
     <>
-      <SpanBadge>{badge()}</SpanBadge>
-      <PackageNameWrapper>{issue.pkgName}</PackageNameWrapper>
+      <PackageNameWrapper>
+        {badge()}
+        {` ${issue.pkgName}`}
+      </PackageNameWrapper>
       <PackageDescWrapper>{` - ${issue.issueData.title}`}</PackageDescWrapper>
     </>
   );

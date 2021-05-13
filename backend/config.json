@@ -15,7 +15,7 @@
       "snykAnalyticsKey": "$ANALYTICS"
     },
     "localBaseUrl": "$APP_URL",
-    "appKey": "$APP_KEY"
+    "appKey": "snyk-bbc-app"
   },
   "production": {
     "port": "$PORT",
