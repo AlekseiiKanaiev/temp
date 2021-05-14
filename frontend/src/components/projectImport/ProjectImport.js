@@ -231,16 +231,15 @@ export default function ProjectImport() {
           continuously monitor your repo for vulnerabilities
         </TextWrapper>
         <ButtonWrapper>
-          <Button appearance="primary" onClick={importProjectToSnyk}>
+          <Button appearance='primary' onClick={importProjectToSnyk}>
             Import this repository
           </Button>
         </ButtonWrapper>
         <TextWrapper>
           To bulk import repositories from your account, open the&nbsp;
-          <LinkWrapper href={linkToAddProject} target="_blank" rel="noreferrer">
+          <LinkWrapper href={linkToAddProject} target='_blank' rel='noreferrer'>
             Add project dialog
-          </LinkWrapper>
-          {' '}
+          </LinkWrapper>{' '}
           in Snyk app
         </TextWrapper>
       </ContentWrapper>

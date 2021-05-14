@@ -124,7 +124,7 @@ class AppAPIHandler {
           .then(() => res.status(200).send())
       } else {
         AnalyticsClient.sendEvent(clientKey, body.eventMessage)
-          .then(() => res.status(200).send())
+          .then(() => res.status(200).send({}))
       }
     } catch (err) {
       logger.error({ clientkey: clientKey, message: err.toString() })
