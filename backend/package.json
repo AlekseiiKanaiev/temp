@@ -1,6 +1,6 @@
 {
     "name": "snyk-bitbucket-integration",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "private": true,
     "scripts": {
         "start": "node -r esm app.js",

@@ -58,7 +58,7 @@ export default function NoFilesDetected() {
             <TextWrapper>
               Please visit our
               {' '}
-              <LinkWrapper href="https://support.snyk.io/hc/en-us/articles/360016973477-Snyk-Code-language-and-framework-support">
+              <LinkWrapper href="https://support.snyk.io/hc/en-us/articles/360016973477-Snyk-Code-language-and-framework-support" target="_blank">
                 Knowledge Center
                 {' '}
               </LinkWrapper>
