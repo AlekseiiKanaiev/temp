@@ -23,3 +23,7 @@ a {
 i {
     font-style: italic;
   }
+
+.hidden {
+        display: none;
+}

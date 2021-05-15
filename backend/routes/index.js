@@ -53,7 +53,7 @@ module.exports = function routes (app, addon) {
           })
       }).catch((err) => {
         logger.info({ clientkey: clientKey, message: err.toString() })
-        res.status(status.BAD_REQUEST).send(err)
+        res.status(status.BAD_REQUEST).send('')
       })
   })
 

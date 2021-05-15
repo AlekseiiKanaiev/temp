@@ -8,7 +8,7 @@ module.exports = function events(addon) {
         handleHostSettingsSaved(addon, clientKey, data)
         .then(() => {})        
         .catch((err) => {
-            logger.error({clientkey: clientKey, message: err})
+            logger.error({clientkey: clientKey, message: err.toString()})
           });
     })
     

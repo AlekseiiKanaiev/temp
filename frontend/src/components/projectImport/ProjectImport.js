@@ -18,8 +18,8 @@ import { dispatchProjects } from '../store/dispatchers';
 let intervalObj = 0;
 
 const ImageWrapper = styled.div`
-  margin-top: 50px;
-  height: 400px;
+  margin-top: 20px;
+  height: 360px;
   display: flex;
   justify-content: center;
 `;
@@ -30,8 +30,9 @@ const ContentWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   margin-top: 30px;
-  margin-bottom: 100px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  margin-bottom: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -39,7 +40,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const H1TextWrapper = styled.h1`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 20px;
@@ -47,7 +49,8 @@ const H1TextWrapper = styled.h1`
 `;
 
 const TextWrapper = styled.p`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -55,7 +58,7 @@ const TextWrapper = styled.p`
 `;
 
 const LinkWrapper = styled.a`
-color: rgb(0, 82, 204) !important;
+  color: rgb(0, 82, 204) !important;
 `;
 
 export default function ProjectImport() {
@@ -221,29 +224,28 @@ export default function ProjectImport() {
   }
   return (
     <GridColumn medium={12}>
-      <ContentWrapper>
-        <ImageWrapper>
-          <img src="/ico/addRepository.svg" alt="Add Repository" />
-        </ImageWrapper>
-        <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
-        <TextWrapper>
-          Import your repository to Snyk to find security issues and to
-          continuously monitor your repo for vulnerabilities
-        </TextWrapper>
-        <ButtonWrapper>
-          <Button appearance="primary" onClick={importProjectToSnyk}>
-            Import this repository
-          </Button>
-        </ButtonWrapper>
-        <TextWrapper>
-          To bulk import repositories from your account, open the&nbsp;
-          <LinkWrapper href={linkToAddProject} target="_blank" rel="noreferrer">
-            Add project dialog
-          </LinkWrapper>
-          {' '}
-          in Snyk app
-        </TextWrapper>
-      </ContentWrapper>
-    </GridColumn>
+    <ContentWrapper>
+      <ImageWrapper>
+        <img src='/ico/addRepository.svg' alt='Add Repository' />
+      </ImageWrapper>
+      <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
+      <TextWrapper>
+        Import your repository to Snyk to find security issues and to
+        continuously monitor your repo for vulnerabilities
+      </TextWrapper>
+      <ButtonWrapper>
+        <Button appearance='primary' onClick={importProjectToSnyk}>
+          Import this repository
+        </Button>
+      </ButtonWrapper>
+      <TextWrapper>
+        To bulk import repositories from your account, open the&nbsp;
+        <LinkWrapper href={linkToAddProject} target='_blank' rel='noreferrer'>
+          Add project dialog
+        </LinkWrapper>{' '}
+        in Snyk app
+      </TextWrapper>
+    </ContentWrapper>
+  </GridColumn>
   );
 }
