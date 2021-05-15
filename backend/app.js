@@ -93,12 +93,12 @@ VersionService.updateVersionInAtlassianConnect(pjson.version)
     app.use(expiry(app, { dir: staticDir, debug: devEnv }))
     // Add an hbs helper to fingerprint static resource urls
     hbs.registerHelper('furl', function (url) { return app.locals.furl(url) })
-    
+
     // Set no-referrer header on all requests
-    app.use(function(req, res, next) {
-      res.setHeader("Referrer-Policy", "origin");
-      return next();
-    });
+    app.use(function (req, res, next) {
+      res.setHeader('Referrer-Policy', 'origin')
+      return next()
+    })
     // Show nicer errors in dev mode
     // if (devEnv) app.use(errorHandler());
     // Wire up app events

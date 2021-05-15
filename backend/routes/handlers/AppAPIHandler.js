@@ -100,18 +100,23 @@ class AppAPIHandler {
 
   oauth (req, res) {
     const { state, code } = req.query
+    const { clientKey } = req.context
     const tokenService = new TokenService(this.addon, req.context.clientKey)
     const redirectUri = tokenService.getRedirectUri(this.addon.config.localBaseUrl())
     tokenService.saveSnykApiToken(redirectUri, code, state)
       .then((snykApiTokenBody) => {
         if (snykApiTokenBody.error) {
-          return res.status(status.BAD_REQUEST).send(snykApiTokenBody.error)
+          logger.error({ clientkey: clientKey, message: snykApiTokenBody.error })
+          return res.status(status.BAD_REQUEST).send('')
         }
         // res.redirect(307, 'https://bitbucket.org/alex1mmmcprime/workspace/settings/addon/admin/snyk-bb-app-test/snyk-account-page');
         res.render('snyk-redirect-page', {})
         // return this.app.get('env') === 'development'
         //  ? res.status(200).send({ code: code, snykApiTokenBody: snykApiTokenBody })
         //  : res.status(200).send({ message: 'you can close the tab' })
+      }).catch((err) => {
+        logger.error({ clientkey: clientKey, message: err.toString() })
+        return res.status(status.BAD_REQUEST).send('')
       })
   }
 
@@ -137,8 +142,8 @@ class AppAPIHandler {
     AppPassword.checkAppPassword(body.username, body.password, body.workspaceSlug, body.repoSlug)
       .then((result) => res.status(200).send(result))
       .catch((err) => {
-        logger.error({ clientkey: req.context.clientKey, message: err })
-        res.status(400).send(err)
+        logger.error({ clientkey: req.context.clientKey, message: err.toString() })
+        res.status(400).send('')
       })
   }
 
@@ -165,7 +170,7 @@ class AppAPIHandler {
           })
       }).catch((err) => {
         logger.error({ clientkey: clientKey, message: err.toString() })
-        res.status(status.BAD_REQUEST).send(err)
+        res.status(status.BAD_REQUEST).send('')
       })
   }
 
