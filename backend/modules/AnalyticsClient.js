@@ -10,7 +10,6 @@ class AnalyticsClient {
 
   async sendEvent (clientKey, eventMessage) {
     const eventMessageToSend = await this.replaceTemplateVariables(clientKey, eventMessage)
-    logger.info(eventMessageToSend)
     this.analytics.track(
       eventMessageToSend, (err, data) => {
         if (err) {
@@ -21,8 +20,6 @@ class AnalyticsClient {
 
   async sendIdentify (clientKey, identMessage) {
     const identMessageToSend = await this.replaceTemplateVariables(clientKey, identMessage)
-
-    logger.info(`ident: ${JSON.stringify(identMessageToSend)}`)
     this.analytics.identify(
       identMessageToSend, (err, data) => {
         if (err) {
