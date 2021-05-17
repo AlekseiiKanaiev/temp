@@ -53,9 +53,10 @@ export default function LogIn({
   currentUserId,
 }) {
   const logIn = () => {
+    const windowReference = window.open();
     getNewState(jwtToken, currentUserId).then((result) => {
       const href = `https://app.snyk.io/oauth/authorize?response_type=code&client_id=${result.clientid}&state=${result.token}&redirect_uri=${result.url}&scope=offline_access&audience=https://api.snyk.io&utm_campaign=Bitbucket-connect-promotion&utm_medium=Partner&utm_source=Bitbucket`;
-      window.open(href, '_blank');
+      windowReference.location = href;
     });
     setProcessingOauth(true);
   };

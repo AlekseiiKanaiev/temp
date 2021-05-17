@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SimpleTag as Tag } from '@atlaskit/tag';
 import SnykTag from '../SnykTag';
 
 const PackageNameWrapper = styled.span`
@@ -29,7 +28,7 @@ export default function IssueCardBadge({ issue }) {
         <SnykTag
           color={issue.issueData.severity}
           text={issue.issueData.severity}
-          width='55px'
+          width="55px"
         />
         {` ${issue.pkgName}`}
       </PackageNameWrapper>

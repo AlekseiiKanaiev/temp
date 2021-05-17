@@ -16,7 +16,7 @@ import {
 } from '../../services/SnykService';
 import Spinner from '../Spinner';
 
-const ImageWrapper = styled.div`
+const ImageWrapper = styled.img`
   margin-top: 60px;
   margin-left: 10px;
   height: 340px;
@@ -292,9 +292,10 @@ export default function IntegrateWithSnyk({
                 </TextWrapper>
               </GridColumn>
               <GridColumn medium={6}>
-                <ImageWrapper>
-                  <img src="/addAppPassword.png" alt="Add app password" />
-                </ImageWrapper>
+                <ImageWrapper
+                  src="/addAppPassword.png"
+                  alt="Add app password"
+                />
               </GridColumn>
               <GridColumn medium={12}>
                 <ButtonWrapper>

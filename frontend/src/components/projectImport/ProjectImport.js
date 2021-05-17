@@ -224,28 +224,29 @@ export default function ProjectImport() {
   }
   return (
     <GridColumn medium={12}>
-    <ContentWrapper>
-      <ImageWrapper>
-        <img src='/ico/addRepository.svg' alt='Add Repository' />
-      </ImageWrapper>
-      <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
-      <TextWrapper>
-        Import your repository to Snyk to find security issues and to
-        continuously monitor your repo for vulnerabilities
-      </TextWrapper>
-      <ButtonWrapper>
-        <Button appearance='primary' onClick={importProjectToSnyk}>
-          Import this repository
-        </Button>
-      </ButtonWrapper>
-      <TextWrapper>
-        To bulk import repositories from your account, open the&nbsp;
-        <LinkWrapper href={linkToAddProject} target='_blank' rel='noreferrer'>
-          Add project dialog
-        </LinkWrapper>{' '}
-        in Snyk app
-      </TextWrapper>
-    </ContentWrapper>
-  </GridColumn>
+      <ContentWrapper>
+        <ImageWrapper>
+          <img src="/ico/addRepository.svg" alt="Add Repository" />
+        </ImageWrapper>
+        <H1TextWrapper>Add your repository to Snyk</H1TextWrapper>
+        <TextWrapper>
+          Import your repository to Snyk to find security issues and to
+          continuously monitor your repo for vulnerabilities
+        </TextWrapper>
+        <ButtonWrapper>
+          <Button appearance="primary" onClick={importProjectToSnyk}>
+            Import this repository
+          </Button>
+        </ButtonWrapper>
+        <TextWrapper>
+          To bulk import repositories from your account, open the&nbsp;
+          <LinkWrapper href={linkToAddProject} target="_blank" rel="noreferrer">
+            Add project dialog
+          </LinkWrapper>
+          {' '}
+          in Snyk app
+        </TextWrapper>
+      </ContentWrapper>
+    </GridColumn>
   );
 }
