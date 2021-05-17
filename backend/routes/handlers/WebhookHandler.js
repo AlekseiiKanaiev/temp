@@ -25,11 +25,6 @@ class WebhookHandler {
     })
   }
 
-  pages (req, res) {
-    if (req.url.startsWith('/pages/repo')) { this.pagesRepo(req, res) }
-    if (req.url.startsWith('/pages/account')) { this.pagesAccount(req, res) }
-  }
-
   pagesRepo (req, res) {
     const httpClient = this.addon.httpClient(req)
     const { workspaceSlug, repoSlug, repoMainBranch, repoOwner, useruuid, targetuseruuid } = req.query
