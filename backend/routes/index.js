@@ -74,7 +74,16 @@ module.exports = function routes (app, addon) {
   // `atlassian-connect.json`
 
   app.post('/webhook', addon.authenticate(), webhookHander.handle)
-  app.all('/snyk/*', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+
+  app.get('/snyk/orgs', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.get('/snyk/user/me', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/integrations/:integrationId/import', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/integrations', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.get('/snyk/org/orgid/integrations', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/projects', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/project/:projectId/aggregated-issues', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.get('/snyk/org/:orgId/integrations/:integrationId/import/:jobId', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 
   async function sendToAnalytics (settings, clientKey) {
