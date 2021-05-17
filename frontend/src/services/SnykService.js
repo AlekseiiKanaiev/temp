@@ -49,6 +49,7 @@ export async function getProjects(jwtToken, projectName) {
   const projectBody = {
     filters: {
       name: projectName,
+      origin: 'bitbucket-cloud',
     },
   };
   const res = await executePost(jwtToken, url, projectBody);

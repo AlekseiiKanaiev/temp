@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import MarkdownIt from 'markdown-it';
 
 const md = new MarkdownIt({
-  html: true,  
+  html: true,
 });
 
 export default function IssueCardOverview({ issue }) {
@@ -37,7 +37,7 @@ export default function IssueCardOverview({ issue }) {
 
   const createMarkup = () => {
     const overviewPart = overview();
-    const htmlOutput = overviewPart ? md.renderInline(overviewPart): '';
+    const htmlOutput = overviewPart ? md.renderInline(overviewPart) : '';
     return {
       __html: htmlOutput.replace(/(<a\s)/gm, '<a target="_blank"')
         .trim()

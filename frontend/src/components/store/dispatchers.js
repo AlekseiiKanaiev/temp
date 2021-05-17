@@ -73,7 +73,7 @@ export const dispatchProjects = (dispatch, configuration, imported) => {
             }));
           } else {
             const projects = result.projects
-              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`) && projectTypes.includes(project.type))
+              .filter((project) => project.name.startsWith(`${repoOwner}/${repoSlug}`) && projectTypes.includes(project.type) && project.origin === 'bitbucket-cloud')
               .map((project) => ({
                 id: project.id,
                 name: project.name,

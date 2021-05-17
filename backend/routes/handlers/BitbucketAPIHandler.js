@@ -1,7 +1,6 @@
 const status = require('http-status')
 const { logger } = require('../../logger')
 
-
 class BitbucketAPIHandler {
   constructor (addon) {
     this.addon = addon
@@ -20,7 +19,7 @@ class BitbucketAPIHandler {
         const parsed = JSON.parse(data)
         res.status(status.OK).send(parsed)
       } catch (err) {
-        logger.error({ message: err.toString(), clientkey: req.context.clientKey})
+        logger.error({ message: err.toString(), clientkey: req.context.clientKey })
         res.status(status.BAD_REQUEST).send('')
       }
     })

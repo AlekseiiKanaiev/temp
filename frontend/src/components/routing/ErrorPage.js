@@ -112,7 +112,7 @@ export default function ErrorPage() {
             <TextWrapper>
               Please try again later or
               {' '}
-              <LinkWrapper href="https://snyk.io/contact-us/" target='_blank'>
+              <LinkWrapper href="https://snyk.io/contact-us/" target="_blank">
                 contact our support
               </LinkWrapper>
             </TextWrapper>

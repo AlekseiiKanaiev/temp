@@ -32,7 +32,7 @@ export default function SnykTag({ color, text, width }) {
   };
 
   return (
-    <CustomBadge style={{ backgroundColor: getColor(color), width: width }}>
+    <CustomBadge style={{ backgroundColor: getColor(color), width }}>
       {text}
     </CustomBadge>
   );
