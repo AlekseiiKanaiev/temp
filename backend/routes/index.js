@@ -67,14 +67,24 @@ module.exports = function routes (app, addon) {
   app.post('/app/integration', addon.checkValidToken(), appAPIHandler.restartIntegration.bind(appAPIHandler))
   app.post('/app/analytics', addon.checkValidToken(), appAPIHandler.sendToAnalytics.bind(appAPIHandler))
   app.post('/app/checkapppassword', addon.checkValidToken(), appAPIHandler.checkAppPassword.bind(appAPIHandler))
-  app.get('/pages*', addon.authenticate(), webhookHander.pages.bind(webhookHander))
+  app.get('/pages/repo', addon.authenticate(), webhookHander.pagesRepo.bind(webhookHander))
+  app.get('/pages/account', addon.authenticate(), webhookHander.pagesAccount.bind(webhookHander))
 
   // This route will handle webhooks from repositories this add-on is installed for.
   // Webhook subscriptions are managed in the `modules.webhooks` section of
   // `atlassian-connect.json`
 
   app.post('/webhook', addon.authenticate(), webhookHander.handle)
-  app.all('/snyk/*', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+
+  app.get('/snyk/orgs', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.get('/snyk/user/me', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/integrations/:integrationId/import', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/integrations', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.get('/snyk/org/orgid/integrations', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/projects', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.post('/snyk/org/orgid/project/:projectId/aggregated-issues', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+  app.get('/snyk/org/:orgId/integrations/:integrationId/import/:jobId', addon.checkValidToken(), snykApiHandler.pipe.bind(snykApiHandler))
+
   app.all('/bb/*', addon.authenticate(), bbApiHandler.pipe.bind(bbApiHandler))
 
   async function sendToAnalytics (settings, clientKey) {
