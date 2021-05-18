@@ -28,7 +28,7 @@ export default function IssueCardBadge({ issue }) {
         <SnykTag
           color={issue.issueData.severity}
           text={issue.issueData.severity}
-          width="55px"
+          width="65px"
         />
         {` ${issue.pkgName}`}
       </PackageNameWrapper>
