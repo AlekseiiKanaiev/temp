@@ -26,6 +26,8 @@ export default function SnykTag({ color, text, width }) {
         return '#d68100';
       case 'high':
         return '#cc4f19';
+      case 'critical':
+        return '#ad1a1a';
       default:
         return color;
     }

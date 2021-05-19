@@ -5,6 +5,10 @@ import VulnerabilityBadge from './VulnerabilityBadge';
 export default function VulnarabilityBadges({ issueCounts }) {
   return (
     <>
+      {issueCounts.critical && (
+          <VulnerabilityBadge color="redc" data={issueCounts.critical} />
+        )
+      }
       <VulnerabilityBadge color="red" data={issueCounts.high} />
       <VulnerabilityBadge color="yellow" data={issueCounts.medium} />
       <VulnerabilityBadge color="black" data={issueCounts.low} />
@@ -17,5 +21,6 @@ VulnarabilityBadges.propTypes = {
     high: PropTypes.number.isRequired,
     medium: PropTypes.number.isRequired,
     low: PropTypes.number.isRequired,
+    critical: PropTypes.number,
   }).isRequired,
 };

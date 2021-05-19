@@ -20,7 +20,7 @@ const defaultIssuesBody = {
   includeDescription: true,
   includeIntroducedThrough: true,
   filters: {
-    severities: ['high', 'medium', 'low'],
+    severities: ['high', 'medium', 'low', 'critical'],
     exploitMaturity: [
       'mature',
       'proof-of-concept',
