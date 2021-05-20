@@ -92,8 +92,11 @@ VersionService.updateVersionInAtlassianConnect(pjson.version)
     // Enable static resource fingerprinting for far future expires caching in production
     app.use(expiry(app, { dir: staticDir, debug: devEnv }))
     // Add an hbs helper to fingerprint static resource urls
-    hbs.registerHelper('furl', function (url) { return app.locals.furl(url) })
-
+    if (devEnv === 'development') {
+      hbs.registerHelper('furl', function (url) { return url })
+    } else {
+      hbs.registerHelper('furl', function (url) { return app.locals.furl(url) })
+    }
     // Set no-referrer header on all requests
     app.use(function (req, res, next) {
       res.setHeader('Referrer-Policy', 'origin')

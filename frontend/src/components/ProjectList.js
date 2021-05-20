@@ -47,18 +47,20 @@ export default function ProjectList({ projects, orgname }) {
     let high = 0;
     let medium = 0;
     let low = 0;
-    let critical = undefined;
+    let critical = -1;
     if (projects) {
       projects.forEach((project) => {
         high += project.issueCounts.high;
         medium += project.issueCounts.medium;
         low += project.issueCounts.low;
-        if (project.issueCounts.critical) {
-          critical = critical ? critical + project.issueCounts.critical : project.issueCounts.critical
+        if (Object.prototype.hasOwnProperty.call(project.issueCounts, 'critical')) {
+          critical = critical !== -1 ? critical + project.issueCounts.critical : project.issueCounts.critical;
         }
       });
     }
-    return { high, medium, low, critical };
+    return {
+      high, medium, low, critical,
+    };
   };
 
   const project = projectId
@@ -69,10 +71,12 @@ export default function ProjectList({ projects, orgname }) {
     ? totalIssueCounts([project])
     : totalIssueCounts(projects);
 
-  const { low, high, medium, critical } = issueCounts;
+  const {
+    low, high, medium, critical,
+  } = issueCounts;
 
   const view = projectId ? (
-    low + high + medium + critical === 0 ? (
+    low + high + medium + (critical === -1 ? 0 : critical) === 0 ? (
       <NoIssuesFound />
     ) : (
       <ProjectIssues

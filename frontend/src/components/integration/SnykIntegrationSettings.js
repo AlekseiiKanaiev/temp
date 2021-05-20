@@ -109,7 +109,7 @@ export default function SnykIntegrationsSettings() {
             .then((result) => {
               setOrganization(result.orgname);
               setLoading(false);
-            })
+            });
         })
         .catch((err) => {
           throw new Error(err);

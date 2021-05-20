@@ -56,16 +56,16 @@ export default function ProjectIssues({
   }, [projectId, jwtToken]);
 
   const compareIssues = (a, b) => {
-    const sortList = ['critical', 'high', 'medium', 'low']
-    sortList.indexOf(a.issueData.severity)
-    if ( sortList.indexOf(a.issueData.severity) < sortList.indexOf(b.issueData.severity) ){
+    const sortList = ['critical', 'high', 'medium', 'low'];
+    sortList.indexOf(a.issueData.severity);
+    if (sortList.indexOf(a.issueData.severity) < sortList.indexOf(b.issueData.severity)) {
       return -1;
     }
-    if ( sortList.indexOf(a.issueData.severity) > sortList.indexOf(b.issueData.severity) ){
+    if (sortList.indexOf(a.issueData.severity) > sortList.indexOf(b.issueData.severity)) {
       return 1;
     }
     return 0;
-  } 
+  };
 
   const view = () => {
     if (error) {
