@@ -4,13 +4,13 @@ import VulnerabilityBadge from './VulnerabilityBadge';
 
 export default function VulnarabilityBadges({ issueCounts }) {
   return (
-    <>
+    <div style={{display: 'flex'}}>
       {Object.prototype.hasOwnProperty.call(issueCounts, 'critical') && issueCounts.critical !== -1
           && <VulnerabilityBadge color="redc" data={issueCounts.critical} />}
       <VulnerabilityBadge color="red" data={issueCounts.high} />
       <VulnerabilityBadge color="yellow" data={issueCounts.medium} />
       <VulnerabilityBadge color="black" data={issueCounts.low} />
-    </>
+    </div>
   );
 }
 

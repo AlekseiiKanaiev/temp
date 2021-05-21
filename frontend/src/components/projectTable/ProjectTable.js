@@ -99,7 +99,7 @@ const getTestedMessage = (testedAt) => {
 
 export default function ProjectTable({ projects, baseUrl }) {
   return (
-    <TableWrapper>
+    <TableWrapper >
       <DynamicTable
         head={head}
         rows={rows(projects, baseUrl)}

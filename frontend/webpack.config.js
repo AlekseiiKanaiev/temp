@@ -10,7 +10,15 @@ module.exports = {
             use: {
                 loader: "babel-loader"
             }
-          }
+          },
+          {
+            // Preprocess our own .css files
+            // This is the place to add your own loaders (e.g. sass/less etc.)
+            // for a list of loaders, see https://webpack.js.org/loaders/#styling
+            test: /\.scss$/,
+            exclude: /node_modules/,
+            use: ['style-loader', 'css-loader', 'sass-loader'],
+          },
         ]
     },
     watch: (process.argv.indexOf('--no-watch') > -1) ? false : true,
