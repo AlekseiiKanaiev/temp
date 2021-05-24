@@ -1,21 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const CustomBadge = styled.span`
-  border-radius: 3px;
-  cursor: default;
-  display: inline-flex;
-  height: 20px;
-  line-height: 1.3;
-  margin: 4px;
-  padding: 0px;
-  text-transform: capitalize;
-  vertical-align: middle;
-  justify-content: center;
-  font-weight: 400;
-  width: 20px;
-  color: white;
-`;
+import Tooltip from '@atlaskit/tooltip';
+import './SnykTag.scss';
 
 export default function SnykTag({ color, text, width }) {
   const getColor = (color) => {
@@ -33,9 +18,13 @@ export default function SnykTag({ color, text, width }) {
     }
   };
 
+  const toolTipContent = 'A vulnerability\'s severity (critical, high, medium or low) is based on its CVSS score:\n- CVSS score of -10: Critical or High\n- CVSS score of 4-6.9: Medium\n- CVSS score of 0-3.9: Low';
+
   return (
-    <CustomBadge style={{ backgroundColor: getColor(color), width }}>
-      {text}
-    </CustomBadge>
+    <Tooltip content={toolTipContent}>
+      <span className="custom-bage" style={{ backgroundColor: getColor(color), width }}>
+        {text}
+      </span>
+    </Tooltip>
   );
 }
