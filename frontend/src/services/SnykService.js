@@ -1,21 +1,3 @@
-const defaultProjectsBody = {
-  filters: {
-    tags: {
-      includes: [
-        {
-          key: 'example-tag-key',
-          value: 'example-tag-value',
-        },
-      ],
-    },
-    attributes: {
-      criticality: ['high'],
-      environment: ['backend'],
-      lifecycle: ['development'],
-    },
-  },
-};
-
 const defaultIssuesBody = {
   includeDescription: true,
   includeIntroducedThrough: true,
@@ -281,6 +263,7 @@ async function executeDelete(jwtToken, uri) {
 async function getJsonFromRequestResult(res) {
   let ret = {};
   if (!res.ok) {
+    // eslint-disable-next-line no-console
     console.error(`Could not fetch  ${res.url}, received ${res}`);
     ret.error = true;
     ret.error_short_message = 'Internal Server Error';

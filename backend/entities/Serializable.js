@@ -74,6 +74,7 @@ class Serializable {
     const mapping = this._propsMapping.toArray()
     return factory.newInstance == null
       ? factory.newInstance(data)
+    // eslint-disable-next-line new-cap
       : new factory(mapping).setProperties(data)
   }
 

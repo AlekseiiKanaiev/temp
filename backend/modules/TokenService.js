@@ -2,7 +2,6 @@ import * as jwt from 'atlassian-jwt'
 const request = require('request')
 const jwtDecode = require('jwt-decode')
 const { logger } = require('../logger')
-const BitbucketUser = require('./BitbucketUser')
 const AnalyticsClient = require('../modules/AnalyticsClient')
 const DbClient = require('../modules/DbClient')
 

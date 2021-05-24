@@ -1,4 +1,3 @@
-const { logger } = require('../logger')
 
 class DbClient {
   static async getClientInfo (addon, clientKey) {

@@ -33,6 +33,7 @@ export default function ProjectList({ projects, orgname }) {
   );
 
   useEffect(() => {
+    // eslint-disable-next-line no-undef
     AP.getLocation((location) => {
       const url = new URL(location);
       setBaseUrl(url.href.replace(url.search, ''));
@@ -54,7 +55,9 @@ export default function ProjectList({ projects, orgname }) {
         medium += project.issueCounts.medium;
         low += project.issueCounts.low;
         if (Object.prototype.hasOwnProperty.call(project.issueCounts, 'critical')) {
-          critical = critical !== -1 ? critical + project.issueCounts.critical : project.issueCounts.critical;
+          critical = critical !== -1
+            ? critical + project.issueCounts.critical
+            : project.issueCounts.critical;
         }
       });
     }

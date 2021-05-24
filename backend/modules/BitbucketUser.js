@@ -6,10 +6,10 @@ class BitbucketUser {
     this.addon = addon
   }
 
-  async getUsernameByToken (token) {
-    const restApiToken = await BitbucketUser.getRestApiToken(token)
-    const aa = ''
-  }
+  // async getUsernameByToken (token) {
+  //   const restApiToken = await BitbucketUser.getRestApiToken(token)
+  //   const aa = ''
+  // }
 
   async getRestApiToken (token) {
     return await new Promise((resolve, reject) => {
@@ -17,7 +17,8 @@ class BitbucketUser {
         'https://bitbucket.org/site/oauth2/access_token',
         {
           headers: {
-            Authorization: `JWT ${jwtToken}`
+            // Authorization: `JWT ${jwtToken}`
+            Authorization: `JWT ${token}`
           },
           json: {
             grant_type: 'grant_type=urn:bitbucket:oauth2:jwt'

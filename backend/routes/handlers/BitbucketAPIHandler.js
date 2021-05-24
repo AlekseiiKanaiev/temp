@@ -14,6 +14,7 @@ class BitbucketAPIHandler {
     const httpClient = this.addon.httpClient(req)
     const url = req.path.replace('/bb', '')
 
+    // eslint-disable-next-line node/handle-callback-err
     httpClient[req.method.toLowerCase()](url, (err, resp, data) => {
       try {
         const parsed = JSON.parse(data)

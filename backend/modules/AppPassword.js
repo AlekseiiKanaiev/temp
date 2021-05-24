@@ -1,5 +1,4 @@
 const request = require('request')
-const { logger } = require('../logger')
 
 class AppPassword {
   static async checkAppPassword (username, appPassword, workspaceSlug, repoSlug) {

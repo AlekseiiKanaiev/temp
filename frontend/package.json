@@ -41,7 +41,7 @@
     "prodbuild": "webpack --mode production --no-watch",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/** --fix"
+    "lint": "eslint src/**/*.js --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
