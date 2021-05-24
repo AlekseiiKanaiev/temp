@@ -66,7 +66,6 @@ export default function ProjectIssues({
     }
   }, [projectId, jwtToken]);
 
-
   const view = () => {
     if (error) {
       return <ErrorPage error={error} />;
